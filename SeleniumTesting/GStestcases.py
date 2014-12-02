@@ -85,7 +85,7 @@ class GenomeSpaceTest():
         base_window = driver.current_window_handle
         print base_window'''
 
-    #@unittest.skipUnless(registered, )
+    #@unittest.skip("for testing")
     def test_1b_login(self):
         if not registered:
             raise unittest.SkipTest("Skipped for failed registration.")
@@ -326,12 +326,16 @@ class GenomeSpaceTest():
         try:
             function = '''function rename() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("GET", "https://genomespace.genome.edu.au/datamanager/v1.0/tags/file/Home/swift:UROP/test1",false);\
+                xmlhttp.open("GET", "https://genomespace.genome.edu.au/datamanager/v1.0/file//Home/swift:UROP/",false);\
                 xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
-                xmlhttp.onreadystatechange=function(){\
-                            alert(xmlhttp.readyState+";"+xmlhttp.status);\
-                    };\
                 xmlhttp.send();\
+                if (xmlhttp.status >= 400 || xmlhttp.status < 200) {\
+                    alert("Failure:" + xmlhttp.status);\
+                } else if (xmlhttp.status >= 300) {\
+                    alert("Manual redirection needed:" + xmlhttp.status);\
+                } else if (xmlhttp.status >= 200) {\
+                    alert("Success:" + xmlhttp.status);\
+                }\
             }'''
             #print js.format(function)
             #print driver.page_source
@@ -340,25 +344,50 @@ class GenomeSpaceTest():
             #print s
             driver.execute_script("rename()")
             time.sleep(5)
-            rs_s = {}
-            unexpected_alert = []
-            while True:
-                try:
-                    alert = driver.switch_to_alert()
-                    contents = alert.text.split(";")
-                    if contents[0].isdigit() and contents[1].isdigit():
-                        rs_s[contents[0]] = contents[1]
-                    else:
-                        unexpected_alert.append(alert.text)
-                    alert.dismiss()
-                    time.sleep(3)
-                except NoAlertPresentException:
-                    break
-            print rs_s
-            print unexpected_alert
-            driver.close()
         except Exception as e:
             print e.__str__()
+        #fail = False
+        #fail_rs = -1
+        #rs_s = {}
+        #unexpected_alert = []
+        '''while True:
+            try:
+                alert = driver.switch_to_alert()
+                contents = alert.text.split(";")
+                if contents[0].isdigit() and contents[1].isdigit():
+                    rs_s[int(contents[0])] = int(contents[1])
+                    if int(contents[1])>=400:
+                        fail = True
+                        fail_rs = int(contents[0])
+                else:
+                    unexpected_alert.append(alert.text)
+                alert.dismiss()
+                time.sleep(3)
+            except NoAlertPresentException:
+                break
+        if unexpected_alert != []:
+            print ("Unexpected alert present: "),
+            for alert in unexpected_alert:
+                print alert + ";"
+        if fail == True:
+            raise RenameException(fail_rs, rs_s[fail_rs])
+        driver.close()'''
+        try:
+            elem = wait.until(EC.alert_is_present())
+            alert = driver.switch_to_alert()
+            text = alert.text
+            alert.dismiss()
+            print text
+            assert "Success" in text
+            driver.execute_script('refreshDirectoryList(function(e) {\
+                    rootDirectoryCallback(e);\
+                    openOnDirectoryFromUrl();\
+                    $(\'#splashScreen\').trigger(\'click\');\
+                });')
+        except AssertionError:
+            raise RenameException(text)
+        except NoAlertPresentException:
+            raise RenameException("Http request not sent.")
             
 
     def dismiss_dialogs(self):

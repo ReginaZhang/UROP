@@ -36,3 +36,13 @@ class DisconnectContainerException(Exception):
         if self.message:
             return report + "\n" + self.message
         return report
+
+class RenameException(Exception):
+    def __init__(self, message = None):
+        self.message = message
+
+    def __str__(self):
+        report = "Falied to rename the file."
+        if self.message:
+            return report + "\n" + self.message
+        return report
