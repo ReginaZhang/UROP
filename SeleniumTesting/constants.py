@@ -60,6 +60,8 @@ page_container = {'menu_connect': "menuConnect",
 page_file = {'sort_filename': "fileNameSortFiles",
              'rename': "menuFileRename"}
 
+page_botton = {'copy': '//div[contains(@tabindex, "-1")]//div[@class="dialogButtonDiv"]/button[contains(text(),"Copy")]'}
+
 
 # following are the keys for the tests
 t_mount_container = {'os_ep': "https://keystone.rc.nectar.org.au:5000/v2.0/tokens",
