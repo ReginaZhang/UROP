@@ -266,64 +266,6 @@ class GenomeSpaceTest():
         driver = self.driver
         wait = self.wait
         self.dismiss_dialogs()
-        '''try:
-            elem = driver.find_element_by_xpath(test_folder["GS-Demo_xpath"])
-            elem.click()
-            time.sleep(3)
-            elem = driver.find_element_by_xpath(test_folder["test1_xpath"])
-            elem.click()
-            time.sleep(6)
-            #elem = wait.until(EC.element_to_be_clickable((By.ID, page_file["sort_filename"])))
-            elem = driver.find_element_by_id(page_file["sort_filename"])
-            assert elem.text == "Filename"
-            aciton = ActionChains(driver).move_to_element(elem).context_click().perform
-            #elem.click()
-            time.sleep(2)
-            elem = driver.find_element_by_xpath(test_file["before_rename_xpath"])
-            except AssertionError:
-            raise Exception("not in the folder")
-        except NoSuchElementException, e:
-            messages = e.__str__().split("\n")
-            self.dismiss_dialogs()
-            raise Exception("cannot find the directory or file before renaming!" + messages[0])
-        try:
-            driver.maximize_window()
-            action = ActionChains(driver).move_to_element(elem)
-            action.click(elem).perform()
-            time.sleep(5)
-            elemts = driver.find_elements_by_xpath("//a[contains(text(),'Rename')]")
-            print len(elemts)
-            index = 0
-            for item in elemts:
-                print item.text
-                if item.is_enabled():
-                    print index
-                    elem = item
-                    break
-                index += 1
-            action.move_to_element(elem)
-            action.click().perform()
-            elem = driver.find_element_by_id(common["menu_file"])
-            hover = ActionChains(driver).move_to_element(elem)
-            elem = driver.find_element_by_id(page_file["rename"])
-            hover.move_to_element(elem)
-            hover.click().perform()
-            elemts = driver.find_elements_by_tag_name("input")
-            count = 0
-            for item in elemts:
-                if item.is_enabled():
-                    count += 1
-                    #print item.get_attribute("@value")
-                    #assert item.get_attribute("@placeholder") == test_file["before_rename"]
-                    #item.clear()
-                    #time.sleep(2)
-                    #item.send_keys(test_file["after_rename"])
-                    #print item.get_attribute("@value")
-            print count
-        except NoSuchElementException, e:
-            messages = e.__str__().split("\n")
-            self.dismiss_dialogs()
-            raise Exception(messages[0])'''
         try:
             self.test_2a_mount_container()
             #print js.format(function)
@@ -334,7 +276,7 @@ class GenomeSpaceTest():
             driver.execute_script("rename()")
             time.sleep(5)
         except Exception as e:
-            print e
+            raise RenameException(e.__str__())
         try:
             not_complete = True
             while not_complete:
@@ -351,8 +293,6 @@ class GenomeSpaceTest():
             self.refresh_page()
         except AssertionError:
             raise RenameException(text)
-        except NoAlertPresentException:
-            raise RenameException("Http request not sent.")
 
     def refresh_page(self):
         driver = self.driver
