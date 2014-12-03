@@ -88,3 +88,20 @@ test_file = {'before_rename': "before_rename.txt",
 
 """//div[contains(@class, 'ui-dialog')]/div[preceding-sibling::div/span[contains(., 'Rename display')]]/input[@value='test']"""
 
+# js functions for http requests
+
+js_func = {'rename': '''function rename() {\
+                var xmlhttp=new XMLHttpRequest();\
+                xmlhttp.open("POST", "https://genomespace.genome.edu.au/datamanager/v1.0/file//Home/swift:UROP/before_rename.txt",false);\
+                xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
+                xmlhttp.send(JSON.stringify({"path":"/Home/swift:UROP/after_rename.txt"}));\
+                if (xmlhttp.status >= 400 || (100 <= xmlhttp.status && xmlhttp.status < 200)) {\
+                    alert("Failure: " + xmlhttp.status + "<br/>Response: " + xmlhttp.responseText);\
+                } else if (xmlhttp.status >= 300) {\
+                    alert("Manual redirection needed: " + xmlhttp.status);\
+                } else if (xmlhttp.status >= 200) {\
+                    alert("Success: " + xmlhttp.status);\
+                } else {\
+                    alert("Http request not sent.");\
+                }\
+            }'''}
