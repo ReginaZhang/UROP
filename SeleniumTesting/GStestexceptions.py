@@ -42,7 +42,17 @@ class RenameException(Exception):
         self.message = message
 
     def __str__(self):
-        report = "Falied to rename the file."
+        report = "Failed to rename the file."
+        if self.message:
+            return report + "\n" + self.message
+        return report
+    
+class CopyException(Exception):
+    def __init__(self, message = None):
+        self.message = message
+        
+    def __str__(self):
+        report = "Failed to copy the file"
         if self.message:
             return report + "\n" + self.message
         return report

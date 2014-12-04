@@ -229,10 +229,11 @@ class GenomeSpaceTest():
         wait = self.wait
         self.dismiss_dialogs()
         try:
+            function = js_func["rename"]
             self.test_2a_mount_container()
             #print js.format(function)
             #print driver.page_source
-            driver.execute_script(js.format(js_func["rename"]))
+            driver.execute_script(js.format(function))
             #s= driver.page_source
             #print s
             driver.execute_script("rename()")
@@ -262,7 +263,7 @@ class GenomeSpaceTest():
         driver = self.driver
         wait = self.wait
         self.dismiss_dialogs()
-        try:
+        '''try:
             driver.maximize_window()
             elem = driver.find_element_by_xpath(test_folder["swift:UROP_xpath"])
             elem.click()
@@ -318,7 +319,11 @@ class GenomeSpaceTest():
         try:
             elem = driver.find_element_by_xpath(test_file["after_copy_to_folder_xpath"])
         except NoSuchElementException:
-            raise Exception("failed to copy")
+            raise Exception("failed to copy")'''
+        try:
+            function = js_func["copy_btw_folder"]
+        except Exception:
+            raise CopyException()
 
     def refresh_page(self):
         driver = self.driver
