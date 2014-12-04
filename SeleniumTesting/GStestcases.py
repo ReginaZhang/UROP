@@ -15,43 +15,15 @@ registered = False
 logged_in = False
 mounted = False
 #base_window = None
-"""jq = '''$.ajax({
-            type:"{0}",
-            url:"{1}",
-            contentType:"{2}",
-            {3}
-            success: function (data, status, jqXHR){
-                {4}
-            },
-            error: function (jqXHR, status){
-                {5}
-            }
-        });'''"""
+
 js = """var s=document.createElement(\'script\');
         s.innerHTML=\'{0}\';
         s.type=\'text/javascript\';
         document.head.appendChild(s);"""
 
 class GenomeSpaceTest():
-    '''def setUp(self):
-        self.driver_type = args[0]
-        driver_type = self.driver_type.lower()
-        if driver_type == "firefox":
-            self.driver = webdriver.Firefox()
-        elif driver_type == "chrome":
-            self.driver = webdriver.Chrome(executable_path = chrome_path)
-        else:
-            print "Not supported browser: " + self.driver_type
-            sys.exit()
-        self.driver.implicitly_wait(10)
-        self.wait = WebDriverWait(self.driver,20)'''
 
     __metaclass__ = ABCMeta
-    
-    '''@abstractmethod
-    @classmethod
-    def setUpClass(cls):
-        pass'''
 
     def test_1a_register(self):
         driver = self.driver
@@ -82,9 +54,6 @@ class GenomeSpaceTest():
             raise Exception("Unexpected alert present: " + text)
         global registered
         registered = True
-        '''global base_window
-        base_window = driver.current_window_handle
-        print base_window'''
 
     #@unittest.skip("for testing")
     def test_1b_login(self):
@@ -217,14 +186,6 @@ class GenomeSpaceTest():
             assert alert.text == "Really unmount external storage swift:" + container
             time.sleep(3)
             alert.accept()
-            '''elemts = driver.find_elements_by_tag_name("a")
-            print elemts
-            for elem in elemts:
-                print elem.text
-                if elem.text == "Disconnect" and elem.is_enabled():
-                    print "found it"
-                    action.move_to_element(elem).click().perform()
-                    print "and clicked"'''
         except TimeoutException:
             raise DisconnectContainerException("Timed out waiting for the confirmation pop-up.")
         except AssertionError:
@@ -236,7 +197,7 @@ class GenomeSpaceTest():
             self.dismiss_dialogs()
             raise DisconnectContainerException(messages[0])
         except UnexpectedAlertPresentException:
-            raise DissconnectContainerException("An unexpected alert popped up.")
+            raise DisconnectContainerException("An unexpected alert popped up.")
         except Exception, e:
             self.dismiss_dialogs()
             raise DisconnectContainerException(type(e).__name__ + ": " + e.__str__())
@@ -245,9 +206,9 @@ class GenomeSpaceTest():
             assert "swift:" + container not in driver.page_source
             time.sleep(20)
         except AssertionError:
-            raise DissconnectContainerException("The container is still shown.")
+            raise DisconnectContainerException("The container is still shown.")
         except UnexpectedAlertPresentException:
-            raise DissconnectContainerException("An unexpected alert popped up.")
+            raise DisconnectContainerException("An unexpected alert popped up.")
         except Exception, e:
             self.dismiss_dialogs()
             raise DisconnectContainerException(type(e).__name__ + ": " + e.__str__())
@@ -260,6 +221,7 @@ class GenomeSpaceTest():
     
     def test_4b_'''
 
+    @unittest.skip("I just wanna skip it.")
     def test_6a_change_file_name(self):
         if (not registered) or (not logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
@@ -294,6 +256,15 @@ class GenomeSpaceTest():
         except AssertionError:
             raise RenameException(text)
 
+    def test_6b_copy_data(self):
+        if (not registered) or (not logged_in):
+            raise unittest.SkipTest("Skipped for failed registration or login.")
+        driver = self.driver
+        wait = self.wait
+        self.dismiss_dialogs()
+        elem = driver.find_element_by_xpath(test_folder["subdir1"])
+        elem.click()
+
     def refresh_page(self):
         driver = self.driver
         driver.execute_script("refreshDirectoryList(function(e) {\
@@ -301,7 +272,6 @@ class GenomeSpaceTest():
                     openOnDirectoryFromUrl();\
                     $('#splashScreen').trigger('click');\
                 });")
-            
 
     def dismiss_dialogs(self):
         elemts = self.driver.find_elements_by_tag_name("Button")

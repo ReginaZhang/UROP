@@ -80,7 +80,9 @@ test_container = {'mount_container': t_mount_container}
 
 test_folder = {'GS-Demo_xpath': "//a[@dirpath='/Home/swift:GS-Demo']",
                'test1_xpath': "//a[@dirpath='/Home/swift:GS-Demo/test1']",
-               'test2_xpath': "//a[@dirpath='/Home/swift:GS-Demo/test2']"}
+               'test2_xpath': "//a[@dirpath='/Home/swift:GS-Demo/test2']",
+               'subdir1': '//div[@id="filesDiv2"]//tbody//a[@dirpath = "/Home/swift:UROP/subdir1"]',
+               'subdir2': '//div[@id="filesDiv2"]//tbody//a[@dirpath = "/Home/swift:UROP/subdir2"]'}
 
 test_file = {'before_rename': "before_rename.txt",
              'before_rename_xpath': "//a[@filepath='/Home/swift:GS-Demo/test1/before_rename.txt']",
