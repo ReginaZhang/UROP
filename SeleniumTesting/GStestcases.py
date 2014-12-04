@@ -262,8 +262,63 @@ class GenomeSpaceTest():
         driver = self.driver
         wait = self.wait
         self.dismiss_dialogs()
-        elem = driver.find_element_by_xpath(test_folder["subdir1"])
-        elem.click()
+        try:
+            driver.maximize_window()
+            elem = driver.find_element_by_xpath(test_folder["swift:UROP_xpath"])
+            elem.click()
+            time.sleep(5)
+            elem = wait.until(EC.element_to_be_clickable((By.XPATH, test_folder["subdir2_xpath"])))
+            elem = driver.find_element_by_xpath(test_folder["subdir2_xpath"])
+            elem.click()
+            time.sleep(5)
+        except NoSuchElementException:
+            raise Exception("Error")
+        try:
+            elem = driver.find_element_by_xpath(test_file["after_copy_to_folder_xpath"])
+            raise Exception("already in there")
+        except NoSuchElementException:
+            pass
+        try:
+            elem = driver.find_element_by_xpath(test_folder["swift:UROP_xpath"])
+            elem.click()
+            time.sleep(5)
+            elem = wait.until(EC.element_to_be_clickable((By.XPATH, test_folder["subdir1_xpath"])))
+            elem = driver.find_element_by_xpath(test_folder["subdir1_xpath"])
+            elem.click()
+            time.sleep(8)
+            elem = driver.find_element_by_xpath(test_file["before_copy_xpath"])
+            elem.click()
+            elem = driver.find_element_by_id(common["menu_file"])
+            hover = ActionChains(driver).move_to_element(elem)
+            elem = driver.find_element_by_id(page_file["copy/move"])
+            hover.move_to_element(elem)
+            time.sleep(2)
+            hover.click().perform()
+            time.sleep(2)
+            elem = wait.until(EC.element_to_be_clickable((By.XPATH, page_input["copy/move"])))
+            elem = driver.find_element_by_xpath(page_input["copy/move"])
+            elem.clear()
+            elem.send_keys(test_file["after_copy_to_folder_path"])
+            elem = driver.find_element_by_xpath(page_botton["copy"])
+            elem.click()
+            elem = wait.until(EC.element_to_be_clickable((By.XPATH, test_folder["swift:UROP_xpath"])))
+            time.sleep(10)
+            elem = wait.until(EC.element_to_be_clickable((By.XPATH, test_folder["swift:UROP_xpath"])))
+            elem = driver.find_element_by_xpath(test_folder["swift:UROP_xpath"])
+            elem.click()
+            time.sleep(3)
+            elem = wait.until(EC.element_to_be_clickable((By.XPATH, test_folder["subdir2_xpath"])))
+            elem = driver.find_element_by_xpath(test_folder["subdir2_xpath"])
+            elem.click()
+            time.sleep(5)
+        except NoSuchElementException as e:
+            messages = e.__str__().split("\n")
+            self.dismiss_dialogs()
+            raise Exception(messages[0])
+        try:
+            elem = driver.find_element_by_xpath(test_file["after_copy_to_folder_xpath"])
+        except NoSuchElementException:
+            raise Exception("failed to copy")
 
     def refresh_page(self):
         driver = self.driver
