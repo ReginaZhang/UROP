@@ -15,6 +15,7 @@ class GSFirefox(unittest.TestCase, GenomeSpaceTest):
         else:'''
         cls.driver.implicitly_wait(10)
         cls.wait = WebDriverWait(cls.driver,20)
+        cls.driver.maximize_window()
 
 if __name__ == "__main__":
     unittest.main()

@@ -18,6 +18,7 @@ class GSChrome(unittest.TestCase, GenomeSpaceTest):
         cls.driver = webdriver.Chrome(executable_path = chrome_path)
         cls.driver.implicitly_wait(10)
         cls.wait = WebDriverWait(cls.driver,60)
+        cls.driver.maximize_window()
 
 if __name__ == "__main__":
     unittest.main()
