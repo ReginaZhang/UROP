@@ -228,33 +228,22 @@ class GenomeSpaceTest():
         driver = self.driver
         wait = self.wait
         self.dismiss_dialogs()
+        function = js_func["rename"]
         try:
-            function = js_func["rename"]
+            self.send_request(function, "rename()")
             #self.test_2a_mount_container()
             #print js.format(function)
             #print driver.page_source
-            self.inject_js(function)
             #s= driver.page_source
             #print s
-            driver.execute_script("rename()")
-            time.sleep(5)
         except Exception as e:
             raise RenameException(e.__str__())
         try:
-            not_complete = True
-            while not_complete:
-                try:
-                    elem = wait.until(EC.alert_is_present())
-                    not_complete = False
-                except TimeoutException:
-                    pass
-            alert = driver.switch_to_alert()
-            text = alert.text
-            alert.dismiss()
-            assert "Success" in text
+            response = self.get_response()
+            assert "Success" in response
             self.refresh_page()
         except AssertionError:
-            raise RenameException(text)
+            raise RenameException(response)
 
     @unittest.skip("I just wanna skip it")
     def test_6b_copy_data_btw_folders(self):
@@ -263,28 +252,17 @@ class GenomeSpaceTest():
         driver = self.driver
         wait = self.wait
         self.dismiss_dialogs()
+        function = js_func["copy_btw_folders"]
         try:
-            function = js_func["copy_btw_folders"]
-            self.inject_js(function)
-            driver.execute_script("copy_btw_folders()")
-            time.sleep(5)
+            self.send_request(function, "copy_btw_folders()")
         except Exception as e:
             raise CopyException("Failed to copy the file between folders. \n" + e.__str__())
         try:
-            not_complete = True
-            while not_complete:
-                try:
-                    elem = wait.until(EC.alert_is_present())
-                    not_complete = False
-                except TimeoutException:
-                    pass
-            alert = driver.switch_to_alert()
-            text = alert.text
-            alert.dismiss()
-            assert "Success" in text
+            response = self.get_response()
+            assert "Success" in response
             self.refresh_page()
         except AssertionError:
-            raise CopyException(text)
+            raise CopyException(response)
         
     def test_6c_copy_date_btw_containers(self):
         if (not registered) or (not logged_in) or(not mounted):
@@ -295,11 +273,6 @@ class GenomeSpaceTest():
         function = js_func["copy_btw_containers"]
         try:
             self.send_request(function, "copy_btw_containers()")
-            '''try:
-            function = js_func["copy_btw_containers"]
-            self.inject_js(function)
-            driver.execute_script("copy_btw_containers()")
-            time.sleep(5)'''
         except Exception as e:
             raise CopyException("Failed to copy the file between folders. \n" + e.__str__())
         try:
@@ -329,7 +302,6 @@ class GenomeSpaceTest():
         text = alert.text
         alert.dismiss()
         return text
-        
 
     def inject_js(self, function):
         driver = self.driver
