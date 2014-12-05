@@ -80,6 +80,13 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                     alert("Http request not sent.");\
                 }\
             }''',
+           'mount':'''function mount() {\
+                var xmlhttp=new XMLHttpRequest();\
+                xmlhttp.open("PUT", "https://genomespace.genome.edu.au/datamanager/v1.0/storage/test/swift/{0}", false);\
+                xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
+                xmlhttp.send('{"storageType":"Swift","attributes":{"container":"{0}","osUserName":"ruijing.zhang@unimelb.edu.au","Endpoint":"https://keystone.rc.nectar.org.au:5000/v2.0/tokens","OsTenant":"pt-9344","osPassword":"NWE4Yzg4NTlkMmVlZTU4"},"filePermissions":["R","W"]}');\
+                getResponse(xmlhttp);\
+            }''',
            'rename': '''function rename() {\
                 var xmlhttp=new XMLHttpRequest();\
                 xmlhttp.open("POST", "https://genomespace.genome.edu.au/datamanager/v1.0/file//Home/swift:UROP/before_rename.txt",false);\
@@ -90,6 +97,13 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
            'copy_btw_folders':'''function copy_btw_folders(){\
                 var xmlhttp=new XMLHttpRequest();\
                 xmlhttp.open("PUT", "https://genomespace.genome.edu.au/datamanager/v1.0/file/Home/swift:UROP/subdir2/file_to_copy.txt", false);\
+                xmlhttp.setRequestHeader("x-gs-copy-source", "/Home/swift:UROP/subdir1/file_to_copy.txt");\
+                xmlhttp.send();\
+                getResponse(xmlhttp);\
+            }''',
+            'copy_btw_containers':'''function copy_btw_containers(){\
+                var xmlhttp=new XMLHttpRequest();\
+                xmlhttp.open("PUT", "https://genomespace.genome.edu.au/datamanager/v1.0/file/Home/swift:UROP_Test/file_to_copy.txt",false);\
                 xmlhttp.setRequestHeader("x-gs-copy-source", "/Home/swift:UROP/subdir1/file_to_copy.txt");\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
