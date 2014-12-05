@@ -10,6 +10,7 @@ from constants import *
 import sys
 import time
 from abc import ABCMeta, abstractmethod
+from pip._vendor.requests.models import Response
 
 registered = False
 logged_in = False
@@ -262,7 +263,7 @@ class GenomeSpaceTest():
             assert "Success" in response
             self.refresh_page()
         except AssertionError:
-            raise CopyException(response)
+            raise CopyException("Failed to copy the file between folders. \n" + response)
         
     def test_6c_copy_date_btw_containers(self):
         if (not registered) or (not logged_in) or(not mounted):
@@ -274,13 +275,31 @@ class GenomeSpaceTest():
         try:
             self.send_request(function, "copy_btw_containers()")
         except Exception as e:
-            raise CopyException("Failed to copy the file between folders. \n" + e.__str__())
+            raise CopyException("Failed to copy the file between containers. \n" + e.__str__())
         try:
             response = self.get_response()
             assert "Success" in response
             self.refresh_page()
         except AssertionError:
-            raise CopyException(response)
+            raise CopyException("Failed to copy the file between containers. \n" + response)
+        
+    def test_6d_delete_file(self):
+        if (not registered) or (not logged_in):
+            raise unittest.SkipTest("Skipped for failed registration or login.")
+        driver = self.driver
+        wait = self.wait
+        self.dismiss_dialogs()
+        function = js_func["delete"]
+        try:
+            self.send_request(function, "delete()")
+        except Exception as e:
+            raise DeleteException(e.__str__()) 
+        try:
+            response = self.get_response()
+            assert "Success" in response
+            self.refresh_page()
+        except AssertionError:
+            raise DeleteException(response)
 
     def send_request(self, function, function_call):
         driver = self.driver
