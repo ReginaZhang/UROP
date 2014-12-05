@@ -56,3 +56,13 @@ class CopyException(Exception):
         if self.message:
             return report + "\n" + self.message
         return report
+
+class DeleteException(Exception):
+    def __init__(self, message = None):
+        self.message = message
+        
+    def __str__(self):
+        report = "Failed to delete the file"
+        if self.message:
+            return report + "\n" + self.message
+        return report
