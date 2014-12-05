@@ -230,10 +230,10 @@ class GenomeSpaceTest():
         self.dismiss_dialogs()
         try:
             function = js_func["rename"]
-            self.test_2a_mount_container()
+            #self.test_2a_mount_container()
             #print js.format(function)
             #print driver.page_source
-            driver.execute_script(js.format(function))
+            self.inject_js(function)
             #s= driver.page_source
             #print s
             driver.execute_script("rename()")
@@ -251,12 +251,12 @@ class GenomeSpaceTest():
             alert = driver.switch_to_alert()
             text = alert.text
             alert.dismiss()
-            print text
             assert "Success" in text
             self.refresh_page()
         except AssertionError:
             raise RenameException(text)
 
+    #@unittest.skip("I just wanna skip it")
     def test_6b_copy_data(self):
         if (not registered) or (not logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
@@ -321,9 +321,32 @@ class GenomeSpaceTest():
         except NoSuchElementException:
             raise Exception("failed to copy")'''
         try:
-            function = js_func["copy_btw_folder"]
-        except Exception:
-            raise CopyException()
+            function = js_func["copy_btw_folders"]
+            self.inject_js(function)
+            driver.execute_script("copy_btw_folders()")
+            time.sleep(5)
+        except Exception as e:
+            raise CopyException("Failed to copy the file between folders. \n" + e.__str__())
+        try:
+            not_complete = True
+            while not_complete:
+                try:
+                    elem = wait.until(EC.alert_is_present())
+                    not_complete = False
+                except TimeoutException:
+                    pass
+            alert = driver.switch_to_alert()
+            text = alert.text
+            alert.dismiss()
+            assert "Success" in text
+            self.refresh_page()
+        except AssertionError:
+            raise CopyException(text)
+
+    def inject_js(self, function):
+        driver = self.driver
+        driver.execute_script(js.format(js_func["get_response"]))
+        driver.execute_script(js.format(function))
 
     def refresh_page(self):
         driver = self.driver

@@ -69,18 +69,28 @@ test_file = {'before_rename': "before_rename.txt",
 
 # js functions for http requests
 
-js_func = {'rename': '''function rename() {\
-                var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("POST", "https://genomespace.genome.edu.au/datamanager/v1.0/file//Home/swift:UROP/before_rename.txt",false);\
-                xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
-                xmlhttp.send(JSON.stringify({"path":"/Home/swift:UROP/after_rename.txt"}));\
+js_func = {'get_response': '''function getResponse(xmlhttp) {\
                 if (xmlhttp.status >= 400 || (100 <= xmlhttp.status && xmlhttp.status < 200)) {\
-                    alert("Failure: " + xmlhttp.status + "<br/>Response: " + xmlhttp.responseText);\
+                    alert("Failure: " + xmlhttp.status + "&#10;Response: " + xmlhttp.responseText);\
                 } else if (xmlhttp.status >= 300) {\
-                    alert("Manual redirection needed: " + xmlhttp.status);\
+                    alert("Manual redirection needed: " + xmlhttp.status + "&#x0A;Response: " + xmlhttp.responseText);\
                 } else if (xmlhttp.status >= 200) {\
                     alert("Success: " + xmlhttp.status);\
                 } else {\
                     alert("Http request not sent.");\
                 }\
+            }''',
+           'rename': '''function rename() {\
+                var xmlhttp=new XMLHttpRequest();\
+                xmlhttp.open("POST", "https://genomespace.genome.edu.au/datamanager/v1.0/file//Home/swift:UROP/before_rename.txt",false);\
+                xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
+                xmlhttp.send(JSON.stringify({"path":"/Home/swift:UROP/after_rename.txt"}));\
+                getResponse(xmlhttp);\
+            }''',
+           'copy_btw_folders':'''function copy_btw_folders(){\
+                var xmlhttp=new XMLHttpRequest();\
+                xmlhttp.open("PUT", "https://genomespace.genome.edu.au/datamanager/v1.0/file/Home/swift:UROP/subdir2/file_to_copy.txt", false);\
+                xmlhttp.setRequestHeader("x-gs-copy-source", "/Home/swift:UROP/subdir1/file_to_copy.txt");\
+                xmlhttp.send();\
+                getResponse(xmlhttp);\
             }'''}
