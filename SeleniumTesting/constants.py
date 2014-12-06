@@ -107,4 +107,7 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                 xmlhttp.setRequestHeader("x-gs-copy-source", "/Home/swift:UROP/subdir1/file_to_copy.txt");\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
+            }''',
+            'delete': '''function delete() {\
+                var xmlhttp=new XMLHttpRequest();\
             }'''}
