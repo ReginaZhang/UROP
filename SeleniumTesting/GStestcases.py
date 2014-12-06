@@ -265,7 +265,7 @@ class GenomeSpaceTest():
         except AssertionError:
             raise CopyException("Failed to copy the file between folders. \n" + response)
         
-    def test_6c_copy_date_btw_containers(self):
+    def test_6c_copy_data_btw_containers(self):
         if (not registered) or (not logged_in) or(not mounted):
             raise unittest.SkipTest("Skipped for failed registration, login or mounting.")
         driver = self.driver
