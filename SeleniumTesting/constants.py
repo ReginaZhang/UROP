@@ -110,4 +110,5 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
             'delete': '''function delete() {\
                 var xmlhttp=new XMLHttpRequest();\
+                xmlhttp.send();\
             }'''}
