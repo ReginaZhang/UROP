@@ -5,16 +5,18 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import *
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
-from GStestexceptions import *
+#from GStestexceptions import *
 from constants import *
 import sys
 import time
 from abc import ABCMeta, abstractmethod
 from pip._vendor.requests.models import Response
+from register_login import UseGS
+from mount_disconnect import CloudStorage
+from data_manipulation import DataManipulation
 
-registered = False
-logged_in = False
-mounted = True
+
+
 #base_window = None
 
 js = """var s=document.createElement(\'script\');
@@ -22,11 +24,11 @@ js = """var s=document.createElement(\'script\');
         s.type=\'text/javascript\';
         document.head.appendChild(s);"""
 
-class GenomeSpaceTest():
+class GenomeSpaceTest(UseGS, CloudStorage, DataManipulation):
 
     __metaclass__ = ABCMeta
 
-    def test_1a_register(self):
+    """def test_1a_register(self):
         driver = self.driver
         wait = self.wait
         try:
@@ -212,7 +214,7 @@ class GenomeSpaceTest():
             raise DisconnectContainerException("An unexpected alert popped up.")
         except Exception, e:
             self.dismiss_dialogs()
-            raise DisconnectContainerException(type(e).__name__ + ": " + e.__str__())
+            raise DisconnectContainerException(type(e).__name__ + ": " + e.__str__())"""
 
     '''def test_3a_connect_Galaxy(self):
         driver = self.driver
@@ -222,7 +224,7 @@ class GenomeSpaceTest():
     
     def test_4b_'''
 
-    @unittest.skip("I just wanna skip it.")
+    """@unittest.skip("I just wanna skip it.")
     def test_6a_change_file_name(self):
         if (not registered) or (not logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
@@ -265,6 +267,7 @@ class GenomeSpaceTest():
         except AssertionError:
             raise CopyException("Failed to copy the file between folders. \n" + response)
         
+    @unittest.skip("I just wanna skip it")    
     def test_6c_copy_data_btw_containers(self):
         if (not registered) or (not logged_in) or(not mounted):
             raise unittest.SkipTest("Skipped for failed registration, login or mounting.")
@@ -291,7 +294,7 @@ class GenomeSpaceTest():
         self.dismiss_dialogs()
         function = js_func["delete"]
         try:
-            self.send_request(function, "delete()")
+            self.send_request(function, "delete_data()")
         except Exception as e:
             raise DeleteException(e.__str__()) 
         try:
@@ -299,7 +302,7 @@ class GenomeSpaceTest():
             assert "Success" in response
             self.refresh_page()
         except AssertionError:
-            raise DeleteException(response)
+            raise DeleteException(response)"""
 
     def send_request(self, function, function_call):
         driver = self.driver
