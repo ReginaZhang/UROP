@@ -21,7 +21,7 @@ from abc import ABCMeta, abstractmethod
 from register_login import UseGS
 from mount_disconnect import CloudStorage
 from data_manipulation import DataManipulation
-
+from data_sharing import DataSharing
 
 
 #base_window = None
@@ -31,7 +31,7 @@ js = """var s=document.createElement(\'script\');
         s.type=\'text/javascript\';
         document.head.appendChild(s);"""
 
-class GenomeSpaceTest(UseGS, CloudStorage, DataManipulation):
+class GenomeSpaceTest(UseGS, CloudStorage, DataManipulation, DataSharing):
 
     __metaclass__ = ABCMeta
 
