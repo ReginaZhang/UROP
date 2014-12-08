@@ -82,3 +82,13 @@ class MoveException(Exception):
         if self.message:
             return report + "\n" + self.message
         return report
+    
+class PublicURLException(Exception):
+    def __init__(self, message = None):
+        self.message = message
+        
+    def __str__(self):
+        report = "Error occurred when manipulating public URLs."
+        if self.message:
+            return self.message
+        return report
