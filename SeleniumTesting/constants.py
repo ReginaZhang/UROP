@@ -133,4 +133,19 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                 xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
                 xmlhttp.send(JSON.stringify({"path":"/Home/swift:UROP_Test/file_to_move.txt"}));\
                 getResponse(xmlhttp);\
+            }''',
+            'generate_public_url':'''function generate_public_url() {\
+                var xmlhttp=new XMLHttpRequest();\
+                xmlhttp.open("HEAD", "https://genomespace.genome.edu.au/datamanager/file/Home/swift:UROP/subdir1/file_to_move.txt?signedURL=true",false);\
+                xmlhttp.send();\
+                getResponse(xmlhttp);\
+                public_url = xmlhttp.getResponseHeader("external-link");\
+                alert("Public URL: " + public_url);\
+                alert(xmlhttp.getAllResponseHeaders());\
+            }''',
+            'share_data':'''function share_data() {\
+                var xmlhttp=new XMLHttpRequest();\
+                xmlhttp.open("GET", "{0}", false);\
+                xmlhttp.send();\
+                getResponse(xmlhttp);\
             }'''}
