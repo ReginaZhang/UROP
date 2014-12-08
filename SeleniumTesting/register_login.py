@@ -1,3 +1,10 @@
+'''
+Module created on 08/12/2014
+
+@author: Regina Zhang
+
+'''
+
 import unittest
 from abc import ABCMeta
 from GStestexceptions import *
