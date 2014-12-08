@@ -1,3 +1,10 @@
+'''
+Module created on 26/11/2014
+
+@author: Regina Zhang
+
+'''
+
 import unittest
 from GStestcases import GenomeSpaceTest
 import GStestcases

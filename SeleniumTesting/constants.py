@@ -1,3 +1,9 @@
+'''
+Module created on 26/11/2014
+
+@author: Regina Zhang
+
+'''
 
 # The constants for the page elements
 p_mount_container = {'os_ep': "mspEndPoint",

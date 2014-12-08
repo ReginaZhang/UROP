@@ -1,3 +1,10 @@
+'''
+Module created on 26/11/2014
+
+@author: Regina Zhang
+
+'''
+
 import unittest
 #from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By

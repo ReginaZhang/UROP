@@ -1,3 +1,9 @@
+'''
+Module created on 26/11/2014
+
+@author: Regina Zhang
+
+'''
 
 class LoginException(Exception):
     def __init__(self, message = None, username = None, pw = None):
