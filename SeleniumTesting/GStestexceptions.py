@@ -66,3 +66,13 @@ class DeleteException(Exception):
         if self.message:
             return report + "\n" + self.message
         return report
+    
+class MoveException(Exception):
+    def __init__(self, message = None):
+        self.message = message
+        
+    def __str__(self):
+        report = "Failed to move the file"
+        if self.message:
+            return report + "\n" + self.message
+        return report

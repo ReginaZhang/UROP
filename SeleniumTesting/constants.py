@@ -113,4 +113,18 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                 xmlhttp.open("DELETE", "https://genomespace.genome.edu.au/datamanager/v1.0/file/Home/swift:UROP/subdir2/file_to_copy.txt",false);\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
+            }''',
+            'move_btw_folders':'''function move_btw_folders() {\
+                var xmlhttp=new XMLHttpRequest();\
+                xmlhttp.open("POST", "https://genomespace.genome.edu.au/datamanager/v1.0/file//Home/swift:UROP/subdir1/file_to_move.txt", false);\
+                xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
+                xmlhttp.send(JSON.stringify({"path":"/Home/swift:UROP/subdir2/file_to_move.txt"}));\
+                getResponse(xmlhttp);\
+            }''',
+            'move_btw_containers':'''function move_btw_containers() {\
+                var xmlhttp=new XMLHttpRequest();\
+                xmlhttp.open("POST", "https://genomespace.genome.edu.au/datamanager/v1.0/file//Home/swift:UROP/subdir2/file_to_move.txt",false);\
+                xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
+                xmlhttp.send(JSON.stringify({"path":"/Home/swift:UROP_Test/file_to_move.txt"}));\
+                getResponse(xmlhttp);\
             }'''}
