@@ -108,7 +108,9 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
             }''',
-            'delete': '''function delete() {\
+            'delete': '''function delete_data() {\
                 var xmlhttp=new XMLHttpRequest();\
+                xmlhttp.open("DELETE", "https://genomespace.genome.edu.au/datamanager/v1.0/file/Home/swift:UROP/subdir2/file_to_copy.txt",false);\
                 xmlhttp.send();\
+                getResponse(xmlhttp);\
             }'''}
