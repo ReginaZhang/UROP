@@ -17,7 +17,7 @@ class CloudStorage():
     
     __metaclass__ = ABCMeta
     
-    #@unittest.skip("I just wanna skip it.")
+    @unittest.skip("I just wanna skip it.")
     def test_2a_mount_container(self):
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
