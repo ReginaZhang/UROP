@@ -120,7 +120,7 @@ class DataManipulation():
             self.refresh_page()
         except AssertionError:
             raise MoveException("Failed to move the data between folders. \n" + response)
-        
+    @unittest.skip("I just wanna skip it.")    
     def test_6f_move_data_btw_containers(self):
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
