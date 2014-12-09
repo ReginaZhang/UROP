@@ -152,4 +152,11 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                 xmlhttp.open("GET", "%s", false);\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
+            }''',
+            'import_url':'''function import_url() {\
+                var xmlhttp=new XMLHttpRequest();\
+                xmlhttp.open("PUT", "https://genomespace.genome.edu.au/datamanager/v1.0/file/Home/swift:UROP/subdir1", false);\
+                xmlhttp.setRequestHeader("x-gs-fetch-source", "%s");\
+                xmlhttp.send(JSON.stringify({"isDirectory":"true"}));\
+                getResponse(xmlhttp);\
             }'''}
