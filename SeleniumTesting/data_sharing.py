@@ -58,6 +58,7 @@ class DataSharing():
         except AssertionError:
             raise PublicURLException("Failed to share data using public URL generated.\n" + response)
         
+    @unittest.skip("Skip to save time.")
     def test_5d_generate_private_url(self):
         if (not rl.registered) or (not rl.logged_in):
             print "Hello"

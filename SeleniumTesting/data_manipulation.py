@@ -24,7 +24,7 @@ class DataManipulation():
     
     __metaclass__ = ABCMeta
     
-    @unittest.skip("I just wanna skip it.")
+    @unittest.skip("Skip to save time")
     def test_6a_change_file_name(self):
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
@@ -48,7 +48,7 @@ class DataManipulation():
         except AssertionError:
             raise RenameException(response)
 
-    @unittest.skip("I just wanna skip it")
+    @unittest.skip("Skip to save time.")
     def test_6b_copy_data_btw_folders(self):
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
@@ -67,7 +67,7 @@ class DataManipulation():
         except AssertionError:
             raise CopyException("Failed to copy the file between folders. \n" + response)
         
-    @unittest.skip("I just wanna skip it")    
+    @unittest.skip("Skip to save time.")    
     def test_6c_copy_data_btw_containers(self):
         if (not rl.registered) or (not rl.logged_in) or(not md.mounted):
             raise unittest.SkipTest("Skipped for failed registration, login or mounting.")
@@ -86,7 +86,7 @@ class DataManipulation():
         except AssertionError:
             raise CopyException("Failed to copy the file between containers. \n" + response)
         
-    @unittest.skip("I just wanna skip it")
+    @unittest.skip("Skip to save time.")
     def test_6d_delete_file(self):
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
@@ -104,7 +104,8 @@ class DataManipulation():
             self.refresh_page()
         except AssertionError:
             raise DeleteException(response)
-    @unittest.skip("I just wanna skip it.")    
+        
+    @unittest.skip("Skip to save time.")    
     def test_6e_move_data_btw_folders(self):
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
@@ -120,7 +121,7 @@ class DataManipulation():
             self.refresh_page()
         except AssertionError:
             raise MoveException("Failed to move the data between folders. \n" + response)
-    @unittest.skip("I just wanna skip it.")    
+    @unittest.skip("Skip to save time.")    
     def test_6f_move_data_btw_containers(self):
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
