@@ -21,6 +21,7 @@ class DataSharing():
     
     __metaclass__ = ABCMeta
     
+    @unittest.skip("Not finished")
     def test_5a_generate_public_URL(self):
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
@@ -57,4 +58,54 @@ class DataSharing():
         except AssertionError:
             raise PublicURLException("Failed to share data using public URL generated.\n" + response)
         
-        
+    def test_5d_generate_private_url(self):
+        if (not rl.registered) or (not rl.logged_in):
+            print "Hello"
+            raise unittest.SkipTest("Skipped for failed registration or loggin.")
+        self.dismiss_dialogs()
+        driver = self.driver
+        wait = self.wait
+        try:
+            elem = wait.until(EC.element_to_be_clickable((By.XPATH, test_folder["UROP_xpath"])))
+            elem = driver.find_element_by_xpath(test_folder["UROP_xpath"])
+            elem.click()
+            time.sleep(8)
+            elem = wait.until(EC.element_to_be_clickable((By.XPATH, test_file["file_to_share_xpath"])))
+            elem = driver.find_element_by_xpath(test_file["file_to_share_xpath"])
+            elem.click()
+            elem = driver.find_element_by_id(common["menu_file"])
+            hover = ActionChains(driver).move_to_element(elem)
+            elem = driver.find_element_by_id(page_file["view_private_link"])
+            hover.move_to_element(elem).click().perform()
+            elem = driver.find_element_by_xpath(page_file["private_url_dialog_xpath"])
+            private_link = elem.get_attribute("value")
+        except NoSuchElementException as e:
+            messages = e.__str__().split("\n")
+            self.dismiss_dialogs()
+            raise PrivateURLException(messages[0])
+        except Exception as e:
+            raise PrivateURLException(e.__str__())
+        function = js_func["share_data"] % (private_link)
+        try:
+            self.send_request(function, "share_data()")
+        except Exception as e:
+            raise PrivateURLException(e.__str__())
+        try:
+            response = self.get_response()
+            assert "Success" in response
+            self.dismiss_dialogs()
+            self.refresh_page()
+        except AssertionError:
+            raise PrivateURLException(response)
+        try:
+            elem = driver.find_element_by_xpath(common["Home_xpath"])
+            mouse = ActionChains(driver).move_to_element(elem)
+            mouse.click().perform()
+            time.sleep(5)
+        except NoSuchElementException as e:
+            messages = e.__str__().split("\n")
+            self.dismiss_dialogs()
+            raise Exception("Failed to return to Home directory.\n" + messages[0])
+        except Exception as e:
+            raise Exception("Failed to return to Home directory.\n" + e.__str__())
+            

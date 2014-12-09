@@ -14,7 +14,8 @@ p_mount_container = {'os_ep': "mspEndPoint",
                      'submit': "mspSwiftMountBtn",
                      'successful_popup': "Mounted  container UROP\n it should be available for use in a few seconds."}
 common = {'base_url': "https://genomespace.genome.edu.au/jsui",
-          'menu_file': "menuFile"}
+          'menu_file': "menuFile",
+          'Home_xpath': '//a[@dirpath="/Home"]'}
 
 page_register = {'registration_link_text': "Register new GenomeSpace user",
                  'registration_username': "usernameEntry",
@@ -32,7 +33,9 @@ page_container = {'menu_connect': "menuConnect",
 
 page_file = {'sort_filename': "fileNameSortFiles",
              'rename': "menuFileRename",
-             'copy/move': "menuFileMove"}
+             'copy/move': "menuFileMove",
+             'view_private_link':"menuFileLink",
+             'private_url_dialog_xpath':'//span[@id="adMessage"]/input'}
 
 page_botton = {'copy': '//div[contains(@tabindex, "-1")]//div[@class="dialogButtonDiv"]/button[contains(text(),"Copy")]'}
 
@@ -57,7 +60,7 @@ test_container = {'mount_container': t_mount_container}
 test_folder = {'GS-Demo_xpath': "//a[@dirpath='/Home/swift:GS-Demo']",
                'test1_xpath': "//a[@dirpath='/Home/swift:GS-Demo/test1']",
                'test2_xpath': "//a[@dirpath='/Home/swift:GS-Demo/test2']",
-               'swift:UROP_xpath':'//tbody//div[@id="directoriesDiv"]//a[@dirpath="/Home/swift:UROP"]',
+               'UROP_xpath':'//tbody//div[@id="directoriesDiv"]//a[@dirpath="/Home/swift:UROP"]',
                'subdir1_xpath': '//div[@id = "filesDiv2"]//tbody//a[@dirpath = "/Home/swift:UROP/subdir1"]',
                'subdir2_xpath': '//div[@id = "filesDiv2"]//tbody//a[@dirpath = "/Home/swift:UROP/subdir2"]'}
 
@@ -69,7 +72,8 @@ test_file = {'before_rename': "before_rename.txt",
              'file_to_copy': "file_to_copy.txt",
              'before_copy_xpath': '//div[@id="filesDiv2"]//tbody//a[@filepath = "/Home/swift:UROP/subdir1/file_to_copy.txt"]',
              'after_copy_to_folder_xpath': '//div[@id="filesDiv2"]//tbody//a[@filepath = "/Home/swift:UROP/subdir2/file_to_copy.txt"]',
-             'after_copy_to_folder_path': "/Home/swift:UROP/subdir2/file_to_copy.txt"}
+             'after_copy_to_folder_path': "/Home/swift:UROP/subdir2/file_to_copy.txt",
+             'file_to_share_xpath': '//div[@id="filesDiv2"]//a[@filepath="/Home/swift:UROP/file_to_share.txt"]'}
 
 """//div[contains(@class, 'ui-dialog')]/div[preceding-sibling::div/span[contains(., 'Rename display')]]/input[@value='test']"""
 
@@ -136,8 +140,8 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
             'generate_public_url':'''function generate_public_url() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("HEAD", "https://genomespace.genome.edu.au/datamanager/file/Home/swift:UROP/subdir1/file_to_move.txt?signedURL=true",false);\
-                xmlhttp.send();\
+                xmlhttp.open("HEAD", "https://genomespace.genome.edu.au/datamanager/file/Home/swift:UROP/subdir1/file_to_move.txt",false);\
+                xmlhttp.send("signedURL=true");\
                 getResponse(xmlhttp);\
                 public_url = xmlhttp.getResponseHeader("external-link");\
                 alert("Public URL: " + public_url);\
@@ -145,7 +149,7 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
             'share_data':'''function share_data() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("GET", "{0}", false);\
+                xmlhttp.open("GET", "%s", false);\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
             }'''}
