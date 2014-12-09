@@ -64,24 +64,18 @@ class CopyException(Exception):
         return report
 
 class DeleteException(Exception):
-    def __init__(self, message = None):
+    def __init__(self, message = "Failed to delete the file."):
         self.message = message
         
     def __str__(self):
-        report = "Failed to delete the file"
-        if self.message:
-            return report + "\n" + self.message
-        return report
+        return self.message
     
 class MoveException(Exception):
-    def __init__(self, message = None):
+    def __init__(self, message = "Failed to move the file."):
         self.message = message
         
     def __str__(self):
-        report = "Failed to move the file"
-        if self.message:
-            return report + "\n" + self.message
-        return report
+        return self.message
     
 class PublicURLException(Exception):
     def __init__(self, message = None):
