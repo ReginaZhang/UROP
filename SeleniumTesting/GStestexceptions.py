@@ -54,21 +54,21 @@ class RenameException(Exception):
         return report
     
 class CopyException(Exception):
-    def __init__(self, message = None):
-        self.message = message
-        
-    def __str__(self):
-        report = "Failed to copy the file"
-        if self.message:
-            return report + "\n" + self.message
-        return report
-
-class DeleteException(Exception):
-    def __init__(self, message = "Failed to delete the file."):
+    def __init__(self, message = "Failed to copy the file."):
         self.message = message
         
     def __str__(self):
         return self.message
+
+class DeleteException(Exception):
+    def __init__(self, message = None):
+        self.message = message
+        
+    def __str__(self):
+        report = "Failed to delete the file."
+        if self.message:
+            return report + "\n" + self.message
+        return report
     
 class MoveException(Exception):
     def __init__(self, message = "Failed to move the file."):
