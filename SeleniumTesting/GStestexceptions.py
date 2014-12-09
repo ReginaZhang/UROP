@@ -92,3 +92,13 @@ class PublicURLException(Exception):
         if self.message:
             return self.message
         return report
+    
+class PrivateURLException(Exception):
+    def __init__(self, message = None):
+        self.message = message
+        
+    def __str__(self):
+        report = "Failed to get the private URL."
+        if self.message:
+            return report + "\n" + self.message
+        return report
