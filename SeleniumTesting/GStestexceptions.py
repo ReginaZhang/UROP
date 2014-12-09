@@ -102,3 +102,13 @@ class PrivateURLException(Exception):
         if self.message:
             return report + "\n" + self.message
         return report
+    
+class ImportURLException(Exception):
+    def __init__(self,message = None):
+        self.message = message
+        
+    def __str__(self):
+        report = "Failed to import URL."
+        if self.message:
+            return report + "\n" + self.message
+        return report
