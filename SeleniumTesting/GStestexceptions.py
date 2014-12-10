@@ -106,3 +106,15 @@ class ImportURLException(Exception):
         if self.message:
             return report + "\n" + self.message
         return report
+    
+class DragAndDropException(Exception):
+    def __init__(self, message = None):
+        self.message = message
+        
+    def __str__(self):
+        report = "Failed to upload file using drag and drop."
+        if self.message:
+            return report + "\n" + self.message
+        return report
+    
+    
