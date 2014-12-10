@@ -117,7 +117,7 @@ class DragAndDropException(Exception):
             return report + "\n" + self.message
         return report
     
-class LauchWithFileException(Exception):
+class LaunchWithFileException(Exception):
     def __init__(self, message = None):
         self.message = message
         
