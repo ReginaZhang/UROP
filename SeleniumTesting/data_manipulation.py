@@ -33,26 +33,44 @@ class DataManipulation():
         self.dismiss_dialogs()
         file_sizes = ["small"]
         failure = {}
+        failure_keys = []
         for size in file_sizes:
-            function = js_func["rename"] % (test_file["before_rename_url"][size], test_file["after_rename_path"][size])
+            function = js_func["rename"] % (test_file["before_rename_path"][size], test_file["after_rename_path"][size])
             try:
                 self.send_request(function, "rename()")
             except Exception as e:
                 failure[size] = e.__str__()
-                raise RenameException("Failed to rename the " + size + " file: " + e.__str__())
+                failure_keys.append(size)
             try:
                 response = self.get_response()
                 assert "Success" in response
                 self.refresh_page()
             except AssertionError:
                 failure[size] = response
-                raise RenameException("Failed to rename the " + size + " file: " + response)
+                failure_keys.append(size)
             time.sleep(8)
+        cleanup_report = ""
+        for size in file_sizes:
+            try:
+                function = js_func["rename"] % (test_file["after_rename_path"][size], test_file["before_rename_path"][size])
+                self.send_request(function, "rename()")
+                response = self.get_response()
+                assert "Success" in response
+                self.refresh_page()
+            except AssertionError:
+                if size in failure_keys:
+                    try:
+                        assert "404" in response
+                    except AssertionError:
+                        cleanup_report += "Failed to rename the " + size + " file back: " + response + " \n"
+                cleanup_report += "Failed to rename the " + size + " file back: " + response + " \n"
+            except Exception as e:
+                cleanup_report += "Failed to rename the " + size + "file back: " + e.__str__() + "\n"
         if failure:
             report  = ""
             for size in failure.keys():
                 report += "Failed to rename the " + size + "File: " + failure[size] + "\n"
-            raise RenameException(report)
+            raise RenameException(report + "\n" + cleanup_report)
 
     @unittest.skip("Skip to save time.")
     def test_6b_copy_data_btw_folders(self):
