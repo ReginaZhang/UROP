@@ -20,7 +20,7 @@ class DataStoring():
     
     __metaclass__ = ABCMeta
     
-    @unittest.skip("Skipped to save time.")
+    @unittest.skip("Skip to save time.")
     def test_4a_import_url(self):
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
