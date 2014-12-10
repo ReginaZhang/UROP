@@ -159,4 +159,16 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                 xmlhttp.setRequestHeader("x-gs-fetch-source", "%s");\
                 xmlhttp.send(JSON.stringify({"isDirectory":"true"}));\
                 getResponse(xmlhttp);\
+            }''',
+            'launch_with_file':'''function launch_with_file() {\
+                var xmlhttp=new XMLHttpRequest();\
+                xmlhttp.open("POST", "https://genomespace.genome.edu.au/identityServer/usermanagement/utility/usageLog", false);\
+                xmlhttp.setRequestHeader("Content-Type", "application/json");\
+                xmlhttp.send(JSON.stringify({"module":"GSUI","function":"LAUNCH","username":"test","entity":"Galaxy : %s"}));\
+                getResponse(xmlhttp);\
+                var xmlhttp1=new XMLHttpRequest();\
+                xmlhttp1.open("GET","https://genomespace.genome.edu.au/atm/v1.0/webtool/Galaxy/launchurl?URL=%s",false);\
+                xmlhttp1.setRequestHeader("Content-Type", "application/json");\
+                xmlhttp1.send(JSON.stringify({"module":"GSUI","function":"LAUNCH","username":"test","entity":"Galaxy : %s"}));\
+                getResponse(xmlhttp1);\
             }'''}
