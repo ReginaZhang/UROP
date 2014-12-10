@@ -44,14 +44,11 @@ class DisconnectContainerException(Exception):
         return report
 
 class RenameException(Exception):
-    def __init__(self, message = None):
+    def __init__(self, message = "Failed to rename the file."):
         self.message = message
 
     def __str__(self):
-        report = "Failed to rename the file."
-        if self.message:
-            return report + "\n" + self.message
-        return report
+        return self.message
     
 class CopyException(Exception):
     def __init__(self, message = "Failed to copy the file."):
