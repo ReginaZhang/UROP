@@ -17,19 +17,19 @@ from _codecs import register
 from selenium.webdriver.common.action_chains import ActionChains
 import register_login as rl
 import mount_disconnect as md
-#from register_login import registered, logged_in
-#from mount_disconnect import mounted
 
 class DataManipulation():
     
     __metaclass__ = ABCMeta
     
-    #@unittest.skip("Skip to save time")
+    @unittest.skip("Skip to save time")
     def test_6a_change_file_name(self):
+        '''
+        The test case for testing file rename functionality
+        of GenomeSpace. 
+        '''
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
-        driver = self.driver
-        wait = self.wait
         self.dismiss_dialogs()
         function = js_func["rename"] % (test_file["before_rename_url"], test_file["after_rename_path"])
         try:
