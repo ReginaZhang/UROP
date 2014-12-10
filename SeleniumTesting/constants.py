@@ -64,9 +64,9 @@ test_folder = {'GS-Demo_xpath': "//a[@dirpath='/Home/swift:GS-Demo']",
                'subdir1_xpath': '//div[@id = "filesDiv2"]//tbody//a[@dirpath = "/Home/swift:UROP/subdir1"]',
                'subdir2_xpath': '//div[@id = "filesDiv2"]//tbody//a[@dirpath = "/Home/swift:UROP/subdir2"]'}
 
-test_file = {'before_rename_url': "https://genomespace.genome.edu.au/datamanager/v1.0/file//Home/swift:UROP/before_rename.txt",
-             'before_rename_path': "/Home/swift:UROP/before_rename.txt",
-             'after_rename_path': "/Home/swift:UROP/after_rename.txt",
+test_file = {'before_rename_url': {"small": "https://genomespace.genome.edu.au/datamanager/v1.0/file//Home/swift:UROP/before_rename_s.txt"},
+             'before_rename_path': {"small": "/Home/swift:UROP/before_rename_s.txt"},
+             'after_rename_path': {"small": "/Home/swift:UROP/after_rename_s.txt"},
              'file_to_copy': "file_to_copy.txt",
              'before_copy_xpath': '//div[@id="filesDiv2"]//tbody//a[@filepath = "/Home/swift:UROP/subdir1/file_to_copy.txt"]',
              'after_copy_to_folder_xpath': '//div[@id="filesDiv2"]//tbody//a[@filepath = "/Home/swift:UROP/subdir2/file_to_copy.txt"]',

@@ -22,7 +22,7 @@ class DataManipulation():
     
     __metaclass__ = ABCMeta
     
-    @unittest.skip("Skip to save time")
+    #@unittest.skip("Skip to save time")
     def test_6a_change_file_name(self):
         '''
         The test case for testing file rename functionality
@@ -31,17 +31,28 @@ class DataManipulation():
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
         self.dismiss_dialogs()
-        function = js_func["rename"] % (test_file["before_rename_url"], test_file["after_rename_path"])
-        try:
-            self.send_request(function, "rename()")
-        except Exception as e:
-            raise RenameException(e.__str__())
-        try:
-            response = self.get_response()
-            assert "Success" in response
-            self.refresh_page()
-        except AssertionError:
-            raise RenameException(response)
+        file_sizes = ["small"]
+        failure = {}
+        for size in file_sizes:
+            function = js_func["rename"] % (test_file["before_rename_url"][size], test_file["after_rename_path"][size])
+            try:
+                self.send_request(function, "rename()")
+            except Exception as e:
+                failure[size] = e.__str__()
+                raise RenameException("Failed to rename the " + size + " file: " + e.__str__())
+            try:
+                response = self.get_response()
+                assert "Success" in response
+                self.refresh_page()
+            except AssertionError:
+                failure[size] = response
+                raise RenameException("Failed to rename the " + size + " file: " + response)
+            time.sleep(8)
+        if failure:
+            report  = ""
+            for size in failure.keys():
+                report += "Failed to rename the " + size + "File: " + failure[size] + "\n"
+            raise RenameException(report)
 
     @unittest.skip("Skip to save time.")
     def test_6b_copy_data_btw_folders(self):
