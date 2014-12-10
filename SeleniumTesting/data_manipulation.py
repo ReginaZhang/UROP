@@ -22,7 +22,7 @@ class DataManipulation():
     
     __metaclass__ = ABCMeta
     
-    #@unittest.skip("Skip to save time")
+    @unittest.skip("Skip to save time")
     def test_6a_change_file_name(self):
         '''
         The test case for testing file rename functionality
@@ -76,10 +76,8 @@ class DataManipulation():
     def test_6b_copy_data_btw_folders(self):
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
-        driver = self.driver
-        wait = self.wait
         self.dismiss_dialogs()
-        function = js_func["copy_btw_folders"]
+        function = js_func["copy_btw_folders"] % (test_file["copy_target_path"]["folder"], test_file["copy_source_path"]["folder"])
         try:
             self.send_request(function, "copy_btw_folders()")
         except Exception as e:
@@ -93,12 +91,10 @@ class DataManipulation():
         
     @unittest.skip("Skip to save time.")    
     def test_6c_copy_data_btw_containers(self):
-        if (not rl.registered) or (not rl.logged_in) or(not md.mounted):
-            raise unittest.SkipTest("Skipped for failed registration, login or mounting.")
-        driver = self.driver
-        wait = self.wait
+        if (not rl.registered) or (not rl.logged_in):
+            raise unittest.SkipTest("Skipped for failed registration or login.")
         self.dismiss_dialogs()
-        function = js_func["copy_btw_containers"]
+        function = js_func["copy_btw_containers"] % (test_file["copy_target_path"]["container"], test_file["copy_source_path"]["container"])
         try:
             self.send_request(function, "copy_btw_containers()")
         except Exception as e:
@@ -110,7 +106,7 @@ class DataManipulation():
         except AssertionError:
             raise CopyException("Failed to copy the file between containers. \n" + response)
         
-    @unittest.skip("Skip to save time.")
+    #@unittest.skip("Skip to save time.")
     def test_6d_delete_file(self):
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")

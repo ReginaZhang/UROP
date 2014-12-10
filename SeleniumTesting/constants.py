@@ -67,9 +67,10 @@ test_folder = {'GS-Demo_xpath': "//a[@dirpath='/Home/swift:GS-Demo']",
 test_file = {'before_rename_path': {"small": "/Home/swift:UROP/before_rename_s.txt"},
              'after_rename_path': {"small": "/Home/swift:UROP/after_rename_s.txt"},
              'file_to_copy': "file_to_copy.txt",
-             'before_copy_xpath': '//div[@id="filesDiv2"]//tbody//a[@filepath = "/Home/swift:UROP/subdir1/file_to_copy.txt"]',
-             'after_copy_to_folder_xpath': '//div[@id="filesDiv2"]//tbody//a[@filepath = "/Home/swift:UROP/subdir2/file_to_copy.txt"]',
-             'after_copy_to_folder_path': "/Home/swift:UROP/subdir2/file_to_copy.txt",
+             'copy_source_path': {"folder": "/Home/swift:UROP/subdir1/file_to_copy.txt",
+                                  "container": "/Home/swift:UROP/subdir1/file_to_copy.txt"},
+             'copy_target_path':{"folder": "/Home/swift:UROP/subdir2/file_to_copy.txt",
+                                 "container": "/Home/swift:UROP_Test/file_to_copy.txt"},
              'file_to_share_xpath': '//div[@id="filesDiv2"]//a[@filepath="/Home/swift:UROP/file_to_share.txt"]'}
 
 """//div[contains(@class, 'ui-dialog')]/div[preceding-sibling::div/span[contains(., 'Rename display')]]/input[@value='test']"""
@@ -103,15 +104,15 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
            'copy_btw_folders':'''function copy_btw_folders(){\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("PUT", "https://genomespace.genome.edu.au/datamanager/v1.0/file/Home/swift:UROP/subdir2/file_to_copy.txt", false);\
-                xmlhttp.setRequestHeader("x-gs-copy-source", "/Home/swift:UROP/subdir1/file_to_copy.txt");\
+                xmlhttp.open("PUT", "https://genomespace.genome.edu.au/datamanager/v1.0/file%s", false);\
+                xmlhttp.setRequestHeader("x-gs-copy-source", "%s");\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
             }''',
             'copy_btw_containers':'''function copy_btw_containers(){\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("PUT", "https://genomespace.genome.edu.au/datamanager/v1.0/file/Home/swift:UROP_Test/file_to_copy.txt",false);\
-                xmlhttp.setRequestHeader("x-gs-copy-source", "/Home/swift:UROP/subdir1/file_to_copy.txt");\
+                xmlhttp.open("PUT", "https://genomespace.genome.edu.au/datamanager/v1.0/file%s",false);\
+                xmlhttp.setRequestHeader("x-gs-copy-source", "%s");\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
             }''',
