@@ -20,20 +20,28 @@ class DataToGVL():
     
     __metaclass__ = ABCMeta
     
+    #@unittest.skip("The two request are not clear.")
     def test_7b_launch_with_file(self):
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
         self.dismiss_dialogs()
-        function = js_func["launch_with_file"]
+        file_url = "https://genomespace.genome.edu.au:443/datamanager/file/Home/swift:UROP/file_to_share.txt"
+        file_url_escaped = "https%3A%2F%2Fgenomespace.genome.edu.au%3A443%2Fdatamanager%2Ffile%2FHome%2Fswift%3AUROP%2Ffile_to_share.txt"
+        function = js_func["launch_with_file"] % (file_url, file_url_escaped, file_url)
         try:
             self.send_request(function, "launch_with_file()")
         except Exception as e:
-            raise LauchWithFileException(e.__str__())
+            raise LaunchWithFileException(e.__str__())
+        try:
+            response = self.get_response()
+            assert "Success" in response
+        except AssertionError:
+            raise LaunchWithFileException("Failed at POST: " + response)
         try:
             response = self.get_response()
             assert "Success" in response
             self.refresh_page()
         except AssertionError:
-            raise LauchWithFileException(response)
+            raise LaunchWithFileException("Failed at GET: " + response)
         
         
