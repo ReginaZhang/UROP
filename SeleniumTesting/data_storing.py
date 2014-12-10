@@ -20,6 +20,7 @@ class DataStoring():
     
     __metaclass__ = ABCMeta
     
+    @unittest.skip("Skipped to save time.")
     def test_4a_import_url(self):
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
@@ -35,4 +36,22 @@ class DataStoring():
             self.refresh()
         except AssertionError:
             raise ImportURLException(response)
+    
+    @unittest.skip("Not finished.")
+    def test_4b_drag_and_drop(self):
+        if (not rl.registered) or (not rl.logged_in):
+            raise unittest.SkipTest("Skipped for failed registration or login.")
+        self.dismiss_dialogs()
+        function = js_func["drag_and_drop"]
+        try:
+            self.send_request(function, "drag_and_drop()")
+        except Exception as e:
+            raise DragAndDropException(e.__str__())
+        try:
+            response = self.get_response()
+            assert "Success" in response
+            self.refresh()
+        except AssertionError:
+            raise DragAndDropException(response)
         
+    
