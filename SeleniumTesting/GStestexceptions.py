@@ -117,4 +117,12 @@ class DragAndDropException(Exception):
             return report + "\n" + self.message
         return report
     
-    
+class LauchWithFileException(Exception):
+    def __init__(self, message = None):
+        self.message = message
+        
+    def __str__(self):
+        report = "Failed to Launch the GVL with file."
+        if self.message:
+            return report + "\n" + self.message
+        return report
