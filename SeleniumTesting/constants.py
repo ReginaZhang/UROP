@@ -71,6 +71,7 @@ test_file = {'before_rename_path': {"small": "/Home/swift:UROP/before_rename_s.t
                                   "container": "/Home/swift:UROP/subdir1/file_to_copy.txt"},
              'copy_target_path':{"folder": "/Home/swift:UROP/subdir2/file_to_copy.txt",
                                  "container": "/Home/swift:UROP_Test/file_to_copy.txt"},
+             'file_to_delete_path': "/Home/swift:UROP/subdir2/file_to_copy.txt",
              'file_to_share_xpath': '//div[@id="filesDiv2"]//a[@filepath="/Home/swift:UROP/file_to_share.txt"]'}
 
 """//div[contains(@class, 'ui-dialog')]/div[preceding-sibling::div/span[contains(., 'Rename display')]]/input[@value='test']"""
@@ -118,7 +119,7 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
             'delete': '''function delete_data() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("DELETE", "https://genomespace.genome.edu.au/datamanager/v1.0/file/Home/swift:UROP/subdir2/file_to_copy.txt",false);\
+                xmlhttp.open("DELETE", "https://genomespace.genome.edu.au/datamanager/v1.0/file%s",false);\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
             }''',

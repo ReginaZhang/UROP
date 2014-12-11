@@ -24,10 +24,10 @@ class DataManipulation():
     
     @unittest.skip("Skip to save time")
     def test_6a_change_file_name(self):
-        '''
-        The test case for testing file rename functionality
+        """
+        The test case for testing file renaming functionality
         of GenomeSpace. 
-        '''
+        """
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
         self.dismiss_dialogs()
@@ -74,6 +74,10 @@ class DataManipulation():
 
     @unittest.skip("Skip to save time.")
     def test_6b_copy_data_btw_folders(self):
+        """
+        The test case for testing file copying between folders
+        functionality in GenomeSpace.
+        """
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
         self.dismiss_dialogs()
@@ -91,6 +95,10 @@ class DataManipulation():
         
     @unittest.skip("Skip to save time.")    
     def test_6c_copy_data_btw_containers(self):
+        """
+        The test case for testing copying file between containers 
+        functionality in GenomeSpace.
+        """
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
         self.dismiss_dialogs()
@@ -106,14 +114,16 @@ class DataManipulation():
         except AssertionError:
             raise CopyException("Failed to copy the file between containers. \n" + response)
         
-    #@unittest.skip("Skip to save time.")
+    @unittest.skip("Skip to save time.")
     def test_6d_delete_file(self):
+        """
+        The test case for testing file deletion functionality
+        in GenomeSpace.
+        """
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
-        driver = self.driver
-        wait = self.wait
         self.dismiss_dialogs()
-        function = js_func["delete"]
+        function = js_func["delete"] % test_file["file_to_delete_path"]
         try:
             self.send_request(function, "delete_data()")
         except Exception as e:
