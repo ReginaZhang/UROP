@@ -53,17 +53,17 @@ class DataStoring():
             self.send_request(function, "upload_file()")
         except Exception as e:
             raise DragAndDropException(e.__str__())
-        """try:
+        try:
             response = self.get_response()
             assert "Success" in response
-            time.sleep(2)
-            response = self.get_response()
-            assert "Success" in response
-            time.sleep(2)
-            response = self.get_response()
-            assert "Success" in response
-            self.refresh()
         except AssertionError:
-            raise DragAndDropException(response)
-        """
+            raise DragAndDropException("Failed at 'GET' request: " + response)
+        try:
+            time.sleep(2)
+            response = self.get_response()
+            assert "Success" in response
+            self.refresh_page()
+        except AssertionError:
+            raise DragAndDropException("Failed at 'PUT' request: " + response)
+        
     

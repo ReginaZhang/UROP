@@ -183,22 +183,10 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                     path = response_obj.path;\
                     url = response_obj.swiftFileUrl;\
                     token = response_obj.token;\
-                    var optionsrequest=new XMLHttpRequest();\
-                    optionsrequest.open("OPTIONS", url+"/"+path);\
-                    alert(url+"/"+path);\
-                    alert("opened");\
-                    optionsrequest.setRequestHeader("Origion","https://genomespace.genome.edu.au");\
-                    optionsrequest.onreadystatechange=function(){alert(this.readyState+" "+this.status);};\
-                    optionsrequest.send();\
-                    alert("sent!!!");\
-                    getResponse(optionsrequest);\
-                    alert("no idea what was going on.");\
-                    if (putrequest.status < 300 && putrequest.status > 199) {\
-                        var putrequest=new XMLHttpRequest();\
-                        putrequest.open("PUT", url+"/"+path, false);\
-                        putrequest.setRequestHeader("X-Auth-Token", token);\
-                        putrequest.send("Testing testing");\
-                        getResponse(putrequest);\
-                    }\
+                    var putrequest=new XMLHttpRequest();\
+                    putrequest.open("PUT", url+"/"+path, false);\
+                    putrequest.setRequestHeader("X-Auth-Token", token);\
+                    putrequest.send("Testing testing");\
+                    getResponse(putrequest);\
                 }\
             }'''}
