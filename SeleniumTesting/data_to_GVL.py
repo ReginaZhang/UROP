@@ -20,7 +20,7 @@ class DataToGVL():
     
     __metaclass__ = ABCMeta
     
-    #@unittest.skip("The two request are not clear.")
+    @unittest.skip("The two request are not clear.")
     def test_7b_launch_with_file(self):
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
