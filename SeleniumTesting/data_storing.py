@@ -37,21 +37,33 @@ class DataStoring():
         except AssertionError:
             raise ImportURLException(response)
     
-    @unittest.skip("Not finished.")
+    #@unittest.skip("Not finished.")
     def test_4b_drag_and_drop(self):
+        """
+        The test for uploading functionality in GenomeSpace 
+        using drag-and-drop method.
+        This test is conducted by sending Http Request with
+        file content as the request body to imitate the process.
+        """
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
         self.dismiss_dialogs()
-        function = js_func["drag_and_drop"]
+        function = js_func["upload_file"] % test_file["file_to_upload_path"]
         try:
-            self.send_request(function, "drag_and_drop()")
+            self.send_request(function, "upload_file()")
         except Exception as e:
             raise DragAndDropException(e.__str__())
-        try:
+        """try:
+            response = self.get_response()
+            assert "Success" in response
+            time.sleep(2)
+            response = self.get_response()
+            assert "Success" in response
+            time.sleep(2)
             response = self.get_response()
             assert "Success" in response
             self.refresh()
         except AssertionError:
             raise DragAndDropException(response)
-        
+        """
     
