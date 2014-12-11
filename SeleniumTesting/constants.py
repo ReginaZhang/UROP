@@ -72,7 +72,8 @@ test_file = {'before_rename_path': {"small": "/Home/swift:UROP/before_rename_s.t
              'copy_target_path':{"folder": "/Home/swift:UROP/subdir2/file_to_copy.txt",
                                  "container": "/Home/swift:UROP_Test/file_to_copy.txt"},
              'file_to_delete_path': "/Home/swift:UROP/subdir2/file_to_copy.txt",
-             'file_to_share_xpath': '//div[@id="filesDiv2"]//a[@filepath="/Home/swift:UROP/file_to_share.txt"]'}
+             'file_to_share_xpath': '//div[@id="filesDiv2"]//a[@filepath="/Home/swift:UROP/file_to_share.txt"]',
+             'file_to_upload_path': "/Home/swift:UROP/file_to_upload.txt"}
 
 """//div[contains(@class, 'ui-dialog')]/div[preceding-sibling::div/span[contains(., 'Rename display')]]/input[@value='test']"""
 
@@ -170,4 +171,34 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                 xmlhttp1.setRequestHeader("Content-Type", "application/json");\
                 xmlhttp1.send(JSON.stringify({"module":"GSUI","function":"LAUNCH","username":"test","entity":"Galaxy : %s"}));\
                 getResponse(xmlhttp1);\
+            }''',
+            'upload_file':'''function upload_file() {\
+                var getrequest=new XMLHttpRequest();\
+                getrequest.open("GET","https://genomespace.genome.edu.au/datamanager/v1.0/uploadinfo%s",false);\
+                getrequest.send();\
+                getResponse(getrequest);\
+                if (getrequest.status < 300 && getrequest.status > 199) {\
+                    str = getrequest.response;\
+                    response_obj = JSON.parse(str);\
+                    path = response_obj.path;\
+                    url = response_obj.swiftFileUrl;\
+                    token = response_obj.token;\
+                    var optionsrequest=new XMLHttpRequest();\
+                    optionsrequest.open("OPTIONS", url+"/"+path);\
+                    alert(url+"/"+path);\
+                    alert("opened");\
+                    optionsrequest.setRequestHeader("Origion","https://genomespace.genome.edu.au");\
+                    optionsrequest.onreadystatechange=function(){alert(this.readyState+" "+this.status);};\
+                    optionsrequest.send();\
+                    alert("sent!!!");\
+                    getResponse(optionsrequest);\
+                    alert("no idea what was going on.");\
+                    if (putrequest.status < 300 && putrequest.status > 199) {\
+                        var putrequest=new XMLHttpRequest();\
+                        putrequest.open("PUT", url+"/"+path, false);\
+                        putrequest.setRequestHeader("X-Auth-Token", token);\
+                        putrequest.send("Testing testing");\
+                        getResponse(putrequest);\
+                    }\
+                }\
             }'''}
