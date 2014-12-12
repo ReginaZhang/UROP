@@ -24,7 +24,7 @@ class CloudStorage():
     
     __metaclass__ = ABCMeta
     
-    @unittest.skip("Skip to save time.")
+    #@unittest.skip("Skip to save time.")
     def test_2a_mount_container(self):
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
@@ -56,7 +56,7 @@ class CloudStorage():
             driver.implicitly_wait(5)
             elem = wait.until(EC.alert_is_present())
             alert = driver.switch_to_alert()
-            assert alert.text == form["successful_popup"]
+            assert alert.text == (form["successful_popup"] % (t_mount_container["container"]))
             time.sleep(3)
             alert.accept()
         except TimeoutException:
@@ -82,11 +82,22 @@ class CloudStorage():
         global mounted
         mounted = True
 
-    @unittest.skip("Skip to save time.")
+    #@unittest.skip("Skip to save time.")
     def test_2b_disconnect_container(self):
         if (not rl.registered) or (not rl.logged_in) or (not mounted):
             raise unittest.SkipTest("Skipped for failed registration, loggin or mounting.")
-        driver = self.driver
+        function = js_func["disconnect"]  % (t_mount_container["container"])
+        try:
+            self.send_request(function, "disconnect()")
+        except Exception as e:
+            raise DisconnectContainerException(e.__str__())
+        try:
+            response = self.get_response()
+            assert "Success" in response
+            self.refresh_page()
+        except AssertionError:
+            raise DisconnectContainerException(response)
+        '''driver = self.driver
         wait = self.wait
         container = test_container["mount_container"]["container"]
         try:
@@ -127,3 +138,4 @@ class CloudStorage():
         except Exception, e:
             self.dismiss_dialogs()
             raise DisconnectContainerException(type(e).__name__ + ": " + e.__str__())
+        '''
