@@ -5,6 +5,16 @@ Module created on 26/11/2014
 
 '''
 
+class RegistrationException(Exception):
+    def __init__(self, message = None):
+        self.message = message
+        
+    def __str__(self):
+        report = "Failed to test registration."
+        if self.message:
+            report += "\n" + self.message
+        return report
+
 class LoginException(Exception):
     def __init__(self, message = None, username = None, pw = None):
         self.username = username
