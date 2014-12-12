@@ -22,8 +22,15 @@ class DataToGVL():
     
     @unittest.skip("The two request are not clear.")
     def test_7b_launch_with_file(self):
-        if (not rl.registered) or (not rl.logged_in):
-            raise unittest.SkipTest("Skipped for failed registration or login.")
+        """
+        The test for testing launching the connected Galaxy with file.
+        No Galaxy connection test at the moment.
+        The Galaxy used in this test was the default Galaxy.
+        
+        Skipped if the login test was failed.
+        """
+        if not rl.logged_in:
+            raise unittest.SkipTest("Skipped for failed login.")
         self.dismiss_dialogs()
         file_url = "https://genomespace.genome.edu.au:443/datamanager/file/Home/swift:UROP/file_to_share.txt"
         file_url_escaped = "https%3A%2F%2Fgenomespace.genome.edu.au%3A443%2Fdatamanager%2Ffile%2FHome%2Fswift%3AUROP%2Ffile_to_share.txt"

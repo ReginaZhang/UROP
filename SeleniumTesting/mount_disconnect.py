@@ -26,8 +26,13 @@ class CloudStorage():
     
     #@unittest.skip("Skip to save time.")
     def test_2a_mount_container(self):
-        if (not rl.registered) or (not rl.logged_in):
-            raise unittest.SkipTest("Skipped for failed registration or login.")
+        """
+        The test for mounting container functionality of GenomeSpace.
+        
+        Skipped if the login test was failed.
+        """
+        if not rl.logged_in:
+            raise unittest.SkipTest("Skipped for failed login.")
         driver = self.driver
         wait = self.wait
         try:
@@ -84,8 +89,13 @@ class CloudStorage():
 
     #@unittest.skip("Skip to save time.")
     def test_2b_disconnect_container(self):
-        if (not rl.registered) or (not rl.logged_in) or (not mounted):
-            raise unittest.SkipTest("Skipped for failed registration, loggin or mounting.")
+        """
+        The test for testing the disconnect container functionality of GenomeSpace.
+        
+        Skipped if the login test or mounting container test was failed.
+        """
+        if (not rl.logged_in) or (not mounted):
+            raise unittest.SkipTest("Skipped for failed login or mounting.")
         function = js_func["disconnect"]  % (t_mount_container["container"])
         try:
             self.send_request(function, "disconnect()")

@@ -23,8 +23,13 @@ class DataSharing():
     
     @unittest.skip("Not finished")
     def test_5a_generate_public_URL(self):
-        if (not rl.registered) or (not rl.logged_in):
-            raise unittest.SkipTest("Skipped for failed registration or login.")
+        """
+        The test for testing generating public URL of the file in GenomeSpace.
+        
+        Skipped if the login test was failed.
+        """
+        if not rl.logged_in:
+            raise unittest.SkipTest("Skipped for failed login.")
         self.dismiss_dialogs()
         function = js_func["generate_public_url"]
         try:
@@ -60,9 +65,13 @@ class DataSharing():
         
     @unittest.skip("Skip to save time.")
     def test_5d_generate_private_url(self):
-        if (not rl.registered) or (not rl.logged_in):
-            print "Hello"
-            raise unittest.SkipTest("Skipped for failed registration or loggin.")
+        """
+        The test for testing generating private URL of the file in GenomeSpace.
+        
+        Skipped if the login test was failed.
+        """
+        if not rl.logged_in:
+            raise unittest.SkipTest("Skipped for failed login.")
         self.dismiss_dialogs()
         driver = self.driver
         wait = self.wait

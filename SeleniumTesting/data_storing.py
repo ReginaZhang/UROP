@@ -22,8 +22,16 @@ class DataStoring():
     
     @unittest.skip("Skip to save time.")
     def test_4a_import_url(self):
-        if (not rl.registered) or (not rl.logged_in):
-            raise unittest.SkipTest("Skipped for failed registration or login.")
+        """
+        The test for testing importing data using the public URL.
+        
+        The public URL is fixed to a certain URL at the moment.
+        Need to change every two days.
+        
+        Skipped if the login test was failed.
+        """
+        if not rl.logged_in:
+            raise unittest.SkipTest("Skipped for failed login.")
         self.dismiss_dialogs()
         function = js_func["import_url"] % ("https://swift.rc.nectar.org.au:8888/v1/AUTH_f0d7c5b248004e80ae6f6afa8452d70c/UROP/subdir1%2Ffile_to_share.txt?temp_url_sig=86f1307755aec7340432f2467d5906e3c0511ca0&temp_url_expires=1418446695")
         try:
@@ -44,9 +52,11 @@ class DataStoring():
         using drag-and-drop method.
         This test is conducted by sending Http Request with
         file content as the request body to imitate the process.
+        
+        Skipped if the login test was failed.
         """
-        if (not rl.registered) or (not rl.logged_in):
-            raise unittest.SkipTest("Skipped for failed registration or login.")
+        if not rl.logged_in:
+            raise unittest.SkipTest("Skipped for failed login.")
         self.dismiss_dialogs()
         function = js_func["upload_file"] % test_file["file_to_upload_path"]
         try:

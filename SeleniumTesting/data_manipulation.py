@@ -27,9 +27,11 @@ class DataManipulation():
         """
         The test case for testing file renaming functionality
         of GenomeSpace. 
+        
+        Skipped if the login test was failed.
         """
-        if (not rl.registered) or (not rl.logged_in):
-            raise unittest.SkipTest("Skipped for failed registration or login.")
+        if not rl.logged_in:
+            raise unittest.SkipTest("Skipped for failed login.")
         self.dismiss_dialogs()
         file_sizes = ["small"]
         failure = {}
@@ -77,9 +79,11 @@ class DataManipulation():
         """
         The test case for testing file copying between folders
         functionality in GenomeSpace.
+        
+        Skipped if the Login test was failed.
         """
-        if (not rl.registered) or (not rl.logged_in):
-            raise unittest.SkipTest("Skipped for failed registration or login.")
+        if not rl.logged_in:
+            raise unittest.SkipTest("Skipped for failed login.")
         self.dismiss_dialogs()
         function = js_func["copy_btw_folders"] % (test_file["copy_target_path"]["folder"], test_file["copy_source_path"]["folder"])
         try:
@@ -98,9 +102,11 @@ class DataManipulation():
         """
         The test case for testing copying file between containers 
         functionality in GenomeSpace.
+        
+        Skipped if the login test was failed.
         """
-        if (not rl.registered) or (not rl.logged_in):
-            raise unittest.SkipTest("Skipped for failed registration or login.")
+        if not rl.logged_in:
+            raise unittest.SkipTest("Skipped for failed login.")
         self.dismiss_dialogs()
         function = js_func["copy_btw_containers"] % (test_file["copy_target_path"]["container"], test_file["copy_source_path"]["container"])
         try:
@@ -119,9 +125,11 @@ class DataManipulation():
         """
         The test case for testing file deletion functionality
         in GenomeSpace.
+        
+        Skipped if the login test was failed.
         """
-        if (not rl.registered) or (not rl.logged_in):
-            raise unittest.SkipTest("Skipped for failed registration or login.")
+        if not rl.logged_in:
+            raise unittest.SkipTest("Skipped for failed login.")
         self.dismiss_dialogs()
         function = js_func["delete"] % test_file["file_to_delete_path"]
         try:
@@ -137,8 +145,14 @@ class DataManipulation():
         
     @unittest.skip("Skip to save time.")    
     def test_6e_move_data_btw_folders(self):
-        if (not rl.registered) or (not rl.logged_in):
-            raise unittest.SkipTest("Skipped for failed registration or login.")
+        """
+        The test for testing moving data between folders 
+        functionality of GenomeSpace.
+        
+        Skipped if the login test was failed.
+        """
+        if not rl.logged_in:
+            raise unittest.SkipTest("Skipped for failed login.")
         self.dismiss_dialogs()
         function = js_func["move_btw_folders"]
         try:
@@ -153,8 +167,14 @@ class DataManipulation():
             raise MoveException("Failed to move the data between folders. \n" + response)
     @unittest.skip("Skip to save time.")    
     def test_6f_move_data_btw_containers(self):
-        if (not rl.registered) or (not rl.logged_in):
-            raise unittest.SkipTest("Skipped for failed registration or login.")
+        """
+        The test for testing moving data between containers
+        functionality of GenomeSpace.
+        
+        Skipped if the login test was failed.
+        """
+        if not rl.logged_in:
+            raise unittest.SkipTest("Skipped for failed login.")
         self.dismiss_dialogs()
         function = js_func["move_btw_containers"]
         try:
