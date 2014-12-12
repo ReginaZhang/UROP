@@ -37,7 +37,7 @@ class DataStoring():
         except AssertionError:
             raise ImportURLException(response)
     
-    #@unittest.skip("Not finished.")
+    @unittest.skip("Skip to save time.")
     def test_4b_drag_and_drop(self):
         """
         The test for uploading functionality in GenomeSpace 
