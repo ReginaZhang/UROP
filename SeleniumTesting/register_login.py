@@ -26,19 +26,19 @@ class UseGS(object):
         driver = self.driver
         wait = self.wait
         try:
-            link = page_register['registration_link_text']
+            link = page_register['link_text']
             elem = wait.until(EC.element_to_be_clickable((By.LINK_TEXT, link)))
             elem = driver.find_element_by_link_text(link)
             elem.click()
-            elem = driver.find_element_by_id("usernameEntry")
-            elem.send_keys("test")
-            elem = driver.find_element_by_id("passwordEntry")
-            elem.send_keys("test")
-            elem = driver.find_element_by_id("emailEntry")
-            elem.send_keys("ykowsar@gmail.com")
-            elem = driver.find_element_by_id("signupButton")
+            elem = driver.find_element_by_id(page_register["username"])
+            elem.send_keys(test_register["username"])
+            elem = driver.find_element_by_id(page_register["pw"])
+            elem.send_keys(test_register["pw"])
+            elem = driver.find_element_by_id(page_register["email"])
+            elem.send_keys(test_register["email"])
+            elem = driver.find_element_by_id(page_register["signup_button"])
             elem.click()
-            time.sleep(3)
+            time.sleep(5)
             assert "Cannot create duplicate username" in driver.page_source
             driver.get(common["base_url"])
         except UnexpectedAlertPresentException:
@@ -50,9 +50,9 @@ class UseGS(object):
         except NoSuchElementException as e:
             messages = e.__str__().split("\n")
             self.dismiss_dialogs()
-            raise Exception(messages[0])
+            raise RegistrationException(messages[0])
         except AssertionError:
-            raise Exception("Failed to assert the error message.")
+            raise RegistrationException("Failed to assert the error message.")
         finally:
             driver.get(common["base_url"])
         global registered
