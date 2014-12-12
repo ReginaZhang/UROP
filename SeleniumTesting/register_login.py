@@ -26,36 +26,40 @@ class UseGS(object):
         driver = self.driver
         wait = self.wait
         try:
-            driver.get(common['base_url'])
-            assert "No results found." not in driver.page_source
-        except AssertionError:
-            driver.close()
-            raise Exception("Page not found: " + common['base_url'])
-        except UnexpectedAlertPresentException:
-            alert = driver.switch_to_alert()
-            text = alert.text
-            alert.dismiss()
-            raise Exception("Unexpected alert present: " + text)
-        try:
             link = page_register['registration_link_text']
             elem = wait.until(EC.element_to_be_clickable((By.LINK_TEXT, link)))
             elem = driver.find_element_by_link_text(link)
             elem.click()
+            elem = driver.find_element_by_id("usernameEntry")
+            elem.send_keys("test")
+            elem = driver.find_element_by_id("passwordEntry")
+            elem.send_keys("test")
+            elem = driver.find_element_by_id("emailEntry")
+            elem.send_keys("ykowsar@gmail.com")
+            elem = driver.find_element_by_id("signupButton")
+            elem.click()
+            time.sleep(3)
+            assert "Cannot create duplicate username" in driver.page_source
             driver.get(common["base_url"])
-        except AssertionError:
-            raise Exception("Failed to assert!")
         except UnexpectedAlertPresentException:
             alert = driver.switch_to_alert()
             text = alert.text
             alert.dismiss()
-            raise Exception("Unexpected alert present: " + text)
+            print "Unexpected alert present: " + text
+            driver.get(common["base_url"])
+        except NoSuchElementException as e:
+            messages = e.__str__().split("\n")
+            self.dismiss_dialogs()
+            raise Exception(messages[0])
+        except AssertionError:
+            raise Exception("Failed to assert the error message.")
+        finally:
+            driver.get(common["base_url"])
         global registered
         registered = True
 
     #@unittest.skip("for testing")
     def test_1b_login(self):
-        if not registered:
-            raise unittest.SkipTest("Skipped for failed registration.")
         driver = self.driver
         wait = self.wait
         try:
