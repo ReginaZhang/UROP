@@ -12,16 +12,16 @@ p_mount_container = {'os_ep': "mspEndPoint",
                      'tenancy': "mspTenancyName",
                      'container': "mspContainerName",
                      'submit': "mspSwiftMountBtn",
-                     'successful_popup': "Mounted  container UROP\n it should be available for use in a few seconds."}
+                     'successful_popup': "Mounted  container %s\n it should be available for use in a few seconds." }
 common = {'base_url': "https://genomespace.genome.edu.au/jsui",
           'menu_file': "menuFile",
           'Home_xpath': '//a[@dirpath="/Home"]'}
 
-page_register = {'registration_link_text': "Register new GenomeSpace user",
-                 'registration_username': "usernameEntry",
-                 'registration_pw': "passwordEntry",
-                 'registration_email': "emailEntry",
-                 'registration_signup': "signupButton"}
+page_register = {'link_text': "Register new GenomeSpace user",
+                 'username': "usernameEntry",
+                 'pw': "passwordEntry",
+                 'email': "emailEntry",
+                 'signup_button': "signupButton"}
 
 page_login = {'login_name': "identity",
               'login_pw': "password",
@@ -47,10 +47,10 @@ t_mount_container = {'os_ep': "https://keystone.rc.nectar.org.au:5000/v2.0/token
                      'username': "ruijing.zhang@unimelb.edu.au",
                      'password': "NWE4Yzg4NTlkMmVlZTU4",
                      'tenancy': "pt-9344",
-                     'container': "UROP"}
-test_register = {'registration_name': "",
-                 'registration_pw': "",
-                 'registration_email': ""}
+                     'container': "For_Mounting_Test"}
+test_register = {'username': "test",
+                 'pw': "test",
+                 'email': "ykowsar@gmail.com"}
 
 test_login = {'login_name': "test",
               'login_pw': "test"}
@@ -95,6 +95,12 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                 xmlhttp.open("PUT", "https://genomespace.genome.edu.au/datamanager/v1.0/storage/test/swift/{0}", false);\
                 xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
                 xmlhttp.send('{"storageType":"Swift","attributes":{"container":"{0}","osUserName":"ruijing.zhang@unimelb.edu.au","Endpoint":"https://keystone.rc.nectar.org.au:5000/v2.0/tokens","OsTenant":"pt-9344","osPassword":"NWE4Yzg4NTlkMmVlZTU4"},"filePermissions":["R","W"]}');\
+                getResponse(xmlhttp);\
+            }''',
+            'disconnect':'''function disconnect() {\
+                var xmlhttp=new XMLHttpRequest();\
+                xmlhttp.open("DELETE", "https://genomespace.genome.edu.au/datamanager/v1.0/storage/test/swift/%s", false);\
+                xmlhttp.send();\
                 getResponse(xmlhttp);\
             }''',
            'rename': '''function rename() {\
