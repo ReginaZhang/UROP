@@ -25,7 +25,7 @@ class DataStoring():
         if (not rl.registered) or (not rl.logged_in):
             raise unittest.SkipTest("Skipped for failed registration or login.")
         self.dismiss_dialogs()
-        function = js_func["import_url"] % ("https://swift.rc.nectar.org.au:8888/v1/AUTH_f0d7c5b248004e80ae6f6afa8452d70c/UROP/file_to_share.txt?temp_url_sig=d6a4c505714369893ecd918e213083dd6bf033ea&temp_url_expires=1418200269")
+        function = js_func["import_url"] % ("https://swift.rc.nectar.org.au:8888/v1/AUTH_f0d7c5b248004e80ae6f6afa8452d70c/UROP/subdir1%2Ffile_to_share.txt?temp_url_sig=86f1307755aec7340432f2467d5906e3c0511ca0&temp_url_expires=1418446695")
         try:
             self.send_request(function, "import_url()")
         except Exception as e:
