@@ -15,7 +15,6 @@ from selenium.webdriver.common.by import By
 import time
 
 
-registered = False
 logged_in = False
 
 class UseGS(object):
@@ -23,6 +22,12 @@ class UseGS(object):
     __metaclass__ = ABCMeta
     
     def test_1a_register(self):
+        """
+        The test for testing the registration of GenomeSpace.
+        
+        The registration is expected to fail as the account 
+        used for testing already exists.
+        """
         driver = self.driver
         wait = self.wait
         try:
@@ -55,11 +60,15 @@ class UseGS(object):
             raise RegistrationException("Failed to assert the error message.")
         finally:
             driver.get(common["base_url"])
-        global registered
-        registered = True
 
     #@unittest.skip("for testing")
     def test_1b_login(self):
+        """
+        Test for testing the login functionality of GenomeSpace.
+        
+        This test is the prerequisite for every other tests of GenomeSpace,
+        as all the rest tests are done in the account used for this test.
+        """
         driver = self.driver
         wait = self.wait
         try:
