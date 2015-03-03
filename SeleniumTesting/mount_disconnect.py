@@ -35,55 +35,60 @@ class CloudStorage():
             raise unittest.SkipTest("Skipped for failed login.")
         driver = self.driver
         wait = self.wait
-        try:
-            elem = driver.find_element_by_id(page_container["menu_connect"])
-            hover = ActionChains(driver).move_to_element(elem)
-            elem = driver.find_element_by_id(page_container["swift_container"])
-            hover.move_to_element(elem)
-            hover.click().perform()
-            form = page_container["mount_container"]
-            keys = test_container["mount_container"]
-            elem = wait.until(EC.element_to_be_clickable((By.ID, form['os_ep'])))
-        except TimeoutException:
-            raise MountingException("Timed out opening the form.")
-        except NoSuchElementException as e:
-            messages = e.__str__().split("\n")
-            self.dismiss_dialogs()
-            raise MountingException(messages[0])
-        try:
-            for input_ in form.keys():
-                if input_ not in ["submit", "successful_popup"]:
-                    elem = driver.find_element_by_id(form[input_])
-                    elem.clear()
-                    elem.send_keys(keys[input_])
-            elem = driver.find_element_by_id(form['submit'])
-            elem.click()
-            driver.implicitly_wait(5)
-            elem = wait.until(EC.alert_is_present())
-            alert = driver.switch_to_alert()
-            assert alert.text == (form["successful_popup"] % (t_mount_container["container"]))
-            time.sleep(3)
-            alert.accept()
-        except TimeoutException:
-            self.dismiss_dialogs()
-            raise MountingException()
-        except AssertionError:
-            text = alert.text
-            alert.dismiss()
-            self.dismiss_dialogs()
-            raise MountingException("Alert: " + text)
-        except NoSuchElementException as e:
-            messages = e.__str__().split("\n")
-            self.dismiss_dialogs()
-            raise MountingException(messages[0])
-        except Exception, e:
-            self.dismiss_dialogs()
-            raise MountingException(type(e).__name__ + ": " + e.__str__())
-        try:
-            time.sleep(10)
-            assert "swift:" + keys["container"] in driver.page_source
-        except AssertionError:
-            raise MountingException("Newly mounted container is not shown.")
+        def mounting(ctner_name):
+            try:
+                elem = driver.find_element_by_id(page_container["menu_connect"])
+                hover = ActionChains(driver).move_to_element(elem)
+                elem = driver.find_element_by_id(page_container["swift_container"])
+                hover.move_to_element(elem)
+                hover.click().perform()
+                form = page_container["mount_container"]
+                keys = test_container["mount_container"]
+                keys["container"] = ctner_name
+                elem = wait.until(EC.element_to_be_clickable((By.ID, form['os_ep'])))
+            except TimeoutException:
+                raise MountingException("Timed out opening the form.")
+            except NoSuchElementException as e:
+                messages = e.__str__().split("\n")
+                self.dismiss_dialogs()
+                raise MountingException(messages[0])
+            try:
+                for input_ in form.keys():
+                    if input_ not in ["submit", "successful_popup"]:
+                        elem = driver.find_element_by_id(form[input_])
+                        elem.clear()
+                        elem.send_keys(keys[input_])
+                elem = driver.find_element_by_id(form['submit'])
+                elem.click()
+                driver.implicitly_wait(5)
+                elem = wait.until(EC.alert_is_present())
+                alert = driver.switch_to_alert()
+                assert alert.text == (form["successful_popup"] % (t_mount_container["container"]))
+                time.sleep(3)
+                alert.accept()
+            except TimeoutException:
+                self.dismiss_dialogs()
+                raise MountingException()
+            except AssertionError:
+                text = alert.text
+                alert.dismiss()
+                self.dismiss_dialogs()
+                raise MountingException("Alert: " + text)
+            except NoSuchElementException as e:
+                messages = e.__str__().split("\n")
+                self.dismiss_dialogs()
+                raise MountingException(messages[0])
+            except Exception, e:
+                self.dismiss_dialogs()
+                raise MountingException(type(e).__name__ + ": " + e.__str__())
+            try:
+                time.sleep(10)
+                assert "swift:" + keys["container"] in driver.page_source
+            except AssertionError:
+                raise MountingException("Newly mounted container is not shown.")
+        mounting(container_names["for mounting test"])
+        time.sleep(10)
+        mounting(container_names["for data tests"])
         global mounted
         mounted = True
 
@@ -96,7 +101,7 @@ class CloudStorage():
         """
         if (not rl.logged_in) or (not mounted):
             raise unittest.SkipTest("Skipped for failed login or mounting.")
-        function = js_func["disconnect"]  % (t_mount_container["container"])
+        function = js_func["disconnect"]  % (container_names["for mounting test"])
         try:
             self.send_request(function, "disconnect()")
         except Exception as e:

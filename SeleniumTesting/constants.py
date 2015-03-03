@@ -43,11 +43,14 @@ page_input = {'copy/move': "//div[contains(@class, 'ui-dialog')]/div[preceding-s
 
 
 # following are the keys for the tests
+container_names = {"for mounting test" : "For_Mounting_Test",
+                   "for data tests" : "UROP"}
+
 t_mount_container = {'os_ep': "https://keystone.rc.nectar.org.au:5000/v2.0/tokens",
                      'username': "ruijing.zhang@unimelb.edu.au",
                      'password': "NWE4Yzg4NTlkMmVlZTU4",
                      'tenancy': "pt-9344",
-                     'container': "For_Mounting_Test"}
+                     'container': None}
 test_register = {'username': "test",
                  'pw': "test",
                  'email': "ykowsar@gmail.com"}
