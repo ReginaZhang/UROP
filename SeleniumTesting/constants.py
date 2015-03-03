@@ -81,7 +81,7 @@ test_file = {'before_rename_path': {"small": "/Home/swift:UROP/before_rename_s.t
 
 js_func = {'get_response': '''function getResponse(xmlhttp) {\
                 if (xmlhttp.status >= 400 || (100 <= xmlhttp.status && xmlhttp.status < 200)) {\
-                    alert("Failure: " + xmlhttp.status + "&#10;Response: " + xmlhttp.responseText);\
+                    alert("Failure: " + xmlhttp.status + "  Response: " + xmlhttp.responseText);\
                 } else if (xmlhttp.status >= 300) {\
                     alert("Manual redirection needed: " + xmlhttp.status + "&#x0A;Response: " + xmlhttp.responseText);\
                 } else if (xmlhttp.status >= 200) {\

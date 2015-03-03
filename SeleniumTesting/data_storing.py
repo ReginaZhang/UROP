@@ -20,7 +20,7 @@ class DataStoring():
     
     __metaclass__ = ABCMeta
     
-    @unittest.skip("Skip to save time.")
+    #@unittest.skip("Skip to save time.")
     def test_4a_import_url(self):
         """
         The test for testing importing data using the public URL.
@@ -45,7 +45,7 @@ class DataStoring():
         except AssertionError:
             raise ImportURLException(response)
     
-    @unittest.skip("Skip to save time.")
+    #@unittest.skip("Skip to save time.")
     def test_4b_drag_and_drop(self):
         """
         The test for uploading functionality in GenomeSpace 
