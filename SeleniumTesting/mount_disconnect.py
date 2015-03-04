@@ -18,11 +18,13 @@ from selenium.webdriver.common.action_chains import ActionChains
 #from register_login import registered, logged_in
 import register_login as rl
 
-mounted = True
+data_testing_swift_mounted = False
 
 class CloudStorage():
     
     __metaclass__ = ABCMeta
+    
+    passed_mounting = False
     
     #@unittest.skip("Skip to save time.")
     def test_2a_mount_container(self):
@@ -86,11 +88,18 @@ class CloudStorage():
                 assert "swift:" + keys["container"] in driver.page_source
             except AssertionError:
                 raise MountingException("Newly mounted container is not shown.")
-        mounting(container_names["for mounting test"])
-        time.sleep(10)
-        mounting(container_names["for data tests"])
-        global mounted
-        mounted = True
+        try:
+            mounting(container_names["for mounting test"])
+            self.passed_mounting = True
+        finally:
+            try:
+                assert "swift:" + container_names["for data tests"] in driver.page_source
+            except AssertionError:
+                time.sleep(8)
+                mounting(container_names["for data tests"])
+                global data_testing_swift_mounted
+                data_testing_swift_mounted = True
+        
 
     #@unittest.skip("Skip to save time.")
     def test_2b_disconnect_container(self):
@@ -99,7 +108,7 @@ class CloudStorage():
         
         Skipped if the login test or mounting container test was failed.
         """
-        if (not rl.logged_in) or (not mounted):
+        if (not rl.logged_in) or (not self.passed_mounting):
             raise unittest.SkipTest("Skipped for failed login or mounting.")
         function = js_func["disconnect"]  % (container_names["for mounting test"])
         try:

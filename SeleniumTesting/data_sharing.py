@@ -16,6 +16,7 @@ import time
 from _codecs import register
 from selenium.webdriver.common.action_chains import ActionChains
 import register_login as rl
+from mount_disconnect import data_testing_swift_mounted as ready
 
 class DataSharing():
     
@@ -28,7 +29,7 @@ class DataSharing():
         
         Skipped if the login test was failed.
         """
-        if not rl.logged_in:
+        if (not rl.logged_in) or (not ready):
             raise unittest.SkipTest("Skipped for failed login.")
         self.dismiss_dialogs()
         function = js_func["generate_public_url"]
