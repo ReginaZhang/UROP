@@ -16,8 +16,9 @@ import time
 from _codecs import register
 from selenium.webdriver.common.action_chains import ActionChains
 import register_login as rl
-from mount_disconnect import data_testing_swift_mounted as ready
+import mount_disconnect as md
 
+#@unittest.skipIf(rl.logged_in == False, "I've skipped the whole class")
 class DataSharing():
     
     __metaclass__ = ABCMeta
@@ -29,8 +30,8 @@ class DataSharing():
         
         Skipped if the login test was failed.
         """
-        if (not rl.logged_in) or (not ready):
-            raise unittest.SkipTest("Skipped for failed login.")
+        if (not rl.logged_in) or (not md.data_testing_swift_mounted):
+            raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
         function = js_func["generate_public_url"]
         try:
@@ -71,8 +72,8 @@ class DataSharing():
         
         Skipped if the login test was failed.
         """
-        if not rl.logged_in:
-            raise unittest.SkipTest("Skipped for failed login.")
+        if (not rl.logged_in) or (not md.data_testing_swift_mounted):
+            raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
         driver = self.driver
         wait = self.wait

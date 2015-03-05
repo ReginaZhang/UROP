@@ -30,8 +30,8 @@ class DataManipulation():
         
         Skipped if the login test was failed.
         """
-        if not rl.logged_in:
-            raise unittest.SkipTest("Skipped for failed login.")
+        if (not rl.logged_in) or (not md.data_testing_swift_mounted):
+            raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
         file_sizes = ["small"]
         failure = {}
@@ -82,8 +82,9 @@ class DataManipulation():
         
         Skipped if the Login test was failed.
         """
-        if not rl.logged_in:
-            raise unittest.SkipTest("Skipped for failed login.")
+        print "copying data between folders"
+        if (not rl.logged_in) or (not md.data_testing_swift_mounted):
+            raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
         function = js_func["copy_btw_folders"] % (test_file["copy_target_path"]["folder"], test_file["copy_source_path"]["folder"])
         try:
@@ -105,8 +106,9 @@ class DataManipulation():
         
         Skipped if the login test was failed.
         """
-        if not rl.logged_in:
-            raise unittest.SkipTest("Skipped for failed login.")
+        print "copying data between containers"
+        if (not rl.logged_in) or (not md.data_testing_swift_mounted):
+            raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
         function = js_func["copy_btw_containers"] % (test_file["copy_target_path"]["container"], test_file["copy_source_path"]["container"])
         try:
@@ -128,8 +130,9 @@ class DataManipulation():
         
         Skipped if the login test was failed.
         """
-        if not rl.logged_in:
-            raise unittest.SkipTest("Skipped for failed login.")
+        print "deleting file"
+        if (not rl.logged_in) or (not md.data_testing_swift_mounted):
+            raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
         function = js_func["delete"] % test_file["file_to_delete_path"]
         try:
@@ -151,8 +154,9 @@ class DataManipulation():
         
         Skipped if the login test was failed.
         """
-        if not rl.logged_in:
-            raise unittest.SkipTest("Skipped for failed login.")
+        print "moving data between folders"
+        if (not rl.logged_in) or (not md.data_testing_swift_mounted):
+            raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
         function = js_func["move_btw_folders"]
         try:
@@ -173,8 +177,9 @@ class DataManipulation():
         
         Skipped if the login test was failed.
         """
-        if not rl.logged_in:
-            raise unittest.SkipTest("Skipped for failed login.")
+        print "moving data between containers"
+        if (not rl.logged_in) or (not md.data_testing_swift_mounted):
+            raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
         function = js_func["move_btw_containers"]
         try:
