@@ -149,7 +149,7 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
             'generate_public_url':'''function generate_public_url() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("HEAD", "https://genomespace.genome.edu.au/datamanager/file/Home/swift:UROP/subdir1/file_to_move.txt",false);\
+                xmlhttp.open("HEAD", "https://genomespace.genome.edu.au/datamanager/file/Home/swift:UROP/subdir1/file_to_copy.txt",false);\
                 xmlhttp.send("signedURL=true");\
                 getResponse(xmlhttp);\
                 public_url = xmlhttp.getResponseHeader("external-link");\
