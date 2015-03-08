@@ -17,6 +17,7 @@ from _codecs import register
 from selenium.webdriver.common.action_chains import ActionChains
 import register_login as rl
 import mount_disconnect as md
+import unicodedata
 
 #@unittest.skipIf(rl.logged_in == False, "I've skipped the whole class")
 class DataSharing():
@@ -35,19 +36,19 @@ class DataSharing():
         self.dismiss_dialogs()
         function = js_func["generate_public_url"]
         try:
-            print 1
+            #print 1
             self.send_request(function, "generate_public_url()")
         except Exception as e:
             raise PublicURLException("Failed to generate public URL.\n" + e.__str__())
         try:
-            print 2
+            #print 2
             response = self.get_response()
             assert "Success" in response
             time.sleep(2)
         except AssertionError:
             raise PublicURLException("Failed to generate public URL.\n" + response)
         try:
-            print 3
+            #print 3
             self.wait.until(EC.alert_is_present())
             alert = self.driver.switch_to_alert()
             assert "Public URL" in alert.text
@@ -55,17 +56,21 @@ class DataSharing():
             raise PublicURLException("Failed to catch public URL pop-up.")
         except AssertionError:
             raise PublicURLException("Failed to get generated public URL.")
-        #try:
-        print 4
-        public_url = alert.text.lstrip("Public URL: ")
-        print public_url
-        print js_func["share_data"]
-        function = js_func["share_data"].format(public_url)
-        self.send_request(function, "share_data()")
-        #except Exception as e:
-            #raise PublicURLException("Failed to share data using public URL generated.\n" + e.__str__())
         try:
-            print 5
+            #print 4
+            public_url = alert.text.lstrip("Public URL: ")
+            #print public_url
+            #print type(public_url)
+            public_url = unicodedata.normalize('NFKD', public_url).encode('ascii', 'replace')
+            #print type(public_url)
+            #print js_func["share_data"]
+            #print js_func["share_data"] % (public_url)
+            function = js_func["share_data"] % (public_url)
+            self.send_request(function, "share_data()")
+        except Exception as e:
+            raise PublicURLException("Failed to share data using public URL generated.\n" + e.__str__())
+        try:
+            #print 5
             response = self.get_response()
             assert "Success" in response
             self.refresh_page()
