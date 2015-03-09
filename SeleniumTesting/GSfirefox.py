@@ -11,13 +11,15 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from constants import common
 from selenium.common.exceptions import *
-
+driver = None
 class GSFirefox(unittest.TestCase, GenomeSpaceTest):
     @classmethod
     def setUpClass(cls):
-        cls.driver_name = "firefox"
-        cls.driver = webdriver.Firefox()
-        driver = cls.driver
+        global driver
+        if driver==None:
+            cls.driver_name = "firefox"
+            cls.driver = webdriver.Firefox()
+            driver = cls.driver
         driver.implicitly_wait(10)
         cls.wait = WebDriverWait(driver,20)
         driver.maximize_window()

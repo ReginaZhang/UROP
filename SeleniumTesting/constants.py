@@ -46,10 +46,10 @@ page_input = {'copy/move': "//div[contains(@class, 'ui-dialog')]/div[preceding-s
 container_names = {"for mounting test" : "For_Mounting_Test",
                    "for data tests" : "UROP"}
 
-t_mount_container = {'os_ep': "https://keystone.rc.nectar.org.au:5000/v2.0/tokens",
-                     'username': "ruijing.zhang@unimelb.edu.au",
-                     'password': "NWE4Yzg4NTlkMmVlZTU4",
-                     'tenancy': "pt-9344",
+t_mount_container = {'Endpoint': 'https://keystone.rc.nectar.org.au:5000/v2.0/tokens',
+                     'osUserName': 'ruijing.zhang@unimelb.edu.au',
+                     'osPassword': 'NWE4Yzg4NTlkMmVlZTU4',
+                     'osTenant': 'pt-9344',
                      'container': None}
 test_register = {'username': "test",
                  'pw': "test",
@@ -95,9 +95,9 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
            'mount':'''function mount() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("PUT", "https://genomespace.genome.edu.au/datamanager/v1.0/storage/test/swift/{0}", false);\
+                xmlhttp.open("PUT", "https://genomespace.genome.edu.au/datamanager/v1.0/storage/test/swift/%s", false);\
                 xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
-                xmlhttp.send('{"storageType":"Swift","attributes":{"container":"{0}","osUserName":"ruijing.zhang@unimelb.edu.au","Endpoint":"https://keystone.rc.nectar.org.au:5000/v2.0/tokens","OsTenant":"pt-9344","osPassword":"NWE4Yzg4NTlkMmVlZTU4"},"filePermissions":["R","W"]}');\
+                //xmlhttp.send(JSON.stringify({'storageType':'Swift','attributes':%s,'filePermissions':['R','W']}));\
                 getResponse(xmlhttp);\
             }''',
             'disconnect':'''function disconnect() {\
@@ -199,3 +199,5 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                     getResponse(putrequest);\
                 }\
             }'''}
+
+'''{"container":"{0}","osUserName":"ruijing.zhang@unimelb.edu.au","Endpoint":"https://keystone.rc.nectar.org.au:5000/v2.0/tokens","OsTenant":"pt-9344","osPassword":"NWE4Yzg4NTlkMmVlZTU4"}'''

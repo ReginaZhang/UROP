@@ -37,7 +37,7 @@ class CloudStorage():
         driver = self.driver
         wait = self.wait
         def mounting(ctner_name):
-            try:
+            '''try:
                 elem = driver.find_element_by_id(page_container["menu_connect"])
                 hover = ActionChains(driver).move_to_element(elem)
                 elem = driver.find_element_by_id(page_container["swift_container"])
@@ -87,6 +87,15 @@ class CloudStorage():
                 assert "swift:" + keys["container"] in driver.page_source
             except AssertionError:
                 raise MountingException("Newly mounted container is not shown.")
+        '''
+            t_mount_container["container"] = ctner_name
+            detail = str(t_mount_container)
+            function = js_func["mount"] % (ctner_name, detail)
+            print function
+            try:
+                self.send_request(function,"mount()")
+            except Exception as e:
+                raise e
         try:
             mounting(container_names["for mounting test"])
             global passed_mounting

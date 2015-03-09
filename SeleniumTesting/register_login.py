@@ -20,7 +20,7 @@ logged_in = False
 class UseGS(object):
     
     __metaclass__ = ABCMeta
-    
+
     def test_1a_register(self):
         """
         The test for testing the registration of GenomeSpace.
@@ -28,6 +28,8 @@ class UseGS(object):
         The registration is expected to fail as the account 
         used for testing already exists.
         """
+        if logged_in == True:
+            raise unittest.SkipTest("Logged in")
         driver = self.driver
         wait = self.wait
         try:
@@ -69,6 +71,8 @@ class UseGS(object):
         This test is the prerequisite for every other tests of GenomeSpace,
         as all the rest tests are done in the account used for this test.
         """
+        if logged_in == True:
+            raise unittest.SkipTest("Logged in")
         driver = self.driver
         wait = self.wait
         try:
