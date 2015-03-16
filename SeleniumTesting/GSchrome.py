@@ -11,6 +11,8 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import *
 from constants import common
+import register_login as rl
+import pickle
 
 chrome_path = "D:\Softwares\Python2.7.5\New Folder\Scripts\chromedriver.exe"
 
@@ -28,17 +30,44 @@ class GSChrome(unittest.TestCase, GenomeSpaceTest):
         driver.implicitly_wait(10)
         cls.wait = WebDriverWait(driver,60)
         driver.maximize_window()
+        home_page = common["base_url"] + common["home_suffix"]
         try:
-            driver.get(common['base_url'])
+            driver.get(home_page)
+            driver.implicitly_wait(20)
             assert "No results found." not in driver.page_source
-        except AssertionError:
-            driver.close()
-            raise Exception("Page not found: " + common['base_url'])
+            print 1
         except UnexpectedAlertPresentException:
             alert = driver.switch_to_alert()
             text = alert.text
-            alert.dismiss()
-            raise Exception("Unexpected alert present: " + text)
+            alert.accept()
+            print ("Unexpected alert present: " + text)
+        except AssertionError:
+            driver.close()
+            raise Exception("Page not found: " + home_page)
+        try:
+            cookie_file_name = "cookies_" + cls.driver_name + ".pkl"
+            print 2
+            cookies = pickle.load(open(cookie_file_name,"rb"))
+            print "Hello"
+            print type(cookies), cookies
+            print "world"
+            for cookie in cookies:
+                driver.add_cookie(cookie)
+            rl.logged_in = True
+        except IOError:
+            rl.logged_in = False
+        try:
+            driver.get(home_page)
+            driver.implicitly_wait(20)
+            assert "No results found." not in driver.page_source
+        except AssertionError:
+            driver.close()
+            raise Exception("Page not found: " + home_page)
+        except UnexpectedAlertPresentException:
+            alert = driver.switch_to_alert()
+            text = alert.text
+            alert.accept()
+            print ("Unexpected alert present: " + text)
 
 if __name__ == "__main__":
     unittest.main()

@@ -5,6 +5,7 @@ Module created on 08/12/2014
 
 '''
 
+import pickle
 import unittest
 from abc import ABCMeta
 from GStestexceptions import *
@@ -13,7 +14,6 @@ from selenium.common.exceptions import *
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import time
-
 
 logged_in = False
 
@@ -28,6 +28,7 @@ class UseGS(object):
         The registration is expected to fail as the account 
         used for testing already exists.
         """
+        global logged_in
         if logged_in == True:
             raise unittest.SkipTest("Logged in")
         driver = self.driver
@@ -61,7 +62,7 @@ class UseGS(object):
         except AssertionError:
             raise RegistrationException("Failed to assert the error message.")
         finally:
-            driver.get(common["base_url"])
+            driver.get(common["base_url"]+common["home_suffix"])
 
     #@unittest.skip("for testing")
     def test_1b_login(self):
@@ -71,6 +72,7 @@ class UseGS(object):
         This test is the prerequisite for every other tests of GenomeSpace,
         as all the rest tests are done in the account used for this test.
         """
+        global logged_in
         if logged_in == True:
             raise unittest.SkipTest("Logged in")
         driver = self.driver
@@ -120,5 +122,6 @@ class UseGS(object):
         except Exception as e:
             driver.close()
             raise LoginException("Failed logging in: "+e.__str__(), test_login['login_name'], test_login['login_pw'])
-        global logged_in
+        cookie_file_name = "cookies_" + self.driver_name + ".pkl"
+        pickle.dump(driver.get_cookies(), open(cookie_file_name, "wb"))
         logged_in = True

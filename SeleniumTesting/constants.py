@@ -13,7 +13,8 @@ p_mount_container = {'os_ep': "mspEndPoint",
                      'container': "mspContainerName",
                      'submit': "mspSwiftMountBtn",
                      'successful_popup': "Mounted  container %s\n it should be available for use in a few seconds." }
-common = {'base_url': "https://genomespace.genome.edu.au/jsui",
+common = {'base_url': "https://genomespace-dev.genome.edu.au",
+          'home_suffix': '/jsui',
           'menu_file': "menuFile",
           'Home_xpath': '//a[@dirpath="/Home"]'}
 
@@ -49,7 +50,7 @@ container_names = {"for mounting test" : "For_Mounting_Test",
 t_mount_container = {'Endpoint': 'https://keystone.rc.nectar.org.au:5000/v2.0/tokens',
                      'osUserName': 'ruijing.zhang@unimelb.edu.au',
                      'osPassword': 'NWE4Yzg4NTlkMmVlZTU4',
-                     'osTenant': 'pt-9344',
+                     'OsTenant': 'pt-9344',
                      'container': None}
 test_register = {'username': "test",
                  'pw': "test",
@@ -95,61 +96,61 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
            'mount':'''function mount() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("PUT", "https://genomespace.genome.edu.au/datamanager/v1.0/storage/test/swift/%s", false);\
+                xmlhttp.open("PUT", "''' + common['base_url'] + '''/datamanager/v1.0/storage/test/swift/%s", false);\
                 xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
-                //xmlhttp.send(JSON.stringify({'storageType':'Swift','attributes':%s,'filePermissions':['R','W']}));\
+                xmlhttp.send(JSON.stringify({"storageType":"Swift","attributes":%s,"filePermissions":["R","W"]}));\
                 getResponse(xmlhttp);\
             }''',
             'disconnect':'''function disconnect() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("DELETE", "https://genomespace.genome.edu.au/datamanager/v1.0/storage/test/swift/%s", false);\
+                xmlhttp.open("DELETE", "''' + common['base_url'] + '''/datamanager/v1.0/storage/test/swift/%s", false);\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
             }''',
            'rename': '''function rename() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("POST", "https://genomespace.genome.edu.au/datamanager/v1.0/file/%s",false);\
+                xmlhttp.open("POST", "''' + common['base_url'] + '''datamanager/v1.0/file/%s",false);\
                 xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
                 xmlhttp.send(JSON.stringify({"path":"%s"}));\
                 getResponse(xmlhttp);\
             }''',
            'copy_btw_folders':'''function copy_btw_folders(){\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("PUT", "https://genomespace.genome.edu.au/datamanager/v1.0/file%s", false);\
+                xmlhttp.open("PUT", "''' + common['base_url'] + '''/datamanager/v1.0/file%s", false);\
                 xmlhttp.setRequestHeader("x-gs-copy-source", "%s");\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
             }''',
             'copy_btw_containers':'''function copy_btw_containers(){\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("PUT", "https://genomespace.genome.edu.au/datamanager/v1.0/file%s",false);\
+                xmlhttp.open("PUT", "''' + common['base_url'] + '''/datamanager/v1.0/file%s",false);\
                 xmlhttp.setRequestHeader("x-gs-copy-source", "%s");\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
             }''',
             'delete': '''function delete_data() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("DELETE", "https://genomespace.genome.edu.au/datamanager/v1.0/file%s",false);\
+                xmlhttp.open("DELETE", "''' + common['base_url'] + '''/datamanager/v1.0/file%s",false);\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
             }''',
             'move_btw_folders':'''function move_btw_folders() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("POST", "https://genomespace.genome.edu.au/datamanager/v1.0/file//Home/swift:UROP/subdir1/file_to_move.txt", false);\
+                xmlhttp.open("POST", "''' + common['base_url'] + '''/datamanager/v1.0/file//Home/swift:UROP/subdir1/file_to_move.txt", false);\
                 xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
                 xmlhttp.send(JSON.stringify({"path":"/Home/swift:UROP/subdir2/file_to_move.txt"}));\
                 getResponse(xmlhttp);\
             }''',
             'move_btw_containers':'''function move_btw_containers() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("POST", "https://genomespace.genome.edu.au/datamanager/v1.0/file//Home/swift:UROP/subdir2/file_to_move.txt",false);\
+                xmlhttp.open("POST", "''' + common['base_url'] + '''/datamanager/v1.0/file//Home/swift:UROP/subdir2/file_to_move.txt",false);\
                 xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
                 xmlhttp.send(JSON.stringify({"path":"/Home/swift:UROP_Test/file_to_move.txt"}));\
                 getResponse(xmlhttp);\
             }''',
             'generate_public_url':'''function generate_public_url() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("HEAD", "https://genomespace.genome.edu.au/datamanager/file/Home/swift:UROP/subdir1/file_to_copy.txt",false);\
+                xmlhttp.open("HEAD", "''' + common['base_url'] + '''/datamanager/file/Home/swift:UROP/subdir1/file_to_copy.txt",false);\
                 xmlhttp.send("signedURL=true");\
                 getResponse(xmlhttp);\
                 public_url = xmlhttp.getResponseHeader("external-link");\
@@ -164,26 +165,26 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
             'import_url':'''function import_url() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("PUT", "https://genomespace.genome.edu.au/datamanager/v1.0/file/Home/swift:UROP/subdir1", false);\
+                xmlhttp.open("PUT", "''' + common['base_url'] + '''/datamanager/v1.0/file/Home/swift:UROP/subdir1", false);\
                 xmlhttp.setRequestHeader("x-gs-fetch-source", "%s");\
                 xmlhttp.send(JSON.stringify({"isDirectory":"true"}));\
                 getResponse(xmlhttp);\
             }''',
             'launch_with_file':'''function launch_with_file() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("POST", "https://genomespace.genome.edu.au/identityServer/usermanagement/utility/usageLog", false);\
+                xmlhttp.open("POST", "''' + common['base_url'] + '''/identityServer/usermanagement/utility/usageLog", false);\
                 xmlhttp.setRequestHeader("Content-Type", "application/json");\
                 xmlhttp.send(JSON.stringify({"module":"GSUI","function":"LAUNCH","username":"test","entity":"Galaxy : %s"}));\
                 getResponse(xmlhttp);\
                 var xmlhttp1=new XMLHttpRequest();\
-                xmlhttp1.open("GET","https://genomespace.genome.edu.au/atm/v1.0/webtool/Galaxy/launchurl?URL=%s",false);\
+                xmlhttp1.open("GET","''' + common['base_url'] + '''/atm/v1.0/webtool/Galaxy/launchurl?URL=%s",false);\
                 xmlhttp1.setRequestHeader("Content-Type", "application/json");\
                 xmlhttp1.send(JSON.stringify({"module":"GSUI","function":"LAUNCH","username":"test","entity":"Galaxy : %s"}));\
                 getResponse(xmlhttp1);\
             }''',
             'upload_file':'''function upload_file() {\
                 var getrequest=new XMLHttpRequest();\
-                getrequest.open("GET","https://genomespace.genome.edu.au/datamanager/v1.0/uploadinfo%s",false);\
+                getrequest.open("GET","''' + common['base_url'] + '''/datamanager/v1.0/uploadinfo%s",false);\
                 getrequest.send();\
                 getResponse(getrequest);\
                 if (getrequest.status < 300 && getrequest.status > 199) {\

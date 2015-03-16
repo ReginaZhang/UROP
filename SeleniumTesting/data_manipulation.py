@@ -22,7 +22,7 @@ class DataManipulation():
     
     __metaclass__ = ABCMeta
     
-    @unittest.skip("Skip to save time")
+    #@unittest.skip("Skip to save time")
     def test_6a_change_file_name(self):
         """
         The test case for testing file renaming functionality
@@ -74,7 +74,7 @@ class DataManipulation():
                 report += "Failed to rename the " + size + "File: " + failure[size] + "\n"
             raise RenameException(report + "\n" + cleanup_report)
 
-    @unittest.skip("Skip to save time.")
+    #@unittest.skip("Skip to save time.")
     def test_6b_copy_data_btw_folders(self):
         """
         The test case for testing file copying between folders
@@ -98,7 +98,7 @@ class DataManipulation():
         except AssertionError:
             raise CopyException("Failed to copy the file between folders. \n" + response)
         
-    @unittest.skip("Skip to save time.")    
+    #@unittest.skip("Skip to save time.")    
     def test_6c_copy_data_btw_containers(self):
         """
         The test case for testing copying file between containers 
@@ -122,7 +122,7 @@ class DataManipulation():
         except AssertionError:
             raise CopyException("Failed to copy the file between containers. \n" + response)
         
-    @unittest.skip("Skip to save time.")
+    #@unittest.skip("Skip to save time.")
     def test_6d_delete_file(self):
         """
         The test case for testing file deletion functionality
@@ -146,7 +146,7 @@ class DataManipulation():
         except AssertionError:
             raise DeleteException(response)
         
-    @unittest.skip("Skip to save time.")    
+    #@unittest.skip("Skip to save time.")    
     def test_6e_move_data_btw_folders(self):
         """
         The test for testing moving data between folders 
@@ -169,7 +169,7 @@ class DataManipulation():
             self.refresh_page()
         except AssertionError:
             raise MoveException("Failed to move the data between folders. \n" + response)
-    @unittest.skip("Skip to save time.")    
+    #@unittest.skip("Skip to save time.")    
     def test_6f_move_data_btw_containers(self):
         """
         The test for testing moving data between containers
