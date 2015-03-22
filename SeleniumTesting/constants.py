@@ -109,7 +109,7 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
            'rename': '''function rename() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("POST", "''' + common['base_url'] + '''datamanager/v1.0/file/%s",false);\
+                xmlhttp.open("POST", "''' + common['base_url'] + '''/datamanager/v1.0/file/%s",false);\
                 xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
                 xmlhttp.send(JSON.stringify({"path":"%s"}));\
                 getResponse(xmlhttp);\
@@ -150,12 +150,11 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
             'generate_public_url':'''function generate_public_url() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("HEAD", "''' + common['base_url'] + '''/datamanager/file/Home/swift:UROP/subdir1/file_to_copy.txt",false);\
-                xmlhttp.send("signedURL=true");\
+                xmlhttp.open("HEAD", "''' + common['base_url'] + '''/datamanager/file/Home/swift:UROP/subdir1/file_to_copy.txt?signedURL=true",false);\
+                xmlhttp.send();\
                 getResponse(xmlhttp);\
                 public_url = xmlhttp.getResponseHeader("external-link");\
                 alert("Public URL: " + public_url);\
-                alert(xmlhttp.getAllResponseHeaders());\
             }''',
             'share_data':'''function share_data() {\
                 var xmlhttp=new XMLHttpRequest();\
@@ -196,9 +195,12 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                     var putrequest=new XMLHttpRequest();\
                     putrequest.open("PUT", url+"/"+path, false);\
                     putrequest.setRequestHeader("X-Auth-Token", token);\
-                    putrequest.send("Testing testing");\
+                    alert(token);\
+                    putrequest.send();\
+                    alert("Hello");\
                     getResponse(putrequest);\
                 }\
+                alert("ahahaha");\
             }'''}
 
 '''{"container":"{0}","osUserName":"ruijing.zhang@unimelb.edu.au","Endpoint":"https://keystone.rc.nectar.org.au:5000/v2.0/tokens","OsTenant":"pt-9344","osPassword":"NWE4Yzg4NTlkMmVlZTU4"}'''

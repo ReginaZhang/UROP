@@ -21,7 +21,7 @@ class DataToGVL():
     
     __metaclass__ = ABCMeta
     
-    @unittest.skip("The two request are not clear.")
+    #@unittest.skip("The two request are not clear.")
     def test_7b_launch_with_file(self):
         """
         The test for testing launching the connected Galaxy with file.

@@ -35,7 +35,7 @@ class GSChrome(unittest.TestCase, GenomeSpaceTest):
             driver.get(home_page)
             driver.implicitly_wait(20)
             assert "No results found." not in driver.page_source
-            print 1
+            #print 1
         except UnexpectedAlertPresentException:
             alert = driver.switch_to_alert()
             text = alert.text
@@ -46,11 +46,11 @@ class GSChrome(unittest.TestCase, GenomeSpaceTest):
             raise Exception("Page not found: " + home_page)
         try:
             cookie_file_name = "cookies_" + cls.driver_name + ".pkl"
-            print 2
+            #print 2
             cookies = pickle.load(open(cookie_file_name,"rb"))
-            print "Hello"
-            print type(cookies), cookies
-            print "world"
+            #print "Hello"
+            #print type(cookies), cookies
+            #print "world"
             for cookie in cookies:
                 driver.add_cookie(cookie)
             rl.logged_in = True

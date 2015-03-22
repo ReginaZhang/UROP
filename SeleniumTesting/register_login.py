@@ -48,13 +48,13 @@ class UseGS(object):
             elem.click()
             time.sleep(5)
             assert "Cannot create duplicate username" in driver.page_source
-            driver.get(common["base_url"])
+            driver.get(common["base_url"]+common["home_suffix"])
         except UnexpectedAlertPresentException:
             alert = driver.switch_to_alert()
             text = alert.text
             alert.dismiss()
             print "Unexpected alert present: " + text
-            driver.get(common["base_url"])
+            driver.get(common["base_url"]+common["home_suffix"])
         except NoSuchElementException as e:
             messages = e.__str__().split("\n")
             self.dismiss_dialogs()

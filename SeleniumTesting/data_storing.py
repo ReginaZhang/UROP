@@ -41,12 +41,13 @@ class DataStoring():
             raise ImportURLException(e.__str__())
         try:
             response = self.get_response()
-            assert "Success" in response
-            self.refresh()
+            assert "Failure" in response
+            assert "Malformed url" in response
+            self.refresh_page()
         except AssertionError:
             raise ImportURLException(response)
     
-    @unittest.skip("Skip to save time.")
+    @unittest.skip("problem. Skip to save time.")
     def test_4b_drag_and_drop(self):
         """
         The test for uploading functionality in GenomeSpace 

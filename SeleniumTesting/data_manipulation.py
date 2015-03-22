@@ -22,7 +22,7 @@ class DataManipulation():
     
     __metaclass__ = ABCMeta
     
-    #@unittest.skip("Skip to save time")
+    @unittest.skip("Skip to save time")
     def test_6a_change_file_name(self):
         """
         The test case for testing file renaming functionality
@@ -37,20 +37,25 @@ class DataManipulation():
         failure = {}
         failure_keys = []
         for size in file_sizes:
+            #print 1
             function = js_func["rename"] % (test_file["before_rename_path"][size], test_file["after_rename_path"][size])
+            #print function
             try:
                 self.send_request(function, "rename()")
+                #print 2
             except Exception as e:
                 failure[size] = e.__str__()
                 failure_keys.append(size)
             try:
                 response = self.get_response()
+                #print 3
                 assert "Success" in response
                 self.refresh_page()
             except AssertionError:
                 failure[size] = response
                 failure_keys.append(size)
             time.sleep(8)
+        #print 4
         cleanup_report = ""
         for size in file_sizes:
             try:
@@ -74,7 +79,7 @@ class DataManipulation():
                 report += "Failed to rename the " + size + "File: " + failure[size] + "\n"
             raise RenameException(report + "\n" + cleanup_report)
 
-    #@unittest.skip("Skip to save time.")
+    @unittest.skip("Skip to save time.")
     def test_6b_copy_data_btw_folders(self):
         """
         The test case for testing file copying between folders
@@ -82,7 +87,7 @@ class DataManipulation():
         
         Skipped if the Login test was failed.
         """
-        print "copying data between folders"
+        #print "copying data between folders"
         if (not rl.logged_in) or (not md.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
@@ -106,7 +111,7 @@ class DataManipulation():
         
         Skipped if the login test was failed.
         """
-        print "copying data between containers"
+        #print "copying data between containers"
         if (not rl.logged_in) or (not md.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
@@ -130,7 +135,7 @@ class DataManipulation():
         
         Skipped if the login test was failed.
         """
-        print "deleting file"
+        #print "deleting file"
         if (not rl.logged_in) or (not md.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
@@ -154,7 +159,7 @@ class DataManipulation():
         
         Skipped if the login test was failed.
         """
-        print "moving data between folders"
+        #print "moving data between folders"
         if (not rl.logged_in) or (not md.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
@@ -177,7 +182,7 @@ class DataManipulation():
         
         Skipped if the login test was failed.
         """
-        print "moving data between containers"
+        #print "moving data between containers"
         if (not rl.logged_in) or (not md.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()

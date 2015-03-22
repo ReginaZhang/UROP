@@ -95,7 +95,7 @@ class CloudStorage():
             for elem in tokens[1:]:
                 detail += '"' + elem
             function = js_func["mount"] % (ctner_name, detail)
-            print function
+            #print function
             try:
                 self.send_request(function,"mount()")
             except Exception as e:
@@ -104,7 +104,7 @@ class CloudStorage():
                 response = self.get_response()
                 assert "Success" in response
                 self.refresh_page()
-            except AssertionError:
+            except AssertionError as e:
                 raise e
         try:
             mounting(container_names["for mounting test"])
