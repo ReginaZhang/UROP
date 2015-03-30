@@ -13,8 +13,11 @@ from selenium.common.exceptions import *
 from constants import common
 import register_login as rl
 import pickle
+import chrome_path
 
-chrome_path = "D:\Softwares\Python2.7.5\New Folder\Scripts\chromedriver.exe"
+#chrome_path = "D:\Softwares\Python2.7.5\New Folder\Scripts\chromedriver.exe"
+chrome_driver_path = chrome_path.driver_path
+
 
 class GSChrome(unittest.TestCase, GenomeSpaceTest):
     @classmethod

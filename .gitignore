@@ -62,3 +62,6 @@ Cloud/
 
 # Cookie files
 *.pkl
+
+# Chrome driver path file
+chrome_path.py
