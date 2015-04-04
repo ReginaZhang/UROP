@@ -65,3 +65,10 @@ Cloud/
 
 # Chrome driver path file
 chrome_path.py
+
+# All executable
+*.exe
+chromedriver
+
+# Mac stuff
+.DS_Store
