@@ -28,7 +28,7 @@ class GSChrome(unittest.TestCase, GenomeSpaceTest):
         else:
             print "World"'''
         cls.driver_name = "chrome"
-        cls.driver = webdriver.Chrome(executable_path = chrome_path)
+        cls.driver = webdriver.Chrome()#executable_path = chrome_path)
         driver = cls.driver
         driver.implicitly_wait(10)
         cls.wait = WebDriverWait(driver,60)
@@ -71,6 +71,12 @@ class GSChrome(unittest.TestCase, GenomeSpaceTest):
             text = alert.text
             alert.accept()
             print ("Unexpected alert present: " + text)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.prepare_for_tests()
+        cls.driver.close()
+        cls.driver.quit()
 
 if __name__ == "__main__":
     unittest.main()

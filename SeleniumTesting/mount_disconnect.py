@@ -25,6 +25,28 @@ class CloudStorage():
     
     __metaclass__ = ABCMeta
     
+    @staticmethod
+    def mounting(ctner_name):
+        t_mount_container["container"] = ctner_name
+        detail = str(t_mount_container)
+        tokens = detail.split("'")
+        detail = tokens[0]
+        for elem in tokens[1:]:
+            detail += '"' + elem
+        function = js_func["mount"] % (ctner_name, detail)
+        #print function
+        try:
+            self.send_request(function,"mount()")
+        except Exception as e:
+            raise e
+        try:
+            #print "trying to get response"
+            response = self.get_response()
+            assert "Success" in response
+            self.refresh_page()
+        except AssertionError as e:
+            raise e
+
     #@unittest.skip("Skip to save time.")
     def test_2a_mount_container(self):
         """
@@ -36,8 +58,7 @@ class CloudStorage():
             raise unittest.SkipTest("Skipped for failed login.")
         driver = self.driver
         wait = self.wait
-        def mounting(ctner_name):
-            '''try:
+        '''try:
                 elem = driver.find_element_by_id(page_container["menu_connect"])
                 hover = ActionChains(driver).move_to_element(elem)
                 elem = driver.find_element_by_id(page_container["swift_container"])
@@ -88,37 +109,12 @@ class CloudStorage():
             except AssertionError:
                 raise MountingException("Newly mounted container is not shown.")
         '''
-            t_mount_container["container"] = ctner_name
-            detail = str(t_mount_container)
-            tokens = detail.split("'")
-            detail = tokens[0]
-            for elem in tokens[1:]:
-                detail += '"' + elem
-            function = js_func["mount"] % (ctner_name, detail)
-            #print function
-            try:
-                self.send_request(function,"mount()")
-            except Exception as e:
-                raise e
-            try:
-                response = self.get_response()
-                assert "Success" in response
-                self.refresh_page()
-            except AssertionError as e:
-                raise e
         try:
             mounting(container_names["for mounting test"])
             global passed_mounting
             passed_mounting = True
-        finally:
-            try:
-                assert "swift:" + container_names["for data tests"] in driver.page_source
-                global data_testing_swift_mounted
-                data_testing_swift_mounted = True
-            except AssertionError:
-                time.sleep(8)
-                mounting(container_names["for data tests"])
-                data_testing_swift_mounted = True
+        except e:
+            raise e
         
 
     #@unittest.skip("Skip to save time.")

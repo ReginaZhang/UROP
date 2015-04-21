@@ -24,6 +24,7 @@ from data_manipulation import DataManipulation
 from data_sharing import DataSharing
 from data_storing import DataStoring
 from data_to_GVL import DataToGVL
+from preparation import Preparation
 
 
 #base_window = None
@@ -33,11 +34,9 @@ js = """var s=document.createElement(\'script\');
         s.type=\'text/javascript\';
         document.head.appendChild(s);"""
 
-class GenomeSpaceTest(UseGS, CloudStorage, DataManipulation, DataSharing, DataStoring, DataToGVL):
+class GenomeSpaceTest(Preparation, UseGS, CloudStorage, DataManipulation, DataSharing, DataStoring, DataToGVL):
 
     __metaclass__ = ABCMeta
-
-    
 
     def send_request(self, function, function_call):
         driver = self.driver
@@ -46,18 +45,29 @@ class GenomeSpaceTest(UseGS, CloudStorage, DataManipulation, DataSharing, DataSt
         time.sleep(5)
         
     def get_response(self):
+        #print 1
         driver = self.driver
+        #print 2
         wait = self.wait
+        #print 3
         not_complete = True
+        #print 4
         while not_complete:
             try:
+                #print 5
                 elem = wait.until(EC.alert_is_present())
+                #print 6
                 not_complete = False
+                #print 7
             except TimeoutException:
                 pass
+        #print 8
         alert = driver.switch_to_alert()
+        #print 9
         text = alert.text
-        alert.dismiss()
+        #print text
+        #alert.dismiss()
+        alert.accept()
         return text
 
     def inject_js(self, function):
@@ -79,17 +89,4 @@ class GenomeSpaceTest(UseGS, CloudStorage, DataManipulation, DataSharing, DataSt
             if elem.text == "Close" and elem.is_enabled():
                 elem.click()
 
-    @classmethod
-    def tearDownClass(cls):
-        cls.driver.close()
-        cls.driver.quit()
 
-
-'''if __name__ == "__main__":
-    args = sys.argv[1:]
-    del sys.argv[1:]
-    unittest.main()'''
-
-#my_args = sys.argv[1:]
-#del sys.argv[1:]
-#print sys.argv[1]

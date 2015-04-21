@@ -13,7 +13,7 @@ p_mount_container = {'os_ep': "mspEndPoint",
                      'container': "mspContainerName",
                      'submit': "mspSwiftMountBtn",
                      'successful_popup': "Mounted  container %s\n it should be available for use in a few seconds." }
-common = {'base_url': "https://genomespace-dev.genome.edu.au",
+common = {'base_url': "https://genomespace.genome.edu.au",
           'home_suffix': '/jsui',
           'menu_file': "menuFile",
           'Home_xpath': '//a[@dirpath="/Home"]'}
@@ -45,7 +45,7 @@ page_input = {'copy/move': "//div[contains(@class, 'ui-dialog')]/div[preceding-s
 
 # following are the keys for the tests
 container_names = {"for mounting test" : "For_Mounting_Test",
-                   "for data tests" : "UROP"}
+                   "for data tests" : ["UROP", "UROP_Test"]}
 
 t_mount_container = {'Endpoint': 'https://keystone.rc.nectar.org.au:5000/v2.0/tokens',
                      'osUserName': 'ruijing.zhang@unimelb.edu.au',
@@ -156,7 +156,7 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                 public_url = xmlhttp.getResponseHeader("external-link");\
                 alert("Public URL: " + public_url);\
             }''',
-            'share_data':'''function share_data() {\
+            'download_file':'''function download_file() {\
                 var xmlhttp=new XMLHttpRequest();\
                 xmlhttp.open("GET", "%s", false);\
                 xmlhttp.send();\

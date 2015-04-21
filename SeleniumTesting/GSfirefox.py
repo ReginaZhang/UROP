@@ -66,5 +66,10 @@ class GSFirefox(unittest.TestCase, GenomeSpaceTest):
             alert.dismiss()
             print "Unexpected alert present: " + text
 
+    @classmethod
+    def tearDownClass(cls):
+        cls.driver.close()
+        cls.driver.quit()
+
 if __name__ == "__main__":
     unittest.main()

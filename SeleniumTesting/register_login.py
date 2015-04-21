@@ -72,6 +72,7 @@ class UseGS(object):
         This test is the prerequisite for every other tests of GenomeSpace,
         as all the rest tests are done in the account used for this test.
         """
+        assert 1==2
         global logged_in
         if logged_in == True:
             raise unittest.SkipTest("Logged in")

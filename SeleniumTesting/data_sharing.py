@@ -24,8 +24,8 @@ class DataSharing():
     
     __metaclass__ = ABCMeta
     
-    @unittest.skip("Not finished")
-    def test_5a_generate_public_URL(self):
+    #@unittest.skip("Not finished")
+    def test_2c_generate_public_URL(self):
         """
         The test for testing generating public URL of the file in GenomeSpace.
         
@@ -59,7 +59,9 @@ class DataSharing():
         try:
             #print 4
             public_url = alert.text.lstrip("Public URL: ")
-            alert.dismiss()
+            #alert.dismiss()
+            alert.accept()
+            print public_url
             #print public_url
             #print type(public_url)
             public_url = unicodedata.normalize('NFKD', public_url).encode('ascii', 'replace')
@@ -80,7 +82,7 @@ class DataSharing():
         except AssertionError:
             raise PublicURLException("Failed to share data using public URL generated.\n" + response)
         
-    @unittest.skip("Not working correctly. forget about this")
+    '''@unittest.skip("Not working correctly. forget about this")
     def test_5d_generate_private_url(self):
         """
         The test for testing generating private URL of the file in GenomeSpace.
@@ -136,3 +138,4 @@ class DataSharing():
         except Exception as e:
             raise Exception("Failed to return to Home directory.\n" + e.__str__())
             
+    '''
