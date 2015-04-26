@@ -15,23 +15,26 @@ from selenium.webdriver.common.by import By
 import time
 from _codecs import register
 from selenium.webdriver.common.action_chains import ActionChains
-import register_login as rl
-import mount_disconnect as md
+#import register_login as rl
+#import mount_disconnect as md
 import unicodedata
 
+from genome_space_test import GenomeSpaceTest
+
+
 #@unittest.skipIf(rl.logged_in == False, "I've skipped the whole class")
-class DataSharing():
+class DataSharing(GenomeSpaceTest):
     
     __metaclass__ = ABCMeta
     
     #@unittest.skip("Not finished")
-    def test_2c_generate_public_URL(self):
+    def test_2d_generate_public_URL(self):
         """
         The test for testing generating public URL of the file in GenomeSpace.
         
         Skipped if the login test was failed.
         """
-        if (not rl.logged_in) or (not md.data_testing_swift_mounted):
+        if (not GenomeSpaceTest.logged_in) or (not GenomeSpaceTest.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
         function = js_func["generate_public_url"]
@@ -69,9 +72,9 @@ class DataSharing():
             #print js_func["share_data"]
             #print js_func["share_data"] % (public_url)
             #print public_url
-            function = js_func["share_data"] % (public_url)
+            function = js_func["download_file"] % (public_url)
             print function
-            self.send_request(function, "share_data()")
+            self.send_request(function, "download_file()")
         except Exception as e:
             raise PublicURLException("Failed to share data using public URL generated.\n" + e.__str__())
         try:

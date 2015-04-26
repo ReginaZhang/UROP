@@ -6,7 +6,7 @@ Module created on 26/11/2014
 '''
 
 import unittest
-from GStestcases import GenomeSpaceTest
+from GStestcases import GSTestCases
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from constants import common
@@ -16,7 +16,7 @@ import pickle
 
 #driver = None
 
-class GSFirefox(unittest.TestCase, GenomeSpaceTest):
+class GSFirefox(unittest.TestCase, GSTestCases):
     @classmethod
     def setUpClass(cls):
         #global driver

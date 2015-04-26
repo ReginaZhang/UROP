@@ -16,36 +16,17 @@ import time
 from _codecs import register
 from selenium.webdriver.common.action_chains import ActionChains
 #from register_login import registered, logged_in
-import register_login as rl
+#import register_login as rl
 
-data_testing_swift_mounted = False
+from genome_space_test import GenomeSpaceTest
+from data_test_preparation import DataTestPreparation
+
 passed_mounting = False
 
-class CloudStorage():
+class CloudStorage(GenomeSpaceTest):
     
     __metaclass__ = ABCMeta
-    
-    @staticmethod
-    def mounting(ctner_name):
-        t_mount_container["container"] = ctner_name
-        detail = str(t_mount_container)
-        tokens = detail.split("'")
-        detail = tokens[0]
-        for elem in tokens[1:]:
-            detail += '"' + elem
-        function = js_func["mount"] % (ctner_name, detail)
-        #print function
-        try:
-            self.send_request(function,"mount()")
-        except Exception as e:
-            raise e
-        try:
-            #print "trying to get response"
-            response = self.get_response()
-            assert "Success" in response
-            self.refresh_page()
-        except AssertionError as e:
-            raise e
+
 
     #@unittest.skip("Skip to save time.")
     def test_2a_mount_container(self):
@@ -54,7 +35,7 @@ class CloudStorage():
         
         Skipped if the login test was failed.
         """
-        if not rl.logged_in:
+        if not GenomeSpaceTest.logged_in:
             raise unittest.SkipTest("Skipped for failed login.")
         driver = self.driver
         wait = self.wait
@@ -110,10 +91,10 @@ class CloudStorage():
                 raise MountingException("Newly mounted container is not shown.")
         '''
         try:
-            mounting(container_names["for mounting test"])
+            self.mounting(container_names["for mounting test"])
             global passed_mounting
             passed_mounting = True
-        except e:
+        except Exception as e:
             raise e
         
 
@@ -125,7 +106,7 @@ class CloudStorage():
         Skipped if the login test or mounting container test was failed.
         """
         global passed_mounting
-        if (not rl.logged_in) or (not passed_mounting):
+        if (not GenomeSpaceTest.logged_in) or (not passed_mounting):
             raise unittest.SkipTest("Skipped for failed login or mounting.")
         function = js_func["disconnect"]  % (container_names["for mounting test"])
         try:
@@ -180,3 +161,7 @@ class CloudStorage():
             self.dismiss_dialogs()
             raise DisconnectContainerException(type(e).__name__ + ": " + e.__str__())
         '''
+
+    def test_2c_preparations(self):
+        preparation = DataTestPreparation(self.driver)
+        preparation.prepare_for_tests()

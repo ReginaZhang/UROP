@@ -14,10 +14,12 @@ from selenium.webdriver.common.by import By
 import time
 from _codecs import register
 from selenium.webdriver.common.action_chains import ActionChains
-import register_login as rl
-import mount_disconnect as md
+#import register_login as rl
+#import mount_disconnect as md
 
-class DataToGVL():
+from genome_space_test import GenomeSpaceTest
+
+class DataToGVL(GenomeSpaceTest):
     
     __metaclass__ = ABCMeta
     
@@ -30,7 +32,7 @@ class DataToGVL():
         
         Skipped if the login test was failed.
         """
-        if (not rl.logged_in) or (not md.data_testing_swift_mounted):
+        if (not GenomeSpaceTest.logged_in) or (not GenomeSpaceTest.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
         file_url = "https://genomespace.genome.edu.au:443/datamanager/file/Home/swift:UROP/file_to_share.txt"

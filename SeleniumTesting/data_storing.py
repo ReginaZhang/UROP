@@ -14,10 +14,12 @@ from selenium.webdriver.common.by import By
 import time
 from _codecs import register
 from selenium.webdriver.common.action_chains import ActionChains
-import register_login as rl
-import mount_disconnect as md
+#import register_login as rl
+#import mount_disconnect as md
 
-class DataStoring():
+from genome_space_test import GenomeSpaceTest
+
+class DataStoring(GenomeSpaceTest):
     
     __metaclass__ = ABCMeta
     
@@ -31,7 +33,7 @@ class DataStoring():
         
         Skipped if the login test was failed.
         """
-        if (not rl.logged_in) or (not md.data_testing_swift_mounted):
+        if (not GenomeSpaceTest.logged_in) or (not GenomeSpaceTest.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
         function = js_func["import_url"] % ("https://swift.rc.nectar.org.au:8888/v1/AUTH_f0d7c5b248004e80ae6f6afa8452d70c/UROP/subdir1%2Ffile_to_share.txt?temp_url_sig=86f1307755aec7340432f2467d5906e3c0511ca0&temp_url_expires=1418446695")
@@ -57,7 +59,7 @@ class DataStoring():
         
         Skipped if the login test was failed.
         """
-        if (not rl.logged_in) or (not md.data_testing_swift_mounted):
+        if (not GenomeSpaceTest.logged_in) or (not GenomeSpaceTest.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
         function = js_func["upload_file"] % test_file["file_to_upload_path"]

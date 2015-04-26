@@ -6,20 +6,22 @@ Module created on 26/11/2014
 '''
 
 import unittest
-from GStestcases import GenomeSpaceTest
+from GStestcases import GSTestCases
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import *
 from constants import common
-import register_login as rl
 import pickle
 import chrome_path
+from genome_space_test import GenomeSpaceTest
+from data_test_preparation import DataTestPreparation
 
 #chrome_path = "D:\Softwares\Python2.7.5\New Folder\Scripts\chromedriver.exe"
 chrome_driver_path = chrome_path.driver_path
 
 
-class GSChrome(unittest.TestCase, GenomeSpaceTest):
+class GSChrome(unittest.TestCase, GSTestCases):
+
     @classmethod
     def setUpClass(cls):
         '''if GStestcases.base_window != None:
@@ -56,9 +58,9 @@ class GSChrome(unittest.TestCase, GenomeSpaceTest):
             #print "world"
             for cookie in cookies:
                 driver.add_cookie(cookie)
-            rl.logged_in = True
+            GenomeSpaceTest.logged_in = True
         except IOError:
-            rl.logged_in = False
+            GenomeSpaceTest.logged_in = False
         try:
             driver.get(home_page)
             driver.implicitly_wait(20)
@@ -74,7 +76,8 @@ class GSChrome(unittest.TestCase, GenomeSpaceTest):
 
     @classmethod
     def tearDownClass(cls):
-        cls.prepare_for_tests()
+        preparation = DataTestPreparation(cls.driver)
+        #preparation.prepare_for_tests()
         cls.driver.close()
         cls.driver.quit()
 
