@@ -77,7 +77,7 @@ test_file = {'before_rename_path': {"small": "/Home/swift:UROP/before_rename_s.t
                                  "container": "/Home/swift:UROP_Test/file_to_copy.txt"},
              'file_to_delete_path': "/Home/swift:UROP/subdir2/file_to_copy.txt",
              'file_to_share_xpath': '//div[@id="filesDiv2"]//a[@filepath="/Home/swift:UROP/file_to_share.txt"]',
-             'file_to_upload_path': "/Home/swift:UROP/file_to_upload.txt"}
+             'file_to_upload_path': "/Home/swift:GSTest/file_to_upload.txt"}
 
 """//div[contains(@class, 'ui-dialog')]/div[preceding-sibling::div/span[contains(., 'Rename display')]]/input[@value='test']"""
 
@@ -195,12 +195,9 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                     var putrequest=new XMLHttpRequest();\
                     putrequest.open("PUT", url+"/"+path, false);\
                     putrequest.setRequestHeader("X-Auth-Token", token);\
-                    alert(token);\
                     putrequest.send();\
-                    alert("Hello");\
                     getResponse(putrequest);\
                 }\
-                alert("ahahaha");\
             }'''}
 
 '''{"container":"{0}","osUserName":"ruijing.zhang@unimelb.edu.au","Endpoint":"https://keystone.rc.nectar.org.au:5000/v2.0/tokens","OsTenant":"pt-9344","osPassword":"NWE4Yzg4NTlkMmVlZTU4"}'''

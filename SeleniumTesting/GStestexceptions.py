@@ -94,7 +94,7 @@ class PublicURLException(Exception):
             return self.message
         return report
     
-class PrivateURLException(Exception):
+'''class PrivateURLException(Exception):
     def __init__(self, message = None):
         self.message = message
         
@@ -102,7 +102,7 @@ class PrivateURLException(Exception):
         report = "Failed to get the private URL."
         if self.message:
             return report + "\n" + self.message
-        return report
+        return report'''
     
 class ImportURLException(Exception):
     def __init__(self,message = None):
@@ -132,4 +132,14 @@ class LaunchWithFileException(Exception):
         report = "Failed to Launch the GVL with file."
         if self.message:
             return report + "\n" + self.message
+        return report
+
+class PreparationException(Exception):
+    def __init__(self, message = None):
+        self.message = message
+
+    def __str__(self):
+        report = "Failed to prepare for the file tests."
+        if self.message:
+            report = report + "\n" + self.message
         return report
