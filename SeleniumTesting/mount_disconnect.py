@@ -162,6 +162,6 @@ class CloudStorage(GenomeSpaceTest):
             raise DisconnectContainerException(type(e).__name__ + ": " + e.__str__())
         '''
 
-    def test_2c_preparations(self):
+    '''def test_2c_preparations(self):
         preparation = DataTestPreparation(self.driver)
-        preparation.prepare_for_tests()
+        preparation.prepare_for_tests()'''

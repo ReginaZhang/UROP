@@ -16,33 +16,63 @@ class DataTestPreparation(GenomeSpaceTest):
 	#@staticmethod
 	def containers(self):
 		#self.mounting(container_names["for data tests"][1])
-		a = ("swift:" + container_names["for data tests"][0] in self.driver.page_source)
-		b = ("swift:" + container_names["for data tests"][1] in self.driver.page_source)
 		try:
-			assert a
+			time.sleep(10)
+			assert "swift:" + container_names["for data tests"][0] in self.driver.page_source
 		except AssertionError:
 			self.mounting(container_names["for data tests"][0])
+			self.refresh_page()
 			time.sleep(8)
 		try:
-			assert b
+			assert "swift:" + container_names["for data tests"][1] in self.driver.page_source
 			#global data_testing_swift_mounted
 			#GenomeSpaceTest.data_testing_swift_mounted = True
 		except AssertionError:
 			self.mounting(container_names["for data tests"][1])
+			self.refresh_page()
 			time.sleep(8)
 			#GenomeSpaceTest.data_testing_swift_mounted = True
 		try:
-			print a
-			print b
-			assert a and b
+			assert "swift:" + container_names["for data tests"][0] in self.driver.page_source
+			assert "swift:" + container_names["for data tests"][1] in self.driver.page_source
+			GenomeSpaceTest.data_testing_swift_mounted = True
 			self.refresh_page()
 		except AssertionError:
 			raise PreparationException("Containers for file tests are not connected and failed to mount them.")
 
-	#def folder
+	def check_dir(self, dir_name):
+		try:
+			function1 = js_func["check_existance"] % test_folder["%s_path" % dir_name]
+			self.send_request(function1, "check_existance()")
+		except Exception as e:
+			raise e #PreparationException("Failed to check the existance of %s" % dir_name)
+		response = self.get_response()
+		if "404" in response:
+			function2 = js_func["create_subdir"] % test_folder["%s_path" % dir_name]
+			try:
+				self.send_request(function2, "create_subdir()")
+				response = self.get_response()
+				assert "Success" in response
+			except AssertionError:
+				raise PreparationException("Failed to create %s; response is not successful." % dir_name)
+		elif "Success" not in response:
+			raise PreparationException("Failed to check the existance of %s; failed with status code not 404." % dir_name)
+		try:
+			self.send_request(function1, "check_existance()")
+			response = self.get_response()
+			assert "Success" in response
+		except AssertionError:
+			raise PreparationException("Failed to create %s." % dir_name)
+
+	def subdirs(self):
+		self.check_dir("subdir1")
+		GenomeSpaceTest.subdir1_exists = True
+		self.check_dir("subdir2")
+		GenomeSpaceTest.subdir2_exists = True
 
 	#@staticmethod
-	def prepare_for_tests(self):
+	def test_3_setting_up(self):
 		#self.driver = driver
 		self.containers()
+		self.subdirs()
 

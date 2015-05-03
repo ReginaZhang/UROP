@@ -29,7 +29,7 @@ from data_test_preparation import DataTestPreparation
 
 #base_window = None
 
-class GSTestCases(RegistrationLogin, CloudStorage, DataManipulation, DataSharing, DataStoring, DataToGVL):
+class GSTestCases(RegistrationLogin, CloudStorage, DataTestPreparation, DataManipulation, DataSharing, DataStoring, DataToGVL):
 
     __metaclass__ = ABCMeta
 

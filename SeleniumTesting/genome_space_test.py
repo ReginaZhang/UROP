@@ -23,6 +23,8 @@ class GenomeSpaceTest():
 
 	logged_in = False
 	data_testing_swift_mounted = False
+	subdir1_exists = False
+	subdir2_exists = False
 
 	#@staticmethod
 	def send_request(self, function, function_call):

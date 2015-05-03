@@ -45,7 +45,7 @@ page_input = {'copy/move': "//div[contains(@class, 'ui-dialog')]/div[preceding-s
 
 # following are the keys for the tests
 container_names = {"for mounting test" : "For_Mounting_Test",
-                   "for data tests" : ["UROP", "UROP_Test"]}
+                   "for data tests" : ["GSTest", "GS-Test"]}
 
 t_mount_container = {'Endpoint': 'https://keystone.rc.nectar.org.au:5000/v2.0/tokens',
                      'osUserName': 'ruijing.zhang@unimelb.edu.au',
@@ -64,20 +64,20 @@ test_container = {'mount_container': t_mount_container}
 test_folder = {'GS-Demo_xpath': "//a[@dirpath='/Home/swift:GS-Demo']",
                'test1_xpath': "//a[@dirpath='/Home/swift:GS-Demo/test1']",
                'test2_xpath': "//a[@dirpath='/Home/swift:GS-Demo/test2']",
-               'UROP_xpath':'//tbody//div[@id="directoriesDiv"]//a[@dirpath="/Home/swift:UROP"]',
-               'subdir1_xpath': '//div[@id = "filesDiv2"]//tbody//a[@dirpath = "/Home/swift:UROP/subdir1"]',
-               'subdir2_xpath': '//div[@id = "filesDiv2"]//tbody//a[@dirpath = "/Home/swift:UROP/subdir2"]'}
+               'GSTest_xpath':'//tbody//div[@id="directoriesDiv"]//a[@dirpath="/Home/swift:'+ container_names["for data tests"][0] +'"]',
+               'subdir1_path': common["base_url"] + '/datamanager/v1.0/file/Home/swift:'+ container_names["for data tests"][0] +'/subdir1',
+               'subdir2_path': common["base_url"] + '/datamanager/v1.0/file/Home/swift:'+ container_names["for data tests"][0] +'/subdir2'}
 
-test_file = {'before_rename_path': {"small": "/Home/swift:UROP/before_rename_s.txt"},
-             'after_rename_path': {"small": "/Home/swift:UROP/after_rename_s.txt"},
+test_file = {'before_rename_path': {"small": "/Home/swift:"+ container_names["for data tests"][0] +"/before_rename_s.txt"},
+             'after_rename_path': {"small": "/Home/swift:"+ container_names["for data tests"][0] +"/after_rename_s.txt"},
              'file_to_copy': "file_to_copy.txt",
-             'copy_source_path': {"folder": "/Home/swift:UROP/subdir1/file_to_copy.txt",
-                                  "container": "/Home/swift:UROP/subdir1/file_to_copy.txt"},
-             'copy_target_path':{"folder": "/Home/swift:UROP/subdir2/file_to_copy.txt",
-                                 "container": "/Home/swift:UROP_Test/file_to_copy.txt"},
-             'file_to_delete_path': "/Home/swift:UROP/subdir2/file_to_copy.txt",
-             'file_to_share_xpath': '//div[@id="filesDiv2"]//a[@filepath="/Home/swift:UROP/file_to_share.txt"]',
-             'file_to_upload_path': "/Home/swift:GSTest/file_to_upload.txt"}
+             'copy_source_path': {"folder": "/Home/swift:"+ container_names["for data tests"][0] +"/subdir1/file_to_copy.txt",
+                                  "container": "/Home/swift:"+ container_names["for data tests"][1] +"/subdir1/file_to_copy.txt"},
+             'copy_target_path':{"folder": "/Home/swift:"+ container_names["for data tests"][0] +"/subdir2/file_to_copy.txt",
+                                 "container": "/Home/swift:"+ container_names["for data tests"][1] +"/file_to_copy.txt"},
+             'file_to_delete_path': "/Home/swift:"+ container_names["for data tests"][0] +"/subdir2/file_to_copy.txt",
+             'file_to_share_xpath': '//div[@id="filesDiv2"]//a[@filepath="/Home/swift:'+ container_names["for data tests"][0] +'/file_to_share.txt"]',
+             'file_to_upload_path': "/Home/swift:"+ container_names["for data tests"][0] +"/file_to_upload.txt"}
 
 """//div[contains(@class, 'ui-dialog')]/div[preceding-sibling::div/span[contains(., 'Rename display')]]/input[@value='test']"""
 
@@ -93,6 +93,18 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                 } else {\
                     alert("Http request not sent.");\
                 }\
+            }''',
+           'check_existance':'''function check_existance(){\
+                var xmlhttp=new XMLHttpRequest();\
+                xmlhttp.open("GET", "%s", false);\
+                xmlhttp.send();\
+                getResponse(xmlhttp);\
+            }''',
+           'create_subdir':'''function create_subdir() {\
+                var xmlhttp=new XMLHttpRequest();\
+                xmlhttp.open("PUT", "%s", false);\
+                xmlhttp.send(JSON.stringify({"isDirectory":"true"}));\
+                getResponse(xmlhttp);\
             }''',
            'mount':'''function mount() {\
                 var xmlhttp=new XMLHttpRequest();\
@@ -136,21 +148,21 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
             'move_btw_folders':'''function move_btw_folders() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("POST", "''' + common['base_url'] + '''/datamanager/v1.0/file//Home/swift:UROP/subdir1/file_to_move.txt", false);\
+                xmlhttp.open("POST", "''' + common['base_url'] + '''/datamanager/v1.0/file//Home/swift:'''+ container_names["for data tests"][0] +'''/subdir1/file_to_move.txt", false);\
                 xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
-                xmlhttp.send(JSON.stringify({"path":"/Home/swift:UROP/subdir2/file_to_move.txt"}));\
+                xmlhttp.send(JSON.stringify({"path":"/Home/swift:'''+ container_names["for data tests"][0] +'''/subdir2/file_to_move.txt"}));\
                 getResponse(xmlhttp);\
             }''',
             'move_btw_containers':'''function move_btw_containers() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("POST", "''' + common['base_url'] + '''/datamanager/v1.0/file//Home/swift:UROP/subdir2/file_to_move.txt",false);\
+                xmlhttp.open("POST", "''' + common['base_url'] + '''/datamanager/v1.0/file//Home/swift:'''+ container_names["for data tests"][0] +'''/subdir2/file_to_move.txt",false);\
                 xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
-                xmlhttp.send(JSON.stringify({"path":"/Home/swift:UROP_Test/file_to_move.txt"}));\
+                xmlhttp.send(JSON.stringify({"path":"/Home/swift:'''+ container_names["for data tests"][1] +'''/file_to_move.txt"}));\
                 getResponse(xmlhttp);\
             }''',
             'generate_public_url':'''function generate_public_url() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("HEAD", "''' + common['base_url'] + '''/datamanager/file/Home/swift:UROP/subdir1/file_to_copy.txt?signedURL=true",false);\
+                xmlhttp.open("HEAD", "''' + common['base_url'] + '''/datamanager/file/Home/swift:'''+ container_names["for data tests"][0] +'''/subdir1/file_to_copy.txt?signedURL=true",false);\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
                 public_url = xmlhttp.getResponseHeader("external-link");\
@@ -164,7 +176,7 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
             'import_url':'''function import_url() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("PUT", "''' + common['base_url'] + '''/datamanager/v1.0/file/Home/swift:UROP/subdir1", false);\
+                xmlhttp.open("PUT", "''' + common['base_url'] + '''/datamanager/v1.0/file/Home/swift:'''+ container_names["for data tests"][0] +'''/subdir1", false);\
                 xmlhttp.setRequestHeader("x-gs-fetch-source", "%s");\
                 xmlhttp.send(JSON.stringify({"isDirectory":"true"}));\
                 getResponse(xmlhttp);\

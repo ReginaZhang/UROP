@@ -28,7 +28,7 @@ class DataSharing(GenomeSpaceTest):
     __metaclass__ = ABCMeta
     
     #@unittest.skip("Not finished")
-    def test_2d_generate_public_URL(self):
+    def test_5a_generate_public_URL(self):
         """
         The test for testing generating public URL of the file in GenomeSpace.
         

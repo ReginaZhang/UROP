@@ -76,8 +76,6 @@ class GSChrome(unittest.TestCase, GSTestCases):
 
     @classmethod
     def tearDownClass(cls):
-        preparation = DataTestPreparation(cls.driver)
-        preparation.prepare_for_tests()
         cls.driver.close()
         cls.driver.quit()
 
