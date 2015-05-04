@@ -13,7 +13,7 @@ p_mount_container = {'os_ep': "mspEndPoint",
                      'container': "mspContainerName",
                      'submit': "mspSwiftMountBtn",
                      'successful_popup': "Mounted  container %s\n it should be available for use in a few seconds." }
-common = {'base_url': "https://genomespace.genome.edu.au",
+common = {'base_url': "https://genomespace-dev.genome.edu.au",
           'home_suffix': '/jsui',
           'menu_file': "menuFile",
           'Home_xpath': '//a[@dirpath="/Home"]'}
@@ -44,20 +44,20 @@ page_input = {'copy/move': "//div[contains(@class, 'ui-dialog')]/div[preceding-s
 
 
 # following are the keys for the tests
-container_names = {"for mounting test" : "For_Mounting_Test",
+container_names = {"for mounting test" : "GSTest",
                    "for data tests" : ["GSTest", "GS-Test"]}
 
 t_mount_container = {'Endpoint': 'https://keystone.rc.nectar.org.au:5000/v2.0/tokens',
                      'osUserName': 'ruijing.zhang@unimelb.edu.au',
                      'osPassword': 'NWE4Yzg4NTlkMmVlZTU4',
-                     'OsTenant': 'pt-9344',
+                     'OsTenant': 'GenomicsVL',
                      'container': None}
 test_register = {'username': "test",
                  'pw': "test",
                  'email': "ykowsar@gmail.com"}
 
-test_login = {'login_name': "test",
-              'login_pw': "test"}
+test_login = {'login_name': "devtest",
+              'login_pw': "devtest"}
 
 test_container = {'mount_container': t_mount_container}
 
@@ -65,14 +65,14 @@ test_folder = {'GS-Demo_xpath': "//a[@dirpath='/Home/swift:GS-Demo']",
                'test1_xpath': "//a[@dirpath='/Home/swift:GS-Demo/test1']",
                'test2_xpath': "//a[@dirpath='/Home/swift:GS-Demo/test2']",
                'GSTest_xpath':'//tbody//div[@id="directoriesDiv"]//a[@dirpath="/Home/swift:'+ container_names["for data tests"][0] +'"]',
-               'subdir1_path': common["base_url"] + '/datamanager/v1.0/file/Home/swift:'+ container_names["for data tests"][0] +'/subdir1',
-               'subdir2_path': common["base_url"] + '/datamanager/v1.0/file/Home/swift:'+ container_names["for data tests"][0] +'/subdir2'}
+               'subdir1_path': '/Home/swift:'+ container_names["for data tests"][0] +'/subdir1',
+               'subdir2_path': '/Home/swift:'+ container_names["for data tests"][0] +'/subdir2'}
 
 test_file = {'before_rename_path': {"small": "/Home/swift:"+ container_names["for data tests"][0] +"/before_rename_s.txt"},
              'after_rename_path': {"small": "/Home/swift:"+ container_names["for data tests"][0] +"/after_rename_s.txt"},
              'file_to_copy': "file_to_copy.txt",
              'copy_source_path': {"folder": "/Home/swift:"+ container_names["for data tests"][0] +"/subdir1/file_to_copy.txt",
-                                  "container": "/Home/swift:"+ container_names["for data tests"][1] +"/subdir1/file_to_copy.txt"},
+                                  "container": "/Home/swift:"+ container_names["for data tests"][0] +"/subdir1/file_to_copy.txt"},
              'copy_target_path':{"folder": "/Home/swift:"+ container_names["for data tests"][0] +"/subdir2/file_to_copy.txt",
                                  "container": "/Home/swift:"+ container_names["for data tests"][1] +"/file_to_copy.txt"},
              'file_to_delete_path': "/Home/swift:"+ container_names["for data tests"][0] +"/subdir2/file_to_copy.txt",
@@ -94,9 +94,11 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                     alert("Http request not sent.");\
                 }\
             }''',
-           'check_existance':'''function check_existance(){\
+           'check_existence':'''function check_existence(){\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("GET", "%s", false);\
+                encoded = "''' + common["base_url"] + '''" + encodeURIComponent("/datamanager/file/Home/swift:GSTest/file_to_upload.txt");\
+                var urlstr = "''' + common["base_url"] + '''/datamanager/file/Home/swift%3AGSTest/file_to_upload.txt";\
+                xmlhttp.open("GET", urlstr, false);\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
             }''',
@@ -108,14 +110,14 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
            'mount':'''function mount() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("PUT", "''' + common['base_url'] + '''/datamanager/v1.0/storage/test/swift/%s", false);\
+                xmlhttp.open("PUT", "''' + common['base_url'] + '''/datamanager/v1.0/storage/''' + test_login["login_name"] + '''/swift/%s", false);\
                 xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
                 xmlhttp.send(JSON.stringify({"storageType":"Swift","attributes":%s,"filePermissions":["R","W"]}));\
                 getResponse(xmlhttp);\
             }''',
             'disconnect':'''function disconnect() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("DELETE", "''' + common['base_url'] + '''/datamanager/v1.0/storage/test/swift/%s", false);\
+                xmlhttp.open("DELETE", "''' + common['base_url'] + '''/datamanager/v1.0/storage/''' + test_login["login_name"] + '''/swift/%s", false);\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
             }''',
@@ -212,4 +214,5 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                 }\
             }'''}
 
+"""''' + common["base_url"] + '''/datamanager/file%s"""
 '''{"container":"{0}","osUserName":"ruijing.zhang@unimelb.edu.au","Endpoint":"https://keystone.rc.nectar.org.au:5000/v2.0/tokens","OsTenant":"pt-9344","osPassword":"NWE4Yzg4NTlkMmVlZTU4"}'''

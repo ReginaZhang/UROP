@@ -25,6 +25,7 @@ class GenomeSpaceTest():
 	data_testing_swift_mounted = False
 	subdir1_exists = False
 	subdir2_exists = False
+	upload_file_test_ready = False
 
 	#@staticmethod
 	def send_request(self, function, function_call):

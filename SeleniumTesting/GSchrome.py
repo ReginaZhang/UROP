@@ -76,8 +76,9 @@ class GSChrome(unittest.TestCase, GSTestCases):
 
     @classmethod
     def tearDownClass(cls):
-        cls.driver.close()
-        cls.driver.quit()
+        #cls.driver.close()
+        #cls.driver.quit()
+        pass
 
 if __name__ == "__main__":
     unittest.main()

@@ -127,4 +127,4 @@ class RegistrationLogin(GenomeSpaceTest):
             raise LoginException("Failed logging in: "+e.__str__(), test_login['login_name'], test_login['login_pw'])
         cookie_file_name = "cookies_" + self.driver_name + ".pkl"
         pickle.dump(driver.get_cookies(), open(cookie_file_name, "wb"))
-        logged_in = True
+        GenomeSpaceTest.logged_in = True

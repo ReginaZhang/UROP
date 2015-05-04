@@ -49,6 +49,7 @@ class DataSharing(GenomeSpaceTest):
             assert "Success" in response
             time.sleep(2)
         except AssertionError:
+            self.get_response()
             raise PublicURLException("Failed to generate public URL.\n" + response)
         try:
             #print 3
