@@ -13,7 +13,7 @@ p_mount_container = {'os_ep': "mspEndPoint",
                      'container': "mspContainerName",
                      'submit': "mspSwiftMountBtn",
                      'successful_popup': "Mounted  container %s\n it should be available for use in a few seconds." }
-common = {'base_url': "https://genomespace-dev.genome.edu.au",
+common = {'base_url': "https://genomespace.genome.edu.au",
           'home_suffix': '/jsui',
           'menu_file': "menuFile",
           'Home_xpath': '//a[@dirpath="/Home"]'}
@@ -56,8 +56,8 @@ test_register = {'username': "test",
                  'pw': "test",
                  'email': "ykowsar@gmail.com"}
 
-test_login = {'login_name': "devtest",
-              'login_pw': "devtest"}
+test_login = {'login_name': "test",
+              'login_pw': "test"}
 
 test_container = {'mount_container': t_mount_container}
 
@@ -77,7 +77,15 @@ test_file = {'before_rename_path': {"small": "/Home/swift:"+ container_names["fo
                                  "container": "/Home/swift:"+ container_names["for data tests"][1] +"/file_to_copy.txt"},
              'file_to_delete_path': "/Home/swift:"+ container_names["for data tests"][0] +"/subdir2/file_to_copy.txt",
              'file_to_share_xpath': '//div[@id="filesDiv2"]//a[@filepath="/Home/swift:'+ container_names["for data tests"][0] +'/file_to_share.txt"]',
-             'file_to_upload_path': "/Home/swift:"+ container_names["for data tests"][0] +"/file_to_upload.txt"}
+             'file_to_upload_path': "/Home/swift:"+ container_names["for data tests"][0] +"/file_to_upload.txt",
+             'file_to_publish': "/Home/swift:"+ container_names["for data tests"][0] +"/before_rename_s.txt"}
+
+doi_json = {"Title": "test",
+            "TitleType": "AlternativeTitle",
+            "Email": "test@test.com",
+            "Creator": "Regina",
+            "Contributors": "John Dough",
+            "Description": "test test"}
 
 """//div[contains(@class, 'ui-dialog')]/div[preceding-sibling::div/span[contains(., 'Rename display')]]/input[@value='test']"""
 
@@ -211,6 +219,24 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                     putrequest.setRequestHeader("X-Auth-Token", token);\
                     putrequest.send();\
                     getResponse(putrequest);\
+                }\
+            }''',
+            'get_doi':'''function get_doi() {\
+                var xmlhttp=new XMLHttpRequest();\
+                xmlhttp.open("POST", "''' + common['base_url'] + '''/datamanager/v1.0/tags/mintdoi/%s", false);\
+                xmlhttp.setRequestHeader("Content-Type", "application/json");\
+                xmlhttp.send(JSON.stringify({"Title":"%s", "TitleType":"%s", "Email":"%s", "Creator":"%s", "Contributors":"%s", "Description":"%s"}));\
+                getResponse(xmlhttp);\
+            }''' % (test_file["file_to_publish"],doi_json["Title"], doi_json["TitleType"], doi_json["Email"], doi_json["Creator"],doi_json["Contributors"], doi_json["Description"]),
+            'get_tags':'''function get_tags() {\
+                var xmlhttp=new XMLHttpRequest();\
+                xmlhttp.open("Get", "''' + common["base_url"] + '''/datamanager/v1.0/tags/", false);\
+                xmlhttp.send();\
+                if (xmlhttp.status < 300 && xmlhttp.status > 199) {\
+                    var str = xmlhttp.response;\
+                    var response_obj = JSON.parse(str);\
+                    var len = Object.keys(response_obj).length;\
+                    alert(len);\
                 }\
             }'''}
 

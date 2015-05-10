@@ -25,11 +25,12 @@ from data_sharing import DataSharing
 from data_storing import DataStoring
 from data_to_GVL import DataToGVL
 from data_test_preparation import DataTestPreparation
+from file_publish import FilePublish
 
 
 #base_window = None
 
-class GSTestCases(RegistrationLogin, CloudStorage, DataTestPreparation, DataManipulation, DataSharing, DataStoring, DataToGVL):
+class GSTestCases(RegistrationLogin, CloudStorage, DataTestPreparation, DataManipulation, DataSharing, DataStoring, DataToGVL, FilePublish):
 
     __metaclass__ = ABCMeta
 
