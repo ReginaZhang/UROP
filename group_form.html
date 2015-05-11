@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Group Form</title>
+	</head>
+	<body>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script>
+			$(document).ready(function(){
+				validateGroup();
+				validateMember();
+				validateSubmition();
+				$('#group, #group_name, #group_description').change(validateGroup);
+				$('#title, #firstname, #lastname, #email').change(validateMember);
+				$('#add_button').click(function(){
+					addMember();
+					$('#title, #firstname, #lastname, #email, #home_page, #member_description').val("");
+					validateSubmition();
+				});
+			});
+			$
+			function nextPage(){
+				document.getElementById("group_detail").style.visibility="collapse";
+				document.getElementById("group_detail").style.height="0";
+				document.getElementById("member_detail").style.visibility="visible";
+			}
+			function validateGroup(){
+				if ($('#group').val().length > 0 &&
+					$('#group_name').val.length > 0 &&
+					$('#group_description').val().length > 0) {
+					$('#next_button').prop("disabled", false);
+				} else {
+					$('#next_button').prop("disabled", true);
+				}
+			}
+			function validateMember(){
+				if ($('#title').val().length > 0 &&
+					$('#firstname').val().length > 0 &&
+					$('#lastname').val().length > 0 &&
+					$('#email').val().length > 0) {
+					$('#add_button').prop("disabled",false);
+				} else {
+					$('#add_button').prop("disabled",true);
+				}
+			}
+			function validateSubmition(){
+				var count = document.getElementById('member_table').rows.length;
+				if (count > 1){
+					$('#submit_button').prop("disabled", false);
+				} else {
+					$('#submit_button').prop("disabled", true);
+				}
+			}
+			function addMember(){
+				var title=document.getElementById("title").value;
+				var firstname=document.getElementById('firstname').value;
+				var lastname=document.getElementById('lastname').value;
+				var email=document.getElementById('email').value;
+				var home_page=document.getElementById('home_page').value;
+				var descrptn=document.getElementById('member_description').value;
+				var new_row='<tr><td>'+title+'</td><td>'+firstname+'</td><td>'+lastname+'</td><td>'+email+'</td><td>'+home_page+'</td><td>'+descrptn+'</td><td><button type="button" onclick="removeRow(this);validateSubmition()">remove</button></td></tr>';
+				document.getElementById('member_table').innerHTML=document.getElementById('member_table').innerHTML+new_row;
+			}
+			function goBack(){
+				document.getElementById("group_detail").style.visibility="visible";
+				document.getElementById("group_detail").style.height="initial";
+				document.getElementById("member_detail").style.visibility="hidden";
+			}
+			function removeRow(button){
+				var the_row = button.parentNode.parentNode;
+				the_row.parentNode.removeChild(the_row);
+			}
+			function alertInputs(){
+				var string="";
+				var i = 0;
+				var j = 0;
+				var inputs=document.getElementById("group_form").getElementsByTagName("input");
+				var textareas=document.getElementById("group_form").getElementsByTagName("textarea");
+				var table_rows=document.getElementById("member_table").rows;
+				for (i=0; i< inputs.length; i++){
+					string = string +inputs[i].name+": "+inputs[i].value+"\n";
+				}
+				for (i=0; i< textareas.length; i++){
+					string = string +textareas[i].name+": "+textareas[i].value+"\n";
+				}
+				string = string + "\ntable:\n";
+				headers=table_rows[0].getElementsByTagName("th");
+				for (i = 1; i<table_rows.length; i++){
+					string=string+"row " + i + ": \n";
+					data = table_rows[i].getElementsByTagName("td");
+					for (j=0; j< data.length-1; j++){
+						string = string + headers[j].textContent+": " + data[j].textContent+"\n";
+					}
+					string= string+"\n";
+				}
+				alert(string);
+			}
+		</script>
+		<style>
+			.asterisk{
+				color:red;
+			}
+		</style>
+		<form id="group_form">
+			<div id="group_detail">
+				<p>
+					<lable>Group <char class="asterisk">*</char>: </lable>
+					<input type="text" name="group" id="group" required>
+				</p>
+				<p>
+					<lable>Group name <char class="asterisk">*</char>: </lable>
+					<input type="text" name="groupname" id="group_name" required>
+				</p>
+				<p>
+					<lable>Description <char class="asterisk">*</char>: </lable><br>
+					<textarea rows="5" cols="50" name="group_description" id="group_description"required></textarea>
+
+				</p>
+				<button type="button">cancel</button>
+				<button type="button" id="next_button" onclick="nextPage()">next</button>
+			</div>
+			<div id="member_detail" style="visibility:hidden;">
+				<p>
+					<lable>Title <char class="asterisk">*</char>: </lable><input type="text" name="title" id="title">
+				</p>
+				<p>
+					<lable>First name <char class="asterisk">*</char>: </lable><input type="text" name="firstname" id="firstname">&nbsp;&nbsp;
+					<lable>Last name <char class="asterisk">*</char>: </lable><input type="text" name="lastname" id="lastname">
+				</p>
+				<p>
+					<lable>Email <char class="asterisk">*</char>: </lable><input type="email" name="email" id="email">&nbsp;&nbsp;
+					<lable>Home page: </lable><input type="url" name="home_page" id="home_page">
+				</p>
+				<p>
+					<lable>Discription: </lable><br>
+					<textarea rows="3" cols="50" name="member_description" id="member_description" maxlength="150" id="member_description"></textarea>max 150 chars
+				</p>
+				<button type="button" id="add_button">add</button><br>
+				<table id="member_table" border="1">
+					<tr>
+					<th>Title</th>
+					<th>First name</th>
+					<th>Last name</th>
+					<th>Email</th>
+					<th>Home page</th>
+					<th>Description</th>
+					<th></th>
+					</tr>
+				</table>
+				<button type="button" id="back_button" onclick="goBack()">back</button>&nbsp;
+				<button type="submit" id="submit_button" onclick="alertInputs()">submit</button>
+		</form>
+	</body>
+</html>
