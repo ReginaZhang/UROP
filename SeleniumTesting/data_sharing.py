@@ -65,7 +65,7 @@ class DataSharing(GenomeSpaceTest):
             public_url = alert.text.lstrip("Public URL: ")
             #alert.dismiss()
             alert.accept()
-            print public_url
+            #print public_url
             #print public_url
             #print type(public_url)
             public_url = unicodedata.normalize('NFKD', public_url).encode('ascii', 'replace')
@@ -74,12 +74,12 @@ class DataSharing(GenomeSpaceTest):
             #print js_func["share_data"] % (public_url)
             #print public_url
             function = js_func["download_file"] % (public_url)
-            print function
+            #print function
             self.send_request(function, "download_file()")
         except Exception as e:
             raise PublicURLException("Failed to share data using public URL generated.\n" + e.__str__())
         try:
-            print 5
+            #print 5
             response = self.get_response()
             assert "Success" in response
             self.refresh_page()

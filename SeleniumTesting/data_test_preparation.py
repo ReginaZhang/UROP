@@ -45,12 +45,16 @@ class DataTestPreparation(GenomeSpaceTest):
 	def check_dir(self, dir_name):
 		try:
 			function1 = js_func["check_existence"] % test_folder["%s_path" % dir_name]
+			#print "hey"
 			self.send_request(function1, "check_existence()")
+			#print "there"
 		except Exception as e:
+			#print 1
 			print e.__str__()
 			raise e #PreparationException("Failed to check the existence of %s" % dir_name)
 		response = self.get_response()
 		if "404" in response:
+			#print 2
 			function2 = js_func["create_subdir"] % test_folder["%s_path" % dir_name]
 			try:
 				self.send_request(function2, "create_subdir()")
@@ -59,12 +63,15 @@ class DataTestPreparation(GenomeSpaceTest):
 			except AssertionError:
 				raise PreparationException("Failed to create %s; response is not successful." % dir_name)
 		elif "Success" not in response:
+			#print 3
 			raise PreparationException("Failed to check the existence of %s; failed with status code not 404." % dir_name)
 		try:
+			#print 4
 			self.send_request(function1, "check_existence()")
 			response = self.get_response()
 			assert "Success" in response
 		except AssertionError:
+			#print 5
 			raise PreparationException("Failed to create %s." % dir_name)
 
 	def subdirs(self):
@@ -75,7 +82,7 @@ class DataTestPreparation(GenomeSpaceTest):
 
 	def remove_test_file(self, filename, file_path, testname):
 		try:
-			function1 = js_func["check_existence"]# % file_path
+			function1 = js_func["check_existence"] % file_path
 			print function1
 			self.send_request(function1, "check_existence()")
 		except Exception as e:
@@ -110,6 +117,6 @@ class DataTestPreparation(GenomeSpaceTest):
 	def test_3_setting_up(self):
 		#self.driver = driver
 		self.containers()
-		#self.subdirs()
-		#self.files()
+		self.subdirs()
+		self.files()
 

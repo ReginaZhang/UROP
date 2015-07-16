@@ -41,7 +41,7 @@ class DataManipulation(GenomeSpaceTest):
         for size in file_sizes:
             #print 1
             function = js_func["rename"] % (test_file["before_rename_path"][size], test_file["after_rename_path"][size])
-            #print function
+            print function
             try:
                 self.send_request(function, "rename()")
                 #print 2
@@ -93,9 +93,9 @@ class DataManipulation(GenomeSpaceTest):
         if (not GenomeSpaceTest.logged_in) or (not GenomeSpaceTest.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
-        function = js_func["copy_btw_folders"] % (test_file["copy_target_path"]["folder"], test_file["copy_source_path"]["folder"])
+        function = js_func["copy_file"] % (test_file["copy_target_path"]["folder"], test_file["copy_source_path"]["folder"])
         try:
-            self.send_request(function, "copy_btw_folders()")
+            self.send_request(function, "copy_file()")
         except Exception as e:
             raise CopyException("Failed to copy the file between folders. \n" + e.__str__())
         try:
@@ -117,9 +117,9 @@ class DataManipulation(GenomeSpaceTest):
         if (not GenomeSpaceTest.logged_in) or (not GenomeSpaceTest.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
-        function = js_func["copy_btw_containers"] % (test_file["copy_target_path"]["container"], test_file["copy_source_path"]["container"])
+        function = js_func["copy_file"] % (test_file["copy_target_path"]["container"], test_file["copy_source_path"]["container"])
         try:
-            self.send_request(function, "copy_btw_containers()")
+            self.send_request(function, "copy_file()")
         except Exception as e:
             raise CopyException("Failed to copy the file between containers. \n" + e.__str__())
         try:
