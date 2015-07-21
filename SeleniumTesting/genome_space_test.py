@@ -12,6 +12,7 @@ from selenium.common.exceptions import *
 from constants import *
 import time
 from abc import ABCMeta, abstractmethod
+from GStestexceptions import *
 
 js = """var s=document.createElement(\'script\');
         s.innerHTML=\'{0}\';
@@ -103,4 +104,4 @@ class GenomeSpaceTest():
 			assert "Success" in response
 			self.refresh_page()
 		except AssertionError as e:
-			raise e
+			raise MountingException(response)

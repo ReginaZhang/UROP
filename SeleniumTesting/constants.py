@@ -65,8 +65,8 @@ test_folder = {'GS-Demo_xpath': "//a[@dirpath='/Home/swift:GS-Demo']",
                'test1_xpath': "//a[@dirpath='/Home/swift:GS-Demo/test1']",
                'test2_xpath': "//a[@dirpath='/Home/swift:GS-Demo/test2']",
                'GSTest_xpath':'//tbody//div[@id="directoriesDiv"]//a[@dirpath="/Home/swift:'+ container_names["for data tests"][0] +'"]',
-               'subdir1_path': '/Home/swift%3A'+ container_names["for data tests"][0] +'/subdir1',
-               'subdir2_path': '/Home/swift%3A'+ container_names["for data tests"][0] +'/subdir2'}
+               'subdir1_path': '/Home/swift:'+ container_names["for data tests"][0] +'/subdir1',
+               'subdir2_path': '/Home/swift:'+ container_names["for data tests"][0] +'/subdir2'}
 
 test_file = {'before_rename_path': {"small": "/Home/swift:"+ container_names["for data tests"][0] +"/before_rename_s.txt"},
              'after_rename_path': {"small": "/Home/swift:"+ container_names["for data tests"][0] +"/after_rename_s.txt"},
@@ -75,10 +75,10 @@ test_file = {'before_rename_path': {"small": "/Home/swift:"+ container_names["fo
                                   "container": "/Home/swift:"+ container_names["for data tests"][0] +"/subdir1/file_to_copy.txt"},
              'copy_target_path':{"folder": "/Home/swift:"+ container_names["for data tests"][0] +"/subdir2/file_to_copy.txt",
                                  "container": "/Home/swift:"+ container_names["for data tests"][1] +"/file_to_copy.txt"},
-             'file_to_delete_path': "/Home/swift%3A"+ container_names["for data tests"][0] +"/subdir2/file_to_copy.txt",
+             'file_to_delete_path': "/Home/swift:"+ container_names["for data tests"][0] +"/subdir2/file_to_copy.txt",
              'file_to_share_xpath': '//div[@id="filesDiv2"]//a[@filepath="/Home/swift:'+ container_names["for data tests"][0] +'/file_to_share.txt"]',
-             'file_to_upload_path': "/Home/swift%3A"+ container_names["for data tests"][0] +"/file_to_upload"+"%2E"+"txt",
-             'file_to_publish': "/Home/swift%3A"+ container_names["for data tests"][0] +"/before_rename_s.txt"}
+             'file_to_upload_path': "/Home/swift:"+ container_names["for data tests"][0] +"/file_to_upload.txt",
+             'file_to_publish': "/Home/swift:"+ container_names["for data tests"][0] +"/before_rename_s.txt"}
 
 doi_json = {"Title": "test",
             "TitleType": "AlternativeTitle",
@@ -104,9 +104,8 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
            'check_existence':'''function check_existence(){\
                 var xmlhttp=new XMLHttpRequest();\
-                encoded = "''' + common["base_url"] + '''" + encodeURIComponent("/datamanager/file/Home/swift:GSTest/file_to_upload.txt");\
-                var urlstr = "''' + common["base_url"] + '''/datamanager/file%s";\
-                xmlhttp.open("GET", urlstr, false);\
+                var urlstr = "''' + common["base_url"] + '''/datamanager/file" + escape("%s");\
+                xmlhttp.open("HEAD", urlstr, false);\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
             }''',
@@ -139,13 +138,6 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
            'copy_file':'''function copy_file(){\
                 var xmlhttp=new XMLHttpRequest();\
                 xmlhttp.open("PUT", "''' + common['base_url'] + '''/datamanager/v1.0/file%s", false);\
-                xmlhttp.setRequestHeader("x-gs-copy-source", "%s");\
-                xmlhttp.send();\
-                getResponse(xmlhttp);\
-            }''',
-            'copy_btw_containers':'''function copy_btw_containers(){\
-                var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("PUT", "''' + common['base_url'] + '''/datamanager/v1.0/file%s",false);\
                 xmlhttp.setRequestHeader("x-gs-copy-source", "%s");\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
@@ -205,7 +197,7 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
             'upload_file':'''function upload_file() {\
                 var getrequest=new XMLHttpRequest();\
-                getrequest.open("GET","''' + common['base_url'] + '''/datamanager/v1.0/uploadinfo%s",false);\
+                getrequest.open("GET","''' + common['base_url'] + '''/datamanager/v1.0/uploadinfo"+escape("%s"),false);\
                 getrequest.send();\
                 getResponse(getrequest);\
                 if (getrequest.status < 300 && getrequest.status > 199) {\

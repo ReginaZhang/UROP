@@ -63,6 +63,7 @@ class DataStoring(GenomeSpaceTest):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
         function = js_func["upload_file"] % test_file["file_to_upload_path"]
+        print function
         try:
             self.send_request(function, "upload_file()")
         except Exception as e:

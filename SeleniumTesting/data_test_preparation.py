@@ -45,7 +45,7 @@ class DataTestPreparation(GenomeSpaceTest):
 	def check_dir(self, dir_name):
 		try:
 			function1 = js_func["check_existence"] % test_folder["%s_path" % dir_name]
-			#print "hey"
+			print function1
 			self.send_request(function1, "check_existence()")
 			#print "there"
 		except Exception as e:
@@ -94,12 +94,14 @@ class DataTestPreparation(GenomeSpaceTest):
 		if "Success" in response:
 			function2 = js_func["delete"] % file_path
 			try:
+				print "exists"
 				self.send_request(function2, "delete")
 				response = self.get_response()
 				assert "Success" in response
 			except Exception:
 				raise PreparationException("Failed to delete the existing %s." % filename)
 			try:
+				print "second check"
 				self.send_request(function1, "check_existence()")
 				response = self. get_response()
 				assert "404" in response
@@ -120,3 +122,5 @@ class DataTestPreparation(GenomeSpaceTest):
 		self.subdirs()
 		self.files()
 
+
+		
