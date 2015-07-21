@@ -106,7 +106,7 @@ class DataTestPreparation(GenomeSpaceTest):
 			self.send_request(function_c, "check_existence()")
 			response = self.get_response()
 			assert "404" in response
-		except Exception:
+		except Exception as e:
 			#print "b"
 			raise PreparationException("Failed to prepare for the %s test." % testname)
 		'''elif "404" not in response:
@@ -116,13 +116,58 @@ class DataTestPreparation(GenomeSpaceTest):
 		try:
 			self.uploading(filename, file_path)
 		except Exception as e:
-			raise PreparationException(("Failed to prepare for the %s test." % testname) + e.__str__)
+			if "Overriding an existing object" not in e.__str__():
+				raise PreparationException(("Failed to prepare for the %s test." + e.__str__() ) % testname)
 
 	def files(self):
-		self.remove_test_file("file_to_upload.txt", test_file["file_to_upload_path"], "uploading")
-		GenomeSpaceTest.upload_file_test_ready = True
-		self.remove_test_file("after_rename.txt", test_file["after_rename_path"], "changing file name")
-		self.upload_test_file("before_rename.txt", test_file["before_rename_path"], "changing file name")
+		failures = []
+		try:
+			self.remove_test_file("file_to_upload.txt", gs_file_paths["file_to_upload_path"], "uploading")
+			GenomeSpaceTest.upload_file_test_ready = True
+		except Exception as e:
+			failures.append(e)
+		try:
+			self.remove_test_file("after_rename.txt", gs_file_paths["after_rename_path"], "changing file name")
+			self.upload_test_file("before_rename.txt", gs_file_paths["before_rename_path"], "changing file name")
+			GenomeSpaceTest.rename_file_test_ready = True
+		except Exception as e:
+			failures.append(e)
+		try:
+			self.upload_test_file("file_for_pURL.txt", gs_file_paths["file_to_generate_public_URL_path"], "generating public URL")
+			GenomeSpaceTest.generate_public_URL_test_ready = True
+		except Exception as e:
+			failures.append(e)
+		try:
+			self.upload_test_file("file_to_copy.txt", gs_file_paths["copy_source_path"], "copying data")
+			self.remove_test_file("file_to_copy.txt", gs_file_paths["copy_target_path"]["folder"], "copying data")
+			self.remove_test_file("file_to_copy.txt", gs_file_paths["copy_target_path"]["container"], "copying data")
+			GenomeSpaceTest.copying_data_test_ready = True
+		except Exception as e:
+			failures.append(e)
+		try:
+			self.upload_test_file("file_to_move1.txt", gs_file_paths["move_source_path"]["folder"], "moving data")
+			self.upload_test_file("file_to_move2.txt", gs_file_paths["move_source_path"]["container"], "moving data")
+			self.remove_test_file("file_to_move1.txt", gs_file_paths["move_target_path"]["folder"], "moving data")
+			self.remove_test_file("file_to_move2.txt", gs_file_paths["move_target_path"]["container"], "moving data")
+			GenomeSpaceTest.moving_data_test_ready = True
+		except Exception as e:
+			failures.append(e)
+		try:
+			self.upload_test_file("file_to_delete.txt", gs_file_paths["file_to_delete_path"], "deleting data")
+			GenomeSpaceTest.deleting_data_test_ready = True
+		except Exception as e:
+			failures.append(e)
+		try:
+			self.upload_test_file("file_to_publish.txt", gs_file_paths["file_to_publish_path"], "getting DOI")
+			GenomeSpaceTest.publishing_file_test_ready = True
+		except Exception as e:
+			failures.append(e)
+		if failures != []:
+			report = ""
+			for item in failures:
+				report += item.__str__()
+				report += "\n"
+			raise PreparationException(report)
 
 	#@staticmethod
 	def test_3_setting_up(self):

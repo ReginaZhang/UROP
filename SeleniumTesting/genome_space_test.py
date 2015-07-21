@@ -13,6 +13,8 @@ from constants import *
 import time
 from abc import ABCMeta, abstractmethod
 from GStestexceptions import *
+import ConfigParser
+import sys
 
 js = """var s=document.createElement(\'script\');
         s.innerHTML=\'{0}\';
@@ -27,13 +29,15 @@ class GenomeSpaceTest():
 	subdir1_exists = False
 	subdir2_exists = False
 	upload_file_test_ready = False
+	rename_file_test_ready = False
+	copying_data_test_ready = False
 
 	#@staticmethod
 	def send_request(self, function, function_call):
 		driver = self.driver
 		self.inject_js(function)
 		driver.execute_script(function_call)
-		time.sleep(5)
+		#time.sleep(5)
 
 	#@staticmethod
 	def get_response(self):
@@ -107,7 +111,7 @@ class GenomeSpaceTest():
 			raise MountingException(response)
 
 	def uploading(self, filename, file_path):
-		function = js_func["upload_file"] % file_path #test_file["file_to_upload_path"]
+		function = js_func["upload_file"] % file_path #gs_file_paths["file_to_upload_path"]
 		#print function
 		try:
 			print "b"
@@ -128,5 +132,49 @@ class GenomeSpaceTest():
 		except AssertionError:
 			raise Exception("Failed at 'PUT' request: " + response)
 
-	def read_input(self, input_file_name):
+	@classmethod
+	def parse_config(cls):
+		Config = ConfigParser.ConfigParser()
+		Config.read("./file_paths.cfg")
+		#local_file_paths = {}
+		errors = ""
+		for option in Config.options("LocalFilePaths"):
+			try:
+				local_file_paths[option] = Config.get("LocalFilePaths", option)
+			except Exception as e:
+				errors += e.__str__()
+				errors += "\n"
+		print local_file_paths
+		for option in Config.options("GSFilePaths"):
+			try:
+				gs_file_paths[option] = Config.get("GSFilePaths", option)
+			except Exception as e:
+				errors += e.__str__()
+				errors += "\n"
+		print gs_file_paths
+		new_file_name = Config.get("Others", "new_file_name_for_renaming_test")
+		tokens = gs_file_paths["before_rename_path"].split("/")
+		tokens = tokens[:-1]
+		if new_file_name == "":
+			new_file_name = default_file_name_for_renaming_test
+		tokens.append(new_file_name)
+		gs_file_paths["after_rename_path"] = "/".join(tokens)
+		print gs_file_paths
+		if errors != "":
+			print >>sys.stderr, "Configeration Errors: \n"
+			print >>sys.stderr, errors
+			print >>sys.stderr, "="*70 + "\n"
+
+
+
+
+'''print "sections"
+    print Config.sections()
+    print "options"
+    print Config.options("LocalSystemPaths")
+    print "value to age"
+    print Config.get("SectionOne", "age")
+    print Config.options("SectionTwo")
+    print Config.get("SectionTwo", "favorite color")
 		pass
+'''

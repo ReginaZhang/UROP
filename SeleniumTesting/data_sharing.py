@@ -36,8 +36,10 @@ class DataSharing(GenomeSpaceTest):
         """
         if (not GenomeSpaceTest.logged_in) or (not GenomeSpaceTest.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
+        elif not GenomeSpaceTest.generate_public_URL_test_ready:
+            raise unittest.SkipTest("Skipped for failed to prepare generating public URL test.")
         self.dismiss_dialogs()
-        function = js_func["generate_public_url"]
+        function = js_func["generate_public_url"] % gs_file_paths["file_to_generate_public_URL_path"]
         try:
             #print 1
             self.send_request(function, "generate_public_url()")
@@ -103,8 +105,8 @@ class DataSharing(GenomeSpaceTest):
             elem = driver.find_element_by_xpath(test_folder["UROP_xpath"])
             elem.click()
             time.sleep(8)
-            elem = wait.until(EC.element_to_be_clickable((By.XPATH, test_file["file_to_share_xpath"])))
-            elem = driver.find_element_by_xpath(test_file["file_to_share_xpath"])
+            elem = wait.until(EC.element_to_be_clickable((By.XPATH, gs_file_paths["file_to_share_xpath"])))
+            elem = driver.find_element_by_xpath(gs_file_paths["file_to_share_xpath"])
             elem.click()
             elem = driver.find_element_by_id(common["menu_file"])
             hover = ActionChains(driver).move_to_element(elem)

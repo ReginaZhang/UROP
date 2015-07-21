@@ -29,6 +29,7 @@ class GSChrome(unittest.TestCase, GSTestCases):
             self.driver.switch_to_window(GStestcases.base_window)
         else:
             print "World"'''
+        cls.parse_config()
         cls.driver_name = "chrome"
         cls.driver = webdriver.Chrome()#executable_path = chrome_path)
         driver = cls.driver
@@ -81,4 +82,25 @@ class GSChrome(unittest.TestCase, GSTestCases):
         pass
 
 if __name__ == "__main__":
-    unittest.main()
+    """options_tpl = ('-i', '--in_file', '-o', '--out_file')
+    del_lst = []
+    for i,option in enumerate(sys.argv):
+        if option in options_tpl:
+            del_lst.append(i)
+            del_lst.append(i+1)
+    print sys.argv
+    sys.argv = sys.argv[:-4]
+
+    Config = ConfigParser.ConfigParser()
+    Config.read("./file_paths.cfg")
+    local_file_paths
+    for option in Config.options()
+    print "sections"
+    print Config.sections()
+    print "options"
+    print Config.options("LocalSystemPaths")
+    print "value to age"
+    print Config.get("SectionOne", "age")
+    print Config.options("SectionTwo")
+    print Config.get("SectionTwo", "favorite color")"""
+    unittest.main(verbosity=2)

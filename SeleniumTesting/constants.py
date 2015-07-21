@@ -68,17 +68,23 @@ test_folder = {'GS-Demo_xpath': "//a[@dirpath='/Home/swift:GS-Demo']",
                'subdir1_path': '/Home/swift:'+ container_names["for data tests"][0] +'/subdir1',
                'subdir2_path': '/Home/swift:'+ container_names["for data tests"][0] +'/subdir2'}
 
-test_file = {'before_rename_path': "/Home/swift:"+ container_names["for data tests"][0] +"/before_rename.txt",
+gs_file_paths = {'before_rename_path': "/Home/swift:"+ container_names["for data tests"][0] +"/before_rename.txt",
              'after_rename_path': "/Home/swift:"+ container_names["for data tests"][0] +"/after_rename.txt",
              'file_to_copy': "file_to_copy.txt",
-             'copy_source_path': {"folder": "/Home/swift:"+ container_names["for data tests"][0] +"/subdir1/file_to_copy.txt",
-                                  "container": "/Home/swift:"+ container_names["for data tests"][0] +"/subdir1/file_to_copy.txt"},
-             'copy_target_path':{"folder": "/Home/swift:"+ container_names["for data tests"][0] +"/subdir2/file_to_copy.txt",
-                                 "container": "/Home/swift:"+ container_names["for data tests"][1] +"/file_to_copy.txt"},
-             'file_to_delete_path': "/Home/swift:"+ container_names["for data tests"][0] +"/subdir2/file_to_copy.txt",
+             'copy_source_path': "/Home/swift:"+ container_names["for data tests"][0] +"/subdir1/file_to_copy.txt",
+             'copy_to_folder_target_path': "/Home/swift:"+ container_names["for data tests"][0] +"/subdir2/file_to_copy.txt",
+             'copy_to_container_target_path': "/Home/swift:"+ container_names["for data tests"][1] +"/file_to_copy.txt",
+             'move_source_path': {"folder": "/Home/swift:"+ container_names["for data tests"][0] +"/subdir1/file_to_move1.txt",
+                                  "container": "/Home/swift:"+ container_names["for data tests"][0] +"/subdir1/file_to_move2.txt"},
+             'move_target_path': {"folder": "/Home/swift:"+ container_names["for data tests"][0] +"/subdir2/file_to_move1.txt",
+                                  "container": "/Home/swift:"+ container_names["for data tests"][1] +"/file_to_move2.txt"},
+             'file_to_delete_path': "/Home/swift:"+ container_names["for data tests"][0] +"/file_to_delete.txt",
              'file_to_share_xpath': '//div[@id="filesDiv2"]//a[@filepath="/Home/swift:'+ container_names["for data tests"][0] +'/file_to_share.txt"]',
              'file_to_upload_path': "/Home/swift:"+ container_names["for data tests"][0] +"/file_to_upload.txt",
-             'file_to_publish_path': "/Home/swift:"+ container_names["for data tests"][0] +"/before_rename_s.txt"}
+             'file_to_publish_path': "/Home/swift:"+ container_names["for data tests"][0] +"/file_to_publish.txt",
+             'file_to_generate_public_URL_path': "/Home/swift:"+ container_names["for data tests"][0] +"/file_for_pURL.txt"}
+
+default_file_name_for_renaming_test = "after_rename.txt"
 
 doi_json = {"Title": "test",
             "TitleType": "AlternativeTitle",
@@ -86,6 +92,8 @@ doi_json = {"Title": "test",
             "Creator": "Regina",
             "Contributors": "John Dough",
             "Description": "test test"}
+
+local_file_paths = {}
 
 """//div[contains(@class, 'ui-dialog')]/div[preceding-sibling::div/span[contains(., 'Rename display')]]/input[@value='test']"""
 
@@ -95,7 +103,7 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                 if (xmlhttp.status >= 400 || (100 <= xmlhttp.status && xmlhttp.status < 200)) {\
                     alert("Failure: " + xmlhttp.status + "  Response: " + xmlhttp.responseText);\
                 } else if (xmlhttp.status >= 300) {\
-                    alert("Manual redirection needed: " + xmlhttp.status + "&#x0A;Response: " + xmlhttp.responseText);\
+                    alert("Manual redirection needed: " + xmlhttp.status + "  Response: " + xmlhttp.responseText);\
                 } else if (xmlhttp.status >= 200) {\
                     alert("Success: " + xmlhttp.status);\
                 } else {\
@@ -148,11 +156,11 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
             }''',
-            'move_btw_folders':'''function move_btw_folders() {\
+            'move_file':'''function move_file() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("POST", "''' + common['base_url'] + '''/datamanager/v1.0/file//Home/swift:'''+ container_names["for data tests"][0] +'''/subdir1/file_to_move.txt", false);\
+                xmlhttp.open("POST", "''' + common['base_url'] + '''/datamanager/v1.0/file%s", false);\
                 xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
-                xmlhttp.send(JSON.stringify({"path":"/Home/swift:'''+ container_names["for data tests"][0] +'''/subdir2/file_to_move.txt"}));\
+                xmlhttp.send(JSON.stringify({"path":"%s"}));\
                 getResponse(xmlhttp);\
             }''',
             'move_btw_containers':'''function move_btw_containers() {\
@@ -164,7 +172,7 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
             'generate_public_url':'''function generate_public_url() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("HEAD", "''' + common['base_url'] + '''/datamanager/file/Home/swift:'''+ container_names["for data tests"][0] +'''/subdir1/file_to_copy.txt?signedURL=true",false);\
+                xmlhttp.open("HEAD", "''' + common['base_url'] + '''/datamanager/file%s?signedURL=true",false);\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
                 public_url = xmlhttp.getResponseHeader("external-link");\
@@ -219,7 +227,7 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                 xmlhttp.setRequestHeader("Content-Type", "application/json");\
                 xmlhttp.send(JSON.stringify({"Title":"%s", "TitleType":"%s", "Email":"%s", "Creator":"%s", "Contributors":"%s", "Description":"%s"}));\
                 getResponse(xmlhttp);\
-            }''' % (test_file["file_to_publish_path"],doi_json["Title"], doi_json["TitleType"], doi_json["Email"], doi_json["Creator"],doi_json["Contributors"], doi_json["Description"]),
+            }''' % (gs_file_paths["file_to_publish_path"],doi_json["Title"], doi_json["TitleType"], doi_json["Email"], doi_json["Creator"],doi_json["Contributors"], doi_json["Description"]),
             'get_tags':'''function get_tags() {\
                 var xmlhttp=new XMLHttpRequest();\
                 xmlhttp.open("Get", "''' + common["base_url"] + '''/datamanager/v1.0/tags/", false);\

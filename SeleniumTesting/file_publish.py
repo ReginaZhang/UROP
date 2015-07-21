@@ -14,6 +14,8 @@ class FilePublish(GenomeSpaceTest):
 			raise unittest.SkipTest("Skipped for failed login.")
 		if (not GenomeSpaceTest.data_testing_swift_mounted):
 			raise unittest.SkipTest("Skipped for failed mounting container.")
+		if not GenomeSpaceTest.publishing_file_test_ready:
+			raise unittest.SkipTest("Skipped for failed to prepare getting DOI test.")
 		function1 = js_func["get_tags"]
 		try:
 			self.send_request(function1, "get_tags()")
