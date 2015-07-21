@@ -62,7 +62,11 @@ class DataStoring(GenomeSpaceTest):
         if (not GenomeSpaceTest.logged_in) or (not GenomeSpaceTest.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
-        function = js_func["upload_file"] % test_file["file_to_upload_path"]
+        try:
+            self.uploading("file_to_upload.txt", test_file["file_to_upload_path"])
+        except Exception as e:
+            raise DragAndDropException(e.__str__())
+        '''function = js_func["upload_file"] % test_file["file_to_upload_path"]
         print function
         try:
             self.send_request(function, "upload_file()")
@@ -79,6 +83,6 @@ class DataStoring(GenomeSpaceTest):
             assert "Success" in response
             self.refresh_page()
         except AssertionError:
-            raise DragAndDropException("Failed at 'PUT' request: " + response)
+            raise DragAndDropException("Failed at 'PUT' request: " + response)'''
         
     

@@ -68,8 +68,8 @@ test_folder = {'GS-Demo_xpath': "//a[@dirpath='/Home/swift:GS-Demo']",
                'subdir1_path': '/Home/swift:'+ container_names["for data tests"][0] +'/subdir1',
                'subdir2_path': '/Home/swift:'+ container_names["for data tests"][0] +'/subdir2'}
 
-test_file = {'before_rename_path': {"small": "/Home/swift:"+ container_names["for data tests"][0] +"/before_rename_s.txt"},
-             'after_rename_path': {"small": "/Home/swift:"+ container_names["for data tests"][0] +"/after_rename_s.txt"},
+test_file = {'before_rename_path': "/Home/swift:"+ container_names["for data tests"][0] +"/before_rename.txt",
+             'after_rename_path': "/Home/swift:"+ container_names["for data tests"][0] +"/after_rename.txt",
              'file_to_copy': "file_to_copy.txt",
              'copy_source_path': {"folder": "/Home/swift:"+ container_names["for data tests"][0] +"/subdir1/file_to_copy.txt",
                                   "container": "/Home/swift:"+ container_names["for data tests"][0] +"/subdir1/file_to_copy.txt"},
@@ -78,7 +78,7 @@ test_file = {'before_rename_path': {"small": "/Home/swift:"+ container_names["fo
              'file_to_delete_path': "/Home/swift:"+ container_names["for data tests"][0] +"/subdir2/file_to_copy.txt",
              'file_to_share_xpath': '//div[@id="filesDiv2"]//a[@filepath="/Home/swift:'+ container_names["for data tests"][0] +'/file_to_share.txt"]',
              'file_to_upload_path': "/Home/swift:"+ container_names["for data tests"][0] +"/file_to_upload.txt",
-             'file_to_publish': "/Home/swift:"+ container_names["for data tests"][0] +"/before_rename_s.txt"}
+             'file_to_publish_path': "/Home/swift:"+ container_names["for data tests"][0] +"/before_rename_s.txt"}
 
 doi_json = {"Title": "test",
             "TitleType": "AlternativeTitle",
@@ -219,7 +219,7 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                 xmlhttp.setRequestHeader("Content-Type", "application/json");\
                 xmlhttp.send(JSON.stringify({"Title":"%s", "TitleType":"%s", "Email":"%s", "Creator":"%s", "Contributors":"%s", "Description":"%s"}));\
                 getResponse(xmlhttp);\
-            }''' % (test_file["file_to_publish"],doi_json["Title"], doi_json["TitleType"], doi_json["Email"], doi_json["Creator"],doi_json["Contributors"], doi_json["Description"]),
+            }''' % (test_file["file_to_publish_path"],doi_json["Title"], doi_json["TitleType"], doi_json["Email"], doi_json["Creator"],doi_json["Contributors"], doi_json["Description"]),
             'get_tags':'''function get_tags() {\
                 var xmlhttp=new XMLHttpRequest();\
                 xmlhttp.open("Get", "''' + common["base_url"] + '''/datamanager/v1.0/tags/", false);\

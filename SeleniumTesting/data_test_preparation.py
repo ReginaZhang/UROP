@@ -81,7 +81,7 @@ class DataTestPreparation(GenomeSpaceTest):
 		GenomeSpaceTest.subdir2_exists = True
 
 	def remove_test_file(self, filename, file_path, testname):
-		try:
+		'''try:
 			function1 = js_func["check_existence"] % file_path
 			print function1
 			self.send_request(function1, "check_existence()")
@@ -91,29 +91,38 @@ class DataTestPreparation(GenomeSpaceTest):
 			raise PreparationException(e.__str__() + "Failed to check the existence of %s." % filename)
 		response = self.get_response()
 		print response
-		if "Success" in response:
-			function2 = js_func["delete"] % file_path
-			try:
-				print "exists"
-				self.send_request(function2, "delete")
-				response = self.get_response()
-				assert "Success" in response
-			except Exception:
-				raise PreparationException("Failed to delete the existing %s." % filename)
-			try:
-				print "second check"
-				self.send_request(function1, "check_existence()")
-				response = self. get_response()
-				assert "404" in response
-			except Exception:
-				print "b"
-				raise PreparationException("Failed to prepare for the %s test." % testname)
-		elif "404" not in response:
-			raise PreparationException("Failed to check the existence of %s." % filename)
-		GenomeSpaceTest.upload_file_test_ready = True
+		if "Success" in response:'''
+		function_d = js_func["delete"] % file_path
+		try:
+			#print "exists"
+			self.send_request(function_d, "delete_data()")
+			response = self.get_response()
+			assert (("Success" in response) or ("404" in response))
+		except Exception:
+			raise PreparationException("Failed to delete the existing %s." % filename)
+		try:
+			#print "second check"
+			function_c = js_func["check_existence"] % file_path
+			self.send_request(function_c, "check_existence()")
+			response = self.get_response()
+			assert "404" in response
+		except Exception:
+			#print "b"
+			raise PreparationException("Failed to prepare for the %s test." % testname)
+		'''elif "404" not in response:
+			raise PreparationException("Failed to check the existence of %s." % filename)'''
+
+	def upload_test_file(self, filename, file_path, testname):
+		try:
+			self.uploading(filename, file_path)
+		except Exception as e:
+			raise PreparationException(("Failed to prepare for the %s test." % testname) + e.__str__)
 
 	def files(self):
 		self.remove_test_file("file_to_upload.txt", test_file["file_to_upload_path"], "uploading")
+		GenomeSpaceTest.upload_file_test_ready = True
+		self.remove_test_file("after_rename.txt", test_file["after_rename_path"], "changing file name")
+		self.upload_test_file("before_rename.txt", test_file["before_rename_path"], "changing file name")
 
 	#@staticmethod
 	def test_3_setting_up(self):
@@ -123,4 +132,3 @@ class DataTestPreparation(GenomeSpaceTest):
 		self.files()
 
 
-		

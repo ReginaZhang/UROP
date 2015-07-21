@@ -105,3 +105,28 @@ class GenomeSpaceTest():
 			self.refresh_page()
 		except AssertionError as e:
 			raise MountingException(response)
+
+	def uploading(self, filename, file_path):
+		function = js_func["upload_file"] % file_path #test_file["file_to_upload_path"]
+		#print function
+		try:
+			print "b"
+			self.send_request(function, "upload_file()")
+			print "a"
+		except Exception as e:
+			raise Exception(e.__str__())
+		try:
+			response = self.get_response()
+			assert "Success" in response
+		except AssertionError:
+			raise Exception("Failed at 'GET' request: " + response)
+		try:
+			time.sleep(2)
+			response = self.get_response()
+			assert "Success" in response
+			self.refresh_page()
+		except AssertionError:
+			raise Exception("Failed at 'PUT' request: " + response)
+
+	def read_input(self, input_file_name):
+		pass
