@@ -15,11 +15,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import time
 
-from genome_space_test import GenomeSpaceTest
+from genome_space_test import GenomeSpaceTest as GST
 
 #logged_in = False
 
-class RegistrationLogin(GenomeSpaceTest):
+class RegistrationLogin(GST):
     
     __metaclass__ = ABCMeta
 
@@ -32,7 +32,7 @@ class RegistrationLogin(GenomeSpaceTest):
         """
         #global logged_in
         #print GenomeSpaceTest.logged_in
-        if GenomeSpaceTest.logged_in == True:
+        if GST.logged_in == True:
             raise unittest.SkipTest("Logged in")
         driver = self.driver
         wait = self.wait
@@ -42,11 +42,11 @@ class RegistrationLogin(GenomeSpaceTest):
             elem = driver.find_element_by_link_text(link)
             elem.click()
             elem = driver.find_element_by_id(page_register["username"])
-            elem.send_keys(test_register["username"])
+            elem.send_keys(GST.user_details["username"])
             elem = driver.find_element_by_id(page_register["pw"])
-            elem.send_keys(test_register["pw"])
+            elem.send_keys(GST.user_details["password"])
             elem = driver.find_element_by_id(page_register["email"])
-            elem.send_keys(test_register["email"])
+            elem.send_keys(GST.user_details["email"])
             elem = driver.find_element_by_id(page_register["signup_button"])
             elem.click()
             time.sleep(5)
@@ -76,7 +76,7 @@ class RegistrationLogin(GenomeSpaceTest):
         as all the rest tests are done in the account used for this test.
         """
         #assert 1==2
-        if GenomeSpaceTest.logged_in == True:
+        if GST.logged_in == True:
             raise unittest.SkipTest("Logged in")
         driver = self.driver
         wait = self.wait
@@ -96,10 +96,10 @@ class RegistrationLogin(GenomeSpaceTest):
         try:
             elem = driver.find_element_by_id(page_login['login_name'])
             elem.clear()
-            elem.send_keys(test_login['login_name'])
+            elem.send_keys(GST.user_details['username'])
             elem = driver.find_element_by_id(page_login['login_pw'])
             elem.clear()
-            elem.send_keys(test_login['login_pw'])
+            elem.send_keys(GST.user_details['password'])
             elem = driver.find_element_by_id(page_login['login_signin'])
             elem.click()
             driver.implicitly_wait(10)
@@ -108,11 +108,11 @@ class RegistrationLogin(GenomeSpaceTest):
             time.sleep(20)
         except AssertionError as e:
             driver.close()
-            raise LoginException("Invalid username or password", test_login['login_name'], test_login['login_pw'])
+            raise LoginException("Invalid username or password", GST.user_details['username'], GST.user_details['password'])
         except TimeoutException:
             # failed to load the page after logging in
             driver.close()
-            raise LoginException("Timed out loading page when logging in.", test_login['login_name'], test_login['login_pw'])
+            raise LoginException("Timed out loading page when logging in.", GST.user_details['username'], GST.user_details['password'])
         except NoSuchElementException as e:
             messages = e.__str__().split("\n")
             driver.close()
@@ -124,7 +124,7 @@ class RegistrationLogin(GenomeSpaceTest):
             raise LoginException("Unexpected alert present: " + text)
         except Exception as e:
             driver.close()
-            raise LoginException("Failed logging in: "+e.__str__(), test_login['login_name'], test_login['login_pw'])
+            raise LoginException("Failed logging in: "+e.__str__(), GST.user_details['username'], GST.user_details['password'])
         cookie_file_name = "cookies_" + self.driver_name + ".pkl"
         pickle.dump(driver.get_cookies(), open(cookie_file_name, "wb"))
-        GenomeSpaceTest.logged_in = True
+        GST.logged_in = True

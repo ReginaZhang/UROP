@@ -36,7 +36,7 @@ class DataStoring(GenomeSpaceTest):
         if (not GenomeSpaceTest.logged_in) or (not GenomeSpaceTest.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
         self.dismiss_dialogs()
-        function = js_func["import_url"] % ("https://swift.rc.nectar.org.au:8888/v1/AUTH_f0d7c5b248004e80ae6f6afa8452d70c/UROP/subdir1%2Ffile_to_share.txt?temp_url_sig=86f1307755aec7340432f2467d5906e3c0511ca0&temp_url_expires=1418446695")
+        function = js_func["import_url"] % (container_one["container"],"https://swift.rc.nectar.org.au:8888/v1/AUTH_f0d7c5b248004e80ae6f6afa8452d70c/UROP/subdir1%2Ffile_to_share.txt?temp_url_sig=86f1307755aec7340432f2467d5906e3c0511ca0&temp_url_expires=1418446695")
         try:
             self.send_request(function, "import_url()")
         except Exception as e:

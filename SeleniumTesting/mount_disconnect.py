@@ -18,12 +18,12 @@ from selenium.webdriver.common.action_chains import ActionChains
 #from register_login import registered, logged_in
 #import register_login as rl
 
-from genome_space_test import GenomeSpaceTest
+from genome_space_test import GenomeSpaceTest as GST
 from data_test_preparation import DataTestPreparation
 
 passed_mounting = False
 
-class CloudStorage(GenomeSpaceTest):
+class CloudStorage(GST):
     
     __metaclass__ = ABCMeta
 
@@ -35,7 +35,7 @@ class CloudStorage(GenomeSpaceTest):
         
         Skipped if the login test was failed.
         """
-        if not GenomeSpaceTest.logged_in:
+        if not GST.logged_in:
             raise unittest.SkipTest("Skipped for failed login.")
         driver = self.driver
         wait = self.wait
@@ -91,7 +91,7 @@ class CloudStorage(GenomeSpaceTest):
                 raise MountingException("Newly mounted container is not shown.")
         '''
         try:
-            self.mounting(container_names["for mounting test"])
+            self.mounting(GST.container_names["for mounting test"])
             global passed_mounting
             passed_mounting = True
         except Exception as e:
@@ -106,9 +106,9 @@ class CloudStorage(GenomeSpaceTest):
         Skipped if the login test or mounting container test was failed.
         """
         global passed_mounting
-        if (not GenomeSpaceTest.logged_in) or (not passed_mounting):
+        if (not GST.logged_in) or (not passed_mounting):
             raise unittest.SkipTest("Skipped for failed login or mounting.")
-        function = js_func["disconnect"]  % (container_names["for mounting test"])
+        function = js_func["disconnect"]  % (GST.user_details["username"], GST.container_names["for mounting test"])
         try:
             self.send_request(function, "disconnect()")
         except Exception as e:

@@ -10,11 +10,12 @@ from GStestcases import GSTestCases
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import *
-from constants import common
+from constants import *
 import pickle
 import chrome_path
-from genome_space_test import GenomeSpaceTest
+from genome_space_test import *
 from data_test_preparation import DataTestPreparation
+import sys
 
 #chrome_path = "D:\Softwares\Python2.7.5\New Folder\Scripts\chromedriver.exe"
 chrome_driver_path = chrome_path.driver_path
@@ -30,6 +31,8 @@ class GSChrome(unittest.TestCase, GSTestCases):
         else:
             print "World"'''
         cls.parse_config()
+        print GenomeSpaceTest.user_details
+        print GenomeSpaceTest.container_names
         cls.driver_name = "chrome"
         cls.driver = webdriver.Chrome()#executable_path = chrome_path)
         driver = cls.driver
@@ -46,7 +49,7 @@ class GSChrome(unittest.TestCase, GSTestCases):
             alert = driver.switch_to_alert()
             text = alert.text
             alert.accept()
-            print ("Unexpected alert present: " + text)
+            print >>sys.stderr, ("Unexpected alert present: " + text)
         except AssertionError:
             driver.close()
             raise Exception("Page not found: " + home_page)
@@ -73,7 +76,7 @@ class GSChrome(unittest.TestCase, GSTestCases):
             alert = driver.switch_to_alert()
             text = alert.text
             alert.accept()
-            print ("Unexpected alert present: " + text)
+            print >>sys.stderr, ("Unexpected alert present: " + text)
 
     @classmethod
     def tearDownClass(cls):

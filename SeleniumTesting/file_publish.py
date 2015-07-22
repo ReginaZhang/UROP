@@ -28,7 +28,7 @@ class FilePublish(GenomeSpaceTest):
 			alert.accept()
 		except Exception as e:
 			raise e
-		function2 = js_func["get_doi"]
+		function2 = js_func["get_doi"]% (gs_file_paths["file_to_publish_path"],doi_info["Title"], doi_info["TitleType"], doi_info["Email"], doi_info["Creator"],doi_info["Contributors"], doi_info["Description"])
 		try:
 			self.send_request(function2, "get_doi()")
 		except Exception as e:

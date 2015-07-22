@@ -42,9 +42,9 @@ class DataTestPreparation(GenomeSpaceTest):
 		except AssertionError:
 			raise PreparationException("Containers for file tests are not connected and failed to mount them.")
 
-	def check_dir(self, dir_name):
+	def check_dir(self, path, dir_name):
 		try:
-			function1 = js_func["check_existence"] % test_folder["%s_path" % dir_name]
+			function1 = js_func["check_existence"] % path
 			print function1
 			self.send_request(function1, "check_existence()")
 			#print "there"
@@ -55,7 +55,7 @@ class DataTestPreparation(GenomeSpaceTest):
 		response = self.get_response()
 		if "404" in response:
 			#print 2
-			function2 = js_func["create_subdir"] % test_folder["%s_path" % dir_name]
+			function2 = js_func["create_subdir"] % path
 			try:
 				self.send_request(function2, "create_subdir()")
 				response = self.get_response()
@@ -64,7 +64,7 @@ class DataTestPreparation(GenomeSpaceTest):
 				raise PreparationException("Failed to create %s; response is not successful." % dir_name)
 		elif "Success" not in response:
 			#print 3
-			raise PreparationException("Failed to check the existence of %s; failed with status code not 404." % dir_name)
+			raise PreparationException(("Failed to check the existence of %s; failed with status code not 404." % dir_name) + response)
 		try:
 			#print 4
 			self.send_request(function1, "check_existence()")
@@ -75,10 +75,14 @@ class DataTestPreparation(GenomeSpaceTest):
 			raise PreparationException("Failed to create %s." % dir_name)
 
 	def subdirs(self):
-		self.check_dir("subdir1")
-		GenomeSpaceTest.subdir1_exists = True
-		self.check_dir("subdir2")
-		GenomeSpaceTest.subdir2_exists = True
+		self.check_dir(gs_folder_paths["dir1_path"], "dir1")
+		GenomeSpaceTest.dir1_exists = True
+		self.check_dir(gs_folder_paths["dir2_path"], "dir2")
+		GenomeSpaceTest.dir2_exists = True
+		if GenomeSpaceTest.default_folder_to_be_used:
+			self.check_dir(default_folder_paths["dir1_path"], "default dir1")
+			self.check_dir(default_folder_paths["dir2_path"], "default dir2")
+			GenomeSpaceTest.default_folders_exists = True
 
 	def remove_test_file(self, filename, file_path, testname):
 		'''try:
@@ -112,66 +116,97 @@ class DataTestPreparation(GenomeSpaceTest):
 		'''elif "404" not in response:
 			raise PreparationException("Failed to check the existence of %s." % filename)'''
 
-	def upload_test_file(self, filename, file_path, testname):
+	def upload_test_file(self, filename, local_path, gs_path, testname):
 		try:
-			self.uploading(filename, file_path)
+			f = open(local_path, "r")
+			data = read()
+		except Exception as e:
+			raise PreparationException(("Failed to prepare for the %s test." + e.__str__() ) % testname)
+		try:
+			self.uploading(filename, gs_path, data)
 		except Exception as e:
 			if "Overriding an existing object" not in e.__str__():
 				raise PreparationException(("Failed to prepare for the %s test." + e.__str__() ) % testname)
 
+	def get_file_name(self, path):
+		tokens = path.split("/")
+		name = tokens[-1]
+		return name
+
 	def files(self):
 		failures = []
 		try:
-			self.remove_test_file("file_to_upload.txt", gs_file_paths["file_to_upload_path"], "uploading")
+			file_name = self.get_file_name(gs_file_paths["file_to_upload_path"])
+			self.remove_test_file(file_name, gs_file_paths["file_to_upload_path"], "uploading")
 			GenomeSpaceTest.upload_file_test_ready = True
 		except Exception as e:
 			failures.append(e)
 		try:
-			self.remove_test_file("after_rename.txt", gs_file_paths["after_rename_path"], "changing file name")
-			self.upload_test_file("before_rename.txt", gs_file_paths["before_rename_path"], "changing file name")
+			file_name = self.get_file_name(gs_file_paths["after_rename_path"])
+			self.remove_test_file(file_name, gs_file_paths["after_rename_path"], "changing file name")
+			file_name = self.get_file_name(gs_file_paths["file_to_rename_path"])
+			self.upload_test_file(file_name, local_file_paths["file_to_rename_path"], gs_file_paths["file_to_rename_path"], "changing file name")
 			GenomeSpaceTest.rename_file_test_ready = True
 		except Exception as e:
 			failures.append(e)
 		try:
-			self.upload_test_file("file_for_pURL.txt", gs_file_paths["file_to_generate_public_URL_path"], "generating public URL")
+			file_name = self.get_file_name(gs_file_paths["file_to_generate_public_URL_path"])
+			self.upload_test_file(file_name, local_file_paths["file_to_generate_public_URL_path"], gs_file_paths["file_to_generate_public_URL_path"], "generating public URL")
 			GenomeSpaceTest.generate_public_URL_test_ready = True
 		except Exception as e:
 			failures.append(e)
 		try:
-			self.upload_test_file("file_to_copy.txt", gs_file_paths["copy_source_path"], "copying data")
-			self.remove_test_file("file_to_copy.txt", gs_file_paths["copy_target_path"]["folder"], "copying data")
-			self.remove_test_file("file_to_copy.txt", gs_file_paths["copy_target_path"]["container"], "copying data")
+			file_name = self.get_file_name(gs_file_paths["file_to_copy_source_path"])
+			self.upload_test_file(file_name, local_file_paths["file_to_copy_source_path"], gs_file_paths["file_to_copy_source_path"], "copying data")
+			file_name = self.get_file_name(gs_file_paths["copy_to_folder_target_path"])
+			self.remove_test_file(file_name, gs_file_paths["copy_to_folder_target_path"], "copying data")
+			file_name = self.get_file_name(gs_file_paths["copy_to_container_target_path"])
+			self.remove_test_file(file_name, gs_file_paths["copy_to_container_target_path"], "copying data")
 			GenomeSpaceTest.copying_data_test_ready = True
 		except Exception as e:
 			failures.append(e)
 		try:
-			self.upload_test_file("file_to_move1.txt", gs_file_paths["move_source_path"]["folder"], "moving data")
-			self.upload_test_file("file_to_move2.txt", gs_file_paths["move_source_path"]["container"], "moving data")
-			self.remove_test_file("file_to_move1.txt", gs_file_paths["move_target_path"]["folder"], "moving data")
-			self.remove_test_file("file_to_move2.txt", gs_file_paths["move_target_path"]["container"], "moving data")
+			file_name = self.get_file_name(gs_file_paths["file_to_move_to_folder_source_path"])
+			self.upload_test_file(file_name, local_file_paths["file_to_move_to_folder_source_path"], gs_file_paths["file_to_move_to_folder_source_path"], "moving data")
+			file_name = self.get_file_name(gs_file_paths["file_to_move_to_container_source_path"])
+			self.upload_test_file(file_name, local_file_paths["file_to_move_to_container_source_path"], gs_file_paths["file_to_move_to_container_source_path"], "moving data")
+			file_name = self.get_file_name(gs_file_paths["move_to_folder_target_path"])
+			self.remove_test_file(file_name, gs_file_paths["move_to_folder_target_path"], "moving data")
+			file_name = self.get_file_name(gs_file_paths["move_to_container_target_path"])
+			self.remove_test_file(file_name, gs_file_paths["move_to_container_target_path"], "moving data")
 			GenomeSpaceTest.moving_data_test_ready = True
 		except Exception as e:
 			failures.append(e)
 		try:
-			self.upload_test_file("file_to_delete.txt", gs_file_paths["file_to_delete_path"], "deleting data")
+			file_name = self.get_file_name(gs_file_paths["file_to_delete_path"])
+			self.upload_test_file(file_name, local_file_paths["file_to_delete_path"], gs_file_paths["file_to_delete_path"], "deleting data")
 			GenomeSpaceTest.deleting_data_test_ready = True
 		except Exception as e:
 			failures.append(e)
 		try:
-			self.upload_test_file("file_to_publish.txt", gs_file_paths["file_to_publish_path"], "getting DOI")
+			file_name = self.get_file_name(gs_file_paths["file_to_publish_path"])
+			self.upload_test_file(file_name, local_file_paths["file_to_publish_path"], gs_file_paths["file_to_publish_path"], "getting DOI")
 			GenomeSpaceTest.publishing_file_test_ready = True
+		except Exception as e:
+			failures.append(e)
+		try:
+			file_name = self.get_file_name(gs_file_paths["file_to_generate_public_URL_path"])
+			self.upload_test_file(file_name, local_file_paths["file_to_generate_public_URL_path"], gs_file_paths["file_to_generate_public_URL_path"], "importing file using public url")
+			GenomeSpaceTest.importing_url_test_ready = True
 		except Exception as e:
 			failures.append(e)
 		if failures != []:
 			report = ""
 			for item in failures:
-				report += item.__str__()
-				report += "\n"
+				report = report + item.__class__.__name__ + ": " + item.__str__() + "\n"
 			raise PreparationException(report)
 
 	#@staticmethod
 	def test_3_setting_up(self):
 		#self.driver = driver
+		print local_file_paths == {}
+		print
+		print
 		self.containers()
 		self.subdirs()
 		self.files()

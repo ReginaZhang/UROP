@@ -21,6 +21,7 @@ js = """var s=document.createElement(\'script\');
         s.type=\'text/javascript\';
         document.head.appendChild(s);"""
 
+
 class GenomeSpaceTest():
 	__metaclass__ = ABCMeta
 
@@ -31,6 +32,18 @@ class GenomeSpaceTest():
 	upload_file_test_ready = False
 	rename_file_test_ready = False
 	copying_data_test_ready = False
+	#generate_public_URL_test_ready = False
+	default_folder_to_be_used = False
+
+	user_details = {}
+	local_file_paths = {}
+	container_one = {}
+	container_two = {}
+	container_names = {}
+	gs_file_paths = {}
+	gs_folder_paths = {}
+	doi_info = {}
+
 
 	#@staticmethod
 	def send_request(self, function, function_call):
@@ -90,14 +103,20 @@ class GenomeSpaceTest():
 
 	#@staticmethod
 	def mounting(self, ctner_name):
-		t_mount_container["container"] = ctner_name
-		detail = str(t_mount_container)
+		if GenomeSpaceTest.container_one["container"] == ctner_name:
+			detail = str(GenomeSpaceTest.container_one)
+		elif GenomeSpaceTest.container_two["container"] == ctner_name:
+			detail = str(GenomeSpaceTest.container_two)
+		else:
+			raise MountingException("Container name is not one of the container names specified.")
 		tokens = detail.split("'")
 		detail = tokens[0]
 		for elem in tokens[1:]:
 			detail += '"' + elem
-		function = js_func["mount"] % (ctner_name, detail)
-		#print function
+		print "\n\nin mounting", GenomeSpaceTest.user_details["username"]
+		print type(detail), detail
+		function = js_func["mount"] % (GenomeSpaceTest.user_details["username"], ctner_name, detail)
+		print function
 		try:
 			self.send_request(function,"mount()")
 		except Exception as e:
@@ -110,8 +129,8 @@ class GenomeSpaceTest():
 		except AssertionError as e:
 			raise MountingException(response)
 
-	def uploading(self, filename, file_path):
-		function = js_func["upload_file"] % file_path #gs_file_paths["file_to_upload_path"]
+	def uploading(self, filename, file_path, data):
+		function = js_func["upload_file"] % (file_path, data) #gs_file_paths["file_to_upload_path"]
 		#print function
 		try:
 			print "b"
@@ -134,36 +153,56 @@ class GenomeSpaceTest():
 
 	@classmethod
 	def parse_config(cls):
+		#global user_details, local_file_paths, container_one, container_two, container_names, gs_file_paths, gs_folder_paths, doi_info
 		Config = ConfigParser.ConfigParser()
+		Config.optionxform = str
 		Config.read("./file_paths.cfg")
-		#local_file_paths = {}
 		errors = ""
-		for option in Config.options("LocalFilePaths"):
-			try:
-				local_file_paths[option] = Config.get("LocalFilePaths", option)
-			except Exception as e:
-				errors += e.__str__()
-				errors += "\n"
-		print local_file_paths
-		for option in Config.options("GSFilePaths"):
-			try:
-				gs_file_paths[option] = Config.get("GSFilePaths", option)
-			except Exception as e:
-				errors += e.__str__()
-				errors += "\n"
-		print gs_file_paths
+		GenomeSpaceTest.user_details, errors = cls.make_dict(Config, "UserDetails",errors, default_user_details)
+		GenomeSpaceTest.local_file_paths, errors = cls.make_dict(Config, "LocalFilePaths", errors, default_local_file_paths)
+		print "local paths: ", GenomeSpaceTest.local_file_paths
+		GenomeSpaceTest.container_one, errors = cls.make_dict(Config, "GSContainerOne", errors, default_container_one)
+		GenomeSpaceTest.container_two, errors = cls.make_dict(Config, "GSContainerTwo", errors, default_container_two)
+		GenomeSpaceTest.container_names = {"for mounting test" : GenomeSpaceTest.container_one["container"],
+                           "for data tests" : [GenomeSpaceTest.container_one["container"], GenomeSpaceTest.container_two["container"]]}
+		GenomeSpaceTest.gs_file_paths, errors = cls.make_dict(Config, "GSFilePaths", errors, default_gs_file_paths)
+		if ((("GSFilePath" in errors) or ("GSFolderPath" in errors)) and ("default is to be used" in errors)):
+			default_folder_to_be_used = True
 		new_file_name = Config.get("Others", "new_file_name_for_renaming_test")
-		tokens = gs_file_paths["before_rename_path"].split("/")
+		tokens = GenomeSpaceTest.gs_file_paths["file_to_rename_path"].split("/")
 		tokens = tokens[:-1]
 		if new_file_name == "":
 			new_file_name = default_file_name_for_renaming_test
+			errors += "in Others, new_file_name is not provided; default is to be used.\n"
 		tokens.append(new_file_name)
-		gs_file_paths["after_rename_path"] = "/".join(tokens)
-		print gs_file_paths
+		GenomeSpaceTest.gs_file_paths["after_rename_path"] = "/".join(tokens)
+		print GenomeSpaceTest.gs_file_paths
+		GenomeSpaceTest.gs_folder_paths, error = cls.make_dict(Config, "GSFolderPaths", errors, default_gs_folder_paths)
+		GenomeSpaceTest.doi_info, errors = cls.make_dict(Config, "DOIInfo", errors, default_doi_info)
 		if errors != "":
 			print >>sys.stderr, "Configeration Errors: \n"
 			print >>sys.stderr, errors
 			print >>sys.stderr, "="*70 + "\n"
+
+	@classmethod
+	def make_dict(cls, Config, sectionname, errors, default_dict):
+		dictnry = {}
+		for option in Config.options(sectionname):
+			value = Config.get(sectionname, option)
+			if value == "":
+				errors = errors + ("in %s, %s is not provided; default is to be used.\n" % (sectionname, option))
+				if (option != "copy_to_container_target_path") and (option != "move_to_container_target_path"):
+					dictnry[option] = (default_dict[option] % container_one["container"])
+				else:
+					dictnry[option] = (default_dict[option] % container_two["container"])
+			else:
+				try:
+					dictnry[option] = value
+				except Exception as e:
+					errors += e.__str__()
+					errors += "\n"
+		return (dictnry, errors)
+
 
 
 

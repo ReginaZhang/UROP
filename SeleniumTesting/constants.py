@@ -6,17 +6,9 @@ Module created on 26/11/2014
 '''
 
 # The constants for the page elements
-p_mount_container = {'os_ep': "mspEndPoint",
-                     'username': "mspUserName",
-                     'password': "mspPassword",
-                     'tenancy': "mspTenancyName",
-                     'container': "mspContainerName",
-                     'submit': "mspSwiftMountBtn",
-                     'successful_popup': "Mounted  container %s\n it should be available for use in a few seconds." }
 common = {'base_url': "https://genomespace-dev.genome.edu.au",
           'home_suffix': '/jsui',
-          'menu_file': "menuFile",
-          'Home_xpath': '//a[@dirpath="/Home"]'}
+          'menu_file': "menuFile",}
 
 page_register = {'link_text': "Register new GenomeSpace user",
                  'username': "usernameEntry",
@@ -28,72 +20,66 @@ page_login = {'login_name': "identity",
               'login_pw': "password",
               'login_signin': "signin_button"}
 
-page_container = {'menu_connect': "menuConnect",
-                  'swift_container': "swiftMenuItem",
-                  'mount_container': p_mount_container}
-
-page_file = {'sort_filename': "fileNameSortFiles",
-             'rename': "menuFileRename",
-             'copy/move': "menuFileMove",
-             'view_private_link':"menuFileLink",
-             'private_url_dialog_xpath':'//span[@id="adMessage"]/input'}
-
-page_botton = {'copy': '//div[contains(@tabindex, "-1")]//div[@class="dialogButtonDiv"]/button[contains(text(),"Copy")]'}
-
-page_input = {'copy/move': "//div[contains(@class, 'ui-dialog')]/div[preceding-sibling::div/span[contains(., 'Copy or Move')]]/input"}
-
 
 # following are the keys for the tests
-container_names = {"for mounting test" : "GSTest",
-                   "for data tests" : ["GSTest", "GS-Test"]}
 
-t_mount_container = {'Endpoint': 'https://keystone.rc.nectar.org.au:5000/v2.0/tokens',
-                     'osUserName': 'ruijing.zhang@unimelb.edu.au',
-                     'osPassword': 'NWE4Yzg4NTlkMmVlZTU4',
-                     'OsTenant': 'GenomicsVL',
-                     'container': None}
-test_register = {'username': "test",
-                 'pw': "test",
-                 'email': "ykowsar@gmail.com"}
+default_container_one = {'Endpoint': 'https://keystone.rc.nectar.org.au:5000/v2.0/tokens',
+                 'osUserName': 'ruijing.zhang@unimelb.edu.au',
+                 'osPassword': 'NWE4Yzg4NTlkMmVlZTU4',
+                 'OsTenant': 'GenomicsVL',
+                 'container': 'GSTest'}
 
-test_login = {'login_name': "devtest",
-              'login_pw': "devtest"}
+default_container_two = {'Endpoint': 'https://keystone.rc.nectar.org.au:5000/v2.0/tokens',
+                 'osUserName': 'ruijing.zhang@unimelb.edu.au',
+                 'osPassword': 'NWE4Yzg4NTlkMmVlZTU4',
+                 'OsTenant': 'GenomicsVL',
+                 'container': 'GS-Test'}
 
-test_container = {'mount_container': t_mount_container}
+'''container_names = {"for mounting test" : container_one["container"],
+                   "for data tests" : [container_one["container"], container_two["container"]]}'''
 
-test_folder = {'GS-Demo_xpath': "//a[@dirpath='/Home/swift:GS-Demo']",
-               'test1_xpath': "//a[@dirpath='/Home/swift:GS-Demo/test1']",
-               'test2_xpath': "//a[@dirpath='/Home/swift:GS-Demo/test2']",
-               'GSTest_xpath':'//tbody//div[@id="directoriesDiv"]//a[@dirpath="/Home/swift:'+ container_names["for data tests"][0] +'"]',
-               'subdir1_path': '/Home/swift:'+ container_names["for data tests"][0] +'/subdir1',
-               'subdir2_path': '/Home/swift:'+ container_names["for data tests"][0] +'/subdir2'}
+default_user_details = {'username': "devtest",
+                'password': "devtest",
+                'email': "ykowsar@gmail.com"}
 
-gs_file_paths = {'before_rename_path': "/Home/swift:"+ container_names["for data tests"][0] +"/before_rename.txt",
-             'after_rename_path': "/Home/swift:"+ container_names["for data tests"][0] +"/after_rename.txt",
-             'file_to_copy': "file_to_copy.txt",
-             'copy_source_path': "/Home/swift:"+ container_names["for data tests"][0] +"/subdir1/file_to_copy.txt",
-             'copy_to_folder_target_path': "/Home/swift:"+ container_names["for data tests"][0] +"/subdir2/file_to_copy.txt",
-             'copy_to_container_target_path': "/Home/swift:"+ container_names["for data tests"][1] +"/file_to_copy.txt",
-             'move_source_path': {"folder": "/Home/swift:"+ container_names["for data tests"][0] +"/subdir1/file_to_move1.txt",
-                                  "container": "/Home/swift:"+ container_names["for data tests"][0] +"/subdir1/file_to_move2.txt"},
-             'move_target_path': {"folder": "/Home/swift:"+ container_names["for data tests"][0] +"/subdir2/file_to_move1.txt",
-                                  "container": "/Home/swift:"+ container_names["for data tests"][1] +"/file_to_move2.txt"},
-             'file_to_delete_path': "/Home/swift:"+ container_names["for data tests"][0] +"/file_to_delete.txt",
-             'file_to_share_xpath': '//div[@id="filesDiv2"]//a[@filepath="/Home/swift:'+ container_names["for data tests"][0] +'/file_to_share.txt"]',
-             'file_to_upload_path': "/Home/swift:"+ container_names["for data tests"][0] +"/file_to_upload.txt",
-             'file_to_publish_path': "/Home/swift:"+ container_names["for data tests"][0] +"/file_to_publish.txt",
-             'file_to_generate_public_URL_path': "/Home/swift:"+ container_names["for data tests"][0] +"/file_for_pURL.txt"}
+'''gs_folder_paths = {'dir1_path': '/Home/swift:'+ container_names["for data tests"][0] +'/subdir1',
+                   'dir2_path': '/Home/swift:'+ container_names["for data tests"][0] +'/subdir2'}'''
+
+default_gs_folder_paths = {'dir1_path': '/Home/swift:%s/subdir1',
+                        'dir2_path': '/Home/swift:%s/subdir2'}
+
+default_gs_file_paths = {'file_to_rename_path': "/Home/swift:%s/before_rename.txt",
+                 'after_rename_path': "/Home/swift:%s/after_rename.txt",
+                 'file_to_copy_source_path': "/Home/swift:%s/subdir1/file_to_copy.txt",
+                 'copy_to_folder_target_path': "/Home/swift:%s/subdir2/file_to_copy.txt",
+                 'copy_to_container_target_path': "/Home/swift:%s/file_to_copy.txt",
+                 'file_to_move_to_folder_source_path': "/Home/swift:%s/subdir1/file_to_move1.txt",
+                 'file_to_move_to_container_source_path': "/Home/swift:%s/subdir1/file_to_move2.txt",
+                 'move_to_folder_target_path': "/Home/swift:%s/subdir2/file_to_move1.txt",
+                 'move_to_container_target_path': "/Home/swift:%s/file_to_move2.txt",
+                 'file_to_delete_path': "/Home/swift:%s/file_to_delete.txt",
+                 'file_to_upload_path': "/Home/swift:%s/file_to_upload.txt",
+                 'file_to_publish_path': "/Home/swift:%s/file_to_publish.txt",
+                 'file_to_generate_public_URL_path': "/Home/swift:%s/file_for_pURL.txt"}
 
 default_file_name_for_renaming_test = "after_rename.txt"
 
-doi_json = {"Title": "test",
+default_doi_info = {"Title": "test",
             "TitleType": "AlternativeTitle",
             "Email": "test@test.com",
             "Creator": "Regina",
             "Contributors": "John Dough",
             "Description": "test test"}
 
-local_file_paths = {}
+default_local_file_paths = {'file_to_rename_path': './test_files/before_rename.txt',
+                            'file_to_copy_source_path': './test_files/file_to_copy.txt',
+                            'file_to_move_to_folder_source_path': './test_files/file_to_move1.txt',
+                            'file_to_move_to_container_source_path': './test_files/file_to_move2.txt',
+                            'file_to_delete_path': './test_files/file_to_delete.txt',
+                            'file_to_upload_path': './test_files/file_to_upload.txt',
+                            'file_to_publish_path': './test_files/file_to_publish.txt',
+                            'file_to_generate_public_URL_path': './test_files/file_for_pURL.txt',
+                            'file_to_import_with_URL_path': './test_files/file_for_pURL.txt'}
 
 """//div[contains(@class, 'ui-dialog')]/div[preceding-sibling::div/span[contains(., 'Rename display')]]/input[@value='test']"""
 
@@ -125,14 +111,14 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
            'mount':'''function mount() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("PUT", "''' + common['base_url'] + '''/datamanager/v1.0/storage/''' + test_login["login_name"] + '''/swift/%s", false);\
+                xmlhttp.open("PUT", "''' + common['base_url'] + '''/datamanager/v1.0/storage/%s/swift/%s", false);\
                 xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
                 xmlhttp.send(JSON.stringify({"storageType":"Swift","attributes":%s,"filePermissions":["R","W"]}));\
                 getResponse(xmlhttp);\
             }''',
             'disconnect':'''function disconnect() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("DELETE", "''' + common['base_url'] + '''/datamanager/v1.0/storage/''' + test_login["login_name"] + '''/swift/%s", false);\
+                xmlhttp.open("DELETE", "''' + common['base_url'] + '''/datamanager/v1.0/storage/%s/swift/%s", false);\
                 xmlhttp.send();\
                 getResponse(xmlhttp);\
             }''',
@@ -163,13 +149,6 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                 xmlhttp.send(JSON.stringify({"path":"%s"}));\
                 getResponse(xmlhttp);\
             }''',
-            'move_btw_containers':'''function move_btw_containers() {\
-                var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("POST", "''' + common['base_url'] + '''/datamanager/v1.0/file//Home/swift:'''+ container_names["for data tests"][0] +'''/subdir2/file_to_move.txt",false);\
-                xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");\
-                xmlhttp.send(JSON.stringify({"path":"/Home/swift:'''+ container_names["for data tests"][1] +'''/file_to_move.txt"}));\
-                getResponse(xmlhttp);\
-            }''',
             'generate_public_url':'''function generate_public_url() {\
                 var xmlhttp=new XMLHttpRequest();\
                 xmlhttp.open("HEAD", "''' + common['base_url'] + '''/datamanager/file%s?signedURL=true",false);\
@@ -186,7 +165,7 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
             'import_url':'''function import_url() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("PUT", "''' + common['base_url'] + '''/datamanager/v1.0/file/Home/swift:'''+ container_names["for data tests"][0] +'''/subdir1", false);\
+                xmlhttp.open("PUT", "''' + common['base_url'] + '''/datamanager/v1.0/file/Home/swift:%s/subdir1", false);\
                 xmlhttp.setRequestHeader("x-gs-fetch-source", "%s");\
                 xmlhttp.send(JSON.stringify({"isDirectory":"true"}));\
                 getResponse(xmlhttp);\
@@ -217,7 +196,7 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                     var putrequest=new XMLHttpRequest();\
                     putrequest.open("PUT", url+"/"+path, false);\
                     putrequest.setRequestHeader("X-Auth-Token", token);\
-                    putrequest.send();\
+                    putrequest.send(%s);\
                     getResponse(putrequest);\
                 }\
             }''',
@@ -227,7 +206,7 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                 xmlhttp.setRequestHeader("Content-Type", "application/json");\
                 xmlhttp.send(JSON.stringify({"Title":"%s", "TitleType":"%s", "Email":"%s", "Creator":"%s", "Contributors":"%s", "Description":"%s"}));\
                 getResponse(xmlhttp);\
-            }''' % (gs_file_paths["file_to_publish_path"],doi_json["Title"], doi_json["TitleType"], doi_json["Email"], doi_json["Creator"],doi_json["Contributors"], doi_json["Description"]),
+            }''' ,
             'get_tags':'''function get_tags() {\
                 var xmlhttp=new XMLHttpRequest();\
                 xmlhttp.open("Get", "''' + common["base_url"] + '''/datamanager/v1.0/tags/", false);\

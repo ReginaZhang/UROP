@@ -19,7 +19,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 #import mount_disconnect as md
 import unicodedata
 
-from genome_space_test import GenomeSpaceTest
+from genome_space_test import *
 
 
 #@unittest.skipIf(rl.logged_in == False, "I've skipped the whole class")
@@ -101,8 +101,8 @@ class DataSharing(GenomeSpaceTest):
         driver = self.driver
         wait = self.wait
         try:
-            elem = wait.until(EC.element_to_be_clickable((By.XPATH, test_folder["UROP_xpath"])))
-            elem = driver.find_element_by_xpath(test_folder["UROP_xpath"])
+            elem = wait.until(EC.element_to_be_clickable((By.XPATH, gs_folder_paths["UROP_xpath"])))
+            elem = driver.find_element_by_xpath(gs_folder_paths["UROP_xpath"])
             elem.click()
             time.sleep(8)
             elem = wait.until(EC.element_to_be_clickable((By.XPATH, gs_file_paths["file_to_share_xpath"])))
