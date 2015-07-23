@@ -2,59 +2,51 @@ test_1a_register (__main__.GSChrome) ... skipped 'Logged in'
 test_1b_login (__main__.GSChrome) ... skipped 'Logged in'
 test_2a_mount_container (__main__.GSChrome) ... ok
 test_2b_disconnect_container (__main__.GSChrome) ... ok
-test_3_setting_up (__main__.GSChrome) ... ok
-test_4a_import_url (__main__.GSChrome) ... ok
-test_4b_upload_file (__main__.GSChrome) ... ok
-test_5a_generate_public_URL (__main__.GSChrome) ... ok
-test_6a_change_file_name (__main__.GSChrome) ... ERROR
-test_6b_copy_data_btw_folders (__main__.GSChrome) ... ok
-test_6c_copy_data_btw_containers (__main__.GSChrome) ... ERROR
-test_6d_delete_file (__main__.GSChrome) ... ok
-test_6e_move_data_btw_folders (__main__.GSChrome) ... ERROR
-test_6f_move_data_btw_containers (__main__.GSChrome) ... ERROR
-test_7b_launch_with_file (__main__.GSChrome) ... ok
-test_8_get_DOI (__main__.GSChrome) ... ok
-
-======================================================================
-ERROR: test_6a_change_file_name (__main__.GSChrome)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/Users/Regina/Documents/VLSCI_MAC_Documents/UROP/SeleniumTesting/data_manipulation.py", line 58, in test_6a_change_file_name
-    raise RenameException("Failed to rename the file: " + response)
-RenameException: Failed to rename the file: Failure: 500  Response: <html><head><title>Apache Tomcat/7.0.26 - Error report</title><style><!--H1 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;} H2 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;} H3 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:14px;} BODY {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;} B {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;} P {font-family:Tahoma,Arial,sans-serif;background:white;color:black;font-size:12px;}A {color : black;}A.name {color : black;}HR {color : #525D76;}--></style> </head><body><h1>HTTP Status 500 - </h1><HR size="1" noshade="noshade"><p><b>type</b> Exception report</p><p><b>message</b> <u></u></p><p><b>description</b> <u>The server encountered an internal error () that prevented it from fulfilling this request.</u></p><p><b>exception</b> <pre>java.lang.NullPointerException
-</pre></p><p><b>note</b> <u>The full stack trace of the root cause is available in the Apache Tomcat/7.0.26 logs.</u></p><HR size="1" noshade="noshade"><h3>Apache Tomcat/7.0.26</h3></body></html>
-
-======================================================================
-ERROR: test_6c_copy_data_btw_containers (__main__.GSChrome)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/Users/Regina/Documents/VLSCI_MAC_Documents/UROP/SeleniumTesting/data_manipulation.py", line 134, in test_6c_copy_data_btw_containers
-    raise CopyException("Failed to copy the file between containers. \n" + response)
-CopyException: Failed to copy the file between containers. 
-Failure: 500  Response: <html><head><title>Apache Tomcat/7.0.26 - Error report</title><style><!--H1 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;} H2 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;} H3 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:14px;} BODY {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;} B {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;} P {font-family:Tahoma,Arial,sans-serif;background:white;color:black;font-size:12px;}A {color : black;}A.name {color : black;}HR {color : #525D76;}--></style> </head><body><h1>HTTP Status 500 - </h1><HR size="1" noshade="noshade"><p><b>type</b> Exception report</p><p><b>message</b> <u></u></p><p><b>description</b> <u>The server encountered an internal error () that prevented it from fulfilling this request.</u></p><p><b>exception</b> <pre>java.lang.NullPointerException
-</pre></p><p><b>note</b> <u>The full stack trace of the root cause is available in the Apache Tomcat/7.0.26 logs.</u></p><HR size="1" noshade="noshade"><h3>Apache Tomcat/7.0.26</h3></body></html>
-
-======================================================================
-ERROR: test_6e_move_data_btw_folders (__main__.GSChrome)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/Users/Regina/Documents/VLSCI_MAC_Documents/UROP/SeleniumTesting/data_manipulation.py", line 186, in test_6e_move_data_btw_folders
-    raise MoveException("Failed to move the data between folders. \n" + response)
-MoveException: Failed to move the data between folders. 
-Failure: 500  Response: <html><head><title>Apache Tomcat/7.0.26 - Error report</title><style><!--H1 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;} H2 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;} H3 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:14px;} BODY {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;} B {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;} P {font-family:Tahoma,Arial,sans-serif;background:white;color:black;font-size:12px;}A {color : black;}A.name {color : black;}HR {color : #525D76;}--></style> </head><body><h1>HTTP Status 500 - </h1><HR size="1" noshade="noshade"><p><b>type</b> Exception report</p><p><b>message</b> <u></u></p><p><b>description</b> <u>The server encountered an internal error () that prevented it from fulfilling this request.</u></p><p><b>exception</b> <pre>java.lang.NullPointerException
-</pre></p><p><b>note</b> <u>The full stack trace of the root cause is available in the Apache Tomcat/7.0.26 logs.</u></p><HR size="1" noshade="noshade"><h3>Apache Tomcat/7.0.26</h3></body></html>
-
-======================================================================
-ERROR: test_6f_move_data_btw_containers (__main__.GSChrome)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/Users/Regina/Documents/VLSCI_MAC_Documents/UROP/SeleniumTesting/data_manipulation.py", line 211, in test_6f_move_data_btw_containers
-    raise MoveException("Failed to move the data between containers. \n" + response)
-MoveException: Failed to move the data between containers. 
-Failure: 500  Response: <html><head><title>Apache Tomcat/7.0.26 - Error report</title><style><!--H1 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;} H2 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;} H3 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:14px;} BODY {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;} B {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;} P {font-family:Tahoma,Arial,sans-serif;background:white;color:black;font-size:12px;}A {color : black;}A.name {color : black;}HR {color : #525D76;}--></style> </head><body><h1>HTTP Status 500 - </h1><HR size="1" noshade="noshade"><p><b>type</b> Exception report</p><p><b>message</b> <u></u></p><p><b>description</b> <u>The server encountered an internal error () that prevented it from fulfilling this request.</u></p><p><b>exception</b> <pre>java.lang.NullPointerException
-</pre></p><p><b>note</b> <u>The full stack trace of the root cause is available in the Apache Tomcat/7.0.26 logs.</u></p><HR size="1" noshade="noshade"><h3>Apache Tomcat/7.0.26</h3></body></html>
-
-----------------------------------------------------------------------
-Ran 16 tests in 441.840s
-
-FAILED (errors=4, skipped=2)
+test_3_setting_up (__main__.GSChrome) ... Traceback (most recent call last):
+  File "GSchrome.py", line 87, in <module>
+    unittest.main(verbosity=2)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/unittest/main.py", line 95, in __init__
+    self.runTests()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/unittest/main.py", line 232, in runTests
+    self.result = testRunner.run(self.test)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/unittest/runner.py", line 151, in run
+    test(result)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/unittest/suite.py", line 70, in __call__
+    return self.run(*args, **kwds)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/unittest/suite.py", line 108, in run
+    test(result)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/unittest/suite.py", line 70, in __call__
+    return self.run(*args, **kwds)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/unittest/suite.py", line 108, in run
+    test(result)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/unittest/case.py", line 395, in __call__
+    return self.run(*args, **kwds)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/unittest/case.py", line 331, in run
+    testMethod()
+  File "/Users/Regina/Documents/VLSCI_MAC_Documents/UROP/SeleniumTesting/data_test_preparation.py", line 225, in test_3_setting_up
+    self.files()
+  File "/Users/Regina/Documents/VLSCI_MAC_Documents/UROP/SeleniumTesting/data_test_preparation.py", line 157, in files
+    self.upload_test_file(file_name, GST.local_file_paths["file_to_generate_public_URL_path"], GST.gs_file_paths["file_to_generate_public_URL_path"], "generating public URL")
+  File "/Users/Regina/Documents/VLSCI_MAC_Documents/UROP/SeleniumTesting/data_test_preparation.py", line 127, in upload_test_file
+    self.uploading(filename, gs_path, data)
+  File "/Users/Regina/Documents/VLSCI_MAC_Documents/UROP/SeleniumTesting/genome_space_test.py", line 140, in uploading
+    self.send_request(function, "upload_file()")
+  File "/Users/Regina/Documents/VLSCI_MAC_Documents/UROP/SeleniumTesting/genome_space_test.py", line 54, in send_request
+    driver.execute_script(function_call)
+  File "/Library/Python/2.7/site-packages/selenium/webdriver/remote/webdriver.py", line 403, in execute_script
+    {'script': script, 'args':converted_args})['value']
+  File "/Library/Python/2.7/site-packages/selenium/webdriver/remote/webdriver.py", line 173, in execute
+    response = self.command_executor.execute(driver_command, params)
+  File "/Library/Python/2.7/site-packages/selenium/webdriver/remote/remote_connection.py", line 349, in execute
+    return self._request(command_info[0], url, body=data)
+  File "/Library/Python/2.7/site-packages/selenium/webdriver/remote/remote_connection.py", line 380, in _request
+    resp = self._conn.getresponse()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/httplib.py", line 1045, in getresponse
+    response.begin()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/httplib.py", line 409, in begin
+    version, status, reason = self._read_status()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/httplib.py", line 365, in _read_status
+    line = self.fp.readline(_MAXLINE + 1)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/socket.py", line 476, in readline
+    data = self._sock.recv(self._rbufsize)
+KeyboardInterrupt

@@ -80,9 +80,8 @@ class GSChrome(unittest.TestCase, GSTestCases):
 
     @classmethod
     def tearDownClass(cls):
-        #cls.driver.close()
-        #cls.driver.quit()
-        pass
+        cls.driver.close()
+        cls.driver.quit()
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

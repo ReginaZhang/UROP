@@ -11,7 +11,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from constants import common
 from selenium.common.exceptions import *
-import register_login as rl
+import registration_login as rl
 import pickle
 import sys
 
@@ -74,4 +74,4 @@ class GSFirefox(unittest.TestCase, GSTestCases):
         cls.driver.quit()
 
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=2)

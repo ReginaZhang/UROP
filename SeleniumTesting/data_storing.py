@@ -39,13 +39,6 @@ class DataStoring(GST):
             raise unittest.SkipTest("Skipped for failed to prepare importing file using public URL test.")
         self.dismiss_dialogs()
         function = js_func["import_url"] % (GST.gs_file_paths["file_to_import_with_URL_path"], GST.gs_folder_paths["dir1_path"])
-        print
-        print
-        print
-        print function
-        print
-        print
-        print
         try:
             self.send_request(function, "import_url()")
         except Exception as e:
