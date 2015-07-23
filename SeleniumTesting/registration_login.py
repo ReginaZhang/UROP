@@ -31,7 +31,7 @@ class RegistrationLogin(GST):
         used for testing already exists.
         """
         #global logged_in
-        #print GenomeSpaceTest.logged_in
+        #print GST.logged_in
         if GST.logged_in == True:
             raise unittest.SkipTest("Logged in")
         driver = self.driver

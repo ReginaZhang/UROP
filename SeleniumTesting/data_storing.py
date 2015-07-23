@@ -17,9 +17,9 @@ from selenium.webdriver.common.action_chains import ActionChains
 #import register_login as rl
 #import mount_disconnect as md
 
-from genome_space_test import GenomeSpaceTest
+from genome_space_test import GenomeSpaceTest as GST
 
-class DataStoring(GenomeSpaceTest):
+class DataStoring(GST):
     
     __metaclass__ = ABCMeta
     
@@ -33,21 +33,35 @@ class DataStoring(GenomeSpaceTest):
         
         Skipped if the login test was failed.
         """
-        if (not GenomeSpaceTest.logged_in) or (not GenomeSpaceTest.data_testing_swift_mounted):
+        if (not GST.logged_in) or (not GST.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
+        elif not GST.importing_url_test_ready:
+            raise unittest.SkipTest("Skipped for failed to prepare importing file using public URL test.")
         self.dismiss_dialogs()
-        function = js_func["import_url"] % (container_one["container"],"https://swift.rc.nectar.org.au:8888/v1/AUTH_f0d7c5b248004e80ae6f6afa8452d70c/UROP/subdir1%2Ffile_to_share.txt?temp_url_sig=86f1307755aec7340432f2467d5906e3c0511ca0&temp_url_expires=1418446695")
+        function = js_func["import_url"] % (GST.gs_file_paths["file_to_import_with_URL_path"], GST.gs_folder_paths["dir1_path"])
+        print
+        print
+        print
+        print function
+        print
+        print
+        print
         try:
             self.send_request(function, "import_url()")
         except Exception as e:
             raise ImportURLException(e.__str__())
         try:
             response = self.get_response()
-            assert "Failure" in response
-            assert "Malformed url" in response
-            self.refresh_page()
+            print response
+            assert "Success" in response
         except AssertionError:
-            raise ImportURLException(response)
+            raise ImportURLException("Failed to generate public URL for importing. " + response)
+        try:
+            response = self.get_response()
+            print response
+            assert "Success" in response
+        except AssertionError:
+            raise ImportURLException("Failed to import data using public URL. " + response)
     
     #@unittest.skip("problem. Skip to save time.")
     def test_4b_upload_file(self):
@@ -59,13 +73,15 @@ class DataStoring(GenomeSpaceTest):
         
         Skipped if the login test was failed.
         """
-        if (not GenomeSpaceTest.logged_in) or (not GenomeSpaceTest.data_testing_swift_mounted):
+        if (not GST.logged_in) or (not GST.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
-        elif not GenomeSpaceTest.upload_file_test_ready:
+        elif not GST.upload_file_test_ready:
             raise unittest.SkipTest("Skipped for failed to prepare uploading test.")
         self.dismiss_dialogs()
         try:
-            self.uploading("file_to_upload.txt", gs_file_paths["file_to_upload_path"])
+            f = open(GST.local_file_paths["file_to_upload_path"], "r")
+            data = f.read()
+            self.uploading("file_to_upload.txt", GST.gs_file_paths["file_to_upload_path"], data)
         except Exception as e:
             raise DragAndDropException(e.__str__())
         '''function = js_func["upload_file"] % gs_file_paths["file_to_upload_path"]

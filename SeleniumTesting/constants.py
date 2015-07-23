@@ -60,7 +60,9 @@ default_gs_file_paths = {'file_to_rename_path': "/Home/swift:%s/before_rename.tx
                  'file_to_delete_path': "/Home/swift:%s/file_to_delete.txt",
                  'file_to_upload_path': "/Home/swift:%s/file_to_upload.txt",
                  'file_to_publish_path': "/Home/swift:%s/file_to_publish.txt",
-                 'file_to_generate_public_URL_path': "/Home/swift:%s/file_for_pURL.txt"}
+                 'file_to_generate_public_URL_path': "/Home/swift:%s/file_for_pURL.txt",
+                 'file_to_launch_GVL_with': '/Home/swift:%s/file_to_launch_GVL_with.txt',
+                 'file_to_import_with_URL_path': '/Home/swift:%s/file_for_pURL.txt'}
 
 default_file_name_for_renaming_test = "after_rename.txt"
 
@@ -79,6 +81,8 @@ default_local_file_paths = {'file_to_rename_path': './test_files/before_rename.t
                             'file_to_upload_path': './test_files/file_to_upload.txt',
                             'file_to_publish_path': './test_files/file_to_publish.txt',
                             'file_to_generate_public_URL_path': './test_files/file_for_pURL.txt',
+                            'file_to_import_with_URL_path': './test_files/file_for_pURL.txt',
+                            'file_to_launch_GVL_with': './test_files/file_to_launch_GVL_with.txt',
                             'file_to_import_with_URL_path': './test_files/file_for_pURL.txt'}
 
 """//div[contains(@class, 'ui-dialog')]/div[preceding-sibling::div/span[contains(., 'Rename display')]]/input[@value='test']"""
@@ -165,21 +169,29 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
             }''',
             'import_url':'''function import_url() {\
                 var xmlhttp=new XMLHttpRequest();\
-                xmlhttp.open("PUT", "''' + common['base_url'] + '''/datamanager/v1.0/file/Home/swift:%s/subdir1", false);\
-                xmlhttp.setRequestHeader("x-gs-fetch-source", "%s");\
-                xmlhttp.send(JSON.stringify({"isDirectory":"true"}));\
+                xmlhttp.open("HEAD", "''' + common['base_url'] + '''/datamanager/file%s?signedURL=true",false);\
+                xmlhttp.send();\
                 getResponse(xmlhttp);\
+                public_url = xmlhttp.getResponseHeader("external-link");\
+                if (xmlhttp.status < 300 && xmlhttp.status > 199) {\
+                    xmlhttp.open("PUT", "''' + common['base_url'] + '''/datamanager/v1.0/file%s", false);\
+                    xmlhttp.setRequestHeader("x-gs-fetch-source", public_url);\
+                    xmlhttp.send(JSON.stringify({"isDirectory":"true"}));\
+                    getResponse(xmlhttp);\
+                }\
             }''',
             'launch_with_file':'''function launch_with_file() {\
                 var xmlhttp=new XMLHttpRequest();\
                 xmlhttp.open("POST", "''' + common['base_url'] + '''/identityServer/usermanagement/utility/usageLog", false);\
                 xmlhttp.setRequestHeader("Content-Type", "application/json");\
-                xmlhttp.send(JSON.stringify({"module":"GSUI","function":"LAUNCH","username":"test","entity":"Galaxy : %s"}));\
+                var fileURL = "''' + common['base_url'] + '''/datamanager/file%s";\
+                var encodedURL = encodeURIComponent(fileURL);\
+                xmlhttp.send(JSON.stringify({"module":"GSUI","function":"LAUNCH","username":"%s","entity":"Galaxy : " + fileURL}));\
                 getResponse(xmlhttp);\
                 var xmlhttp1=new XMLHttpRequest();\
-                xmlhttp1.open("GET","''' + common['base_url'] + '''/atm/v1.0/webtool/Galaxy/launchurl?URL=%s",false);\
+                xmlhttp1.open("GET","''' + common['base_url'] + '''/atm/v1.0/webtool/Galaxy/launchurl?URL=" + encodedURL,false);\
                 xmlhttp1.setRequestHeader("Content-Type", "application/json");\
-                xmlhttp1.send(JSON.stringify({"module":"GSUI","function":"LAUNCH","username":"test","entity":"Galaxy : %s"}));\
+                xmlhttp1.send();\
                 getResponse(xmlhttp1);\
             }''',
             'upload_file':'''function upload_file() {\
@@ -196,7 +208,7 @@ js_func = {'get_response': '''function getResponse(xmlhttp) {\
                     var putrequest=new XMLHttpRequest();\
                     putrequest.open("PUT", url+"/"+path, false);\
                     putrequest.setRequestHeader("X-Auth-Token", token);\
-                    putrequest.send(%s);\
+                    putrequest.send("%s");\
                     getResponse(putrequest);\
                 }\
             }''',

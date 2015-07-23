@@ -18,9 +18,9 @@ from selenium.webdriver.common.action_chains import ActionChains
 #import register_login as rl
 import mount_disconnect as md
 
-from genome_space_test import GenomeSpaceTest
+from genome_space_test import GenomeSpaceTest as GST
 
-class DataManipulation(GenomeSpaceTest):
+class DataManipulation(GST):
     
     __metaclass__ = ABCMeta
     
@@ -32,9 +32,9 @@ class DataManipulation(GenomeSpaceTest):
         
         Skipped if the login test was failed.
         """
-        if (not GenomeSpaceTest.logged_in) or (not GenomeSpaceTest.data_testing_swift_mounted):
+        if (not GST.logged_in) or (not GST.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
-        elif not GenomeSpaceTest.rename_file_test_ready:
+        elif not GST.rename_file_test_ready:
             raise unittest.SkipTest("Skipped for failed to prepare renaming test.")
         self.dismiss_dialogs()
         """file_sizes = ["small"]
@@ -42,7 +42,7 @@ class DataManipulation(GenomeSpaceTest):
         failure_keys = []
         for size in file_sizes:"""
             #print 1
-        function = js_func["rename"] % (gs_file_paths["before_rename_path"], gs_file_paths["after_rename_path"])
+        function = js_func["rename"] % (GST.gs_file_paths["file_to_rename_path"], GST.gs_file_paths["after_rename_path"])
         print function
         try:
             self.send_request(function, "rename()")
@@ -90,12 +90,12 @@ class DataManipulation(GenomeSpaceTest):
         Skipped if the Login test was failed.
         """
         #print "copying data between folders"
-        if (not GenomeSpaceTest.logged_in) or (not GenomeSpaceTest.data_testing_swift_mounted):
+        if (not GST.logged_in) or (not GST.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
-        elif not GenomeSpaceTest.copying_data_test_ready:
+        elif not GST.copying_data_test_ready:
             raise unittest.SkipTest("Skipped for failed to prepare copying data tests.")
         self.dismiss_dialogs()
-        function = js_func["copy_file"] % (gs_file_paths["copy_target_path"]["folder"], gs_file_paths["copy_source_path"])
+        function = js_func["copy_file"] % (GST.gs_file_paths["copy_to_folder_target_path"], GST.gs_file_paths["file_to_copy_source_path"])
         try:
             self.send_request(function, "copy_file()")
         except Exception as e:
@@ -116,12 +116,12 @@ class DataManipulation(GenomeSpaceTest):
         Skipped if the login test was failed.
         """
         #print "copying data between containers"
-        if (not GenomeSpaceTest.logged_in) or (not GenomeSpaceTest.data_testing_swift_mounted):
+        if (not GST.logged_in) or (not GST.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
-        elif not GenomeSpaceTest.copying_data_test_ready:
+        elif not GST.copying_data_test_ready:
             raise unittest.SkipTest("Skipped for failed to prepare copying data tests.")
         self.dismiss_dialogs()
-        function = js_func["copy_file"] % (gs_file_paths["copy_target_path"]["container"], gs_file_paths["copy_source_path"])
+        function = js_func["copy_file"] % (GST.gs_file_paths["copy_to_container_target_path"], GST.gs_file_paths["file_to_copy_source_path"])
         try:
             self.send_request(function, "copy_file()")
         except Exception as e:
@@ -142,12 +142,12 @@ class DataManipulation(GenomeSpaceTest):
         Skipped if the login test was failed.
         """
         #print "deleting file"
-        if (not GenomeSpaceTest.logged_in) or (not GenomeSpaceTest.data_testing_swift_mounted):
+        if (not GST.logged_in) or (not GST.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
-        elif not GenomeSpaceTest.deleting_data_test_ready:
+        elif not GST.deleting_data_test_ready:
             raise unittest.SkipTest("Skipped for failed to prepare deleting test.")
         self.dismiss_dialogs()
-        function = js_func["delete"] % gs_file_paths["file_to_delete_path"]
+        function = js_func["delete"] % GST.gs_file_paths["file_to_delete_path"]
         try:
             self.send_request(function, "delete_data()")
         except Exception as e:
@@ -168,12 +168,12 @@ class DataManipulation(GenomeSpaceTest):
         Skipped if the login test was failed.
         """
         #print "moving data between folders"
-        if (not GenomeSpaceTest.logged_in) or (not GenomeSpaceTest.data_testing_swift_mounted):
+        if (not GST.logged_in) or (not GST.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
-        elif not GenomeSpaceTest.moving_data_test_ready:
+        elif not GST.moving_data_test_ready:
             raise unittest.SkipTest("Skipped for failed to prepare moving data tests.")
         self.dismiss_dialogs()
-        function = js_func["move_file"] % (gs_file_paths["move_source_path"]["folder"], gs_file_paths["move_target_path"]["folder"])
+        function = js_func["move_file"] % (GST.gs_file_paths["file_to_move_to_folder_source_path"], GST.gs_file_paths["move_to_folder_target_path"])
         try:
             self.send_request(function, "move_file()")
         except Exception as e:
@@ -193,12 +193,12 @@ class DataManipulation(GenomeSpaceTest):
         Skipped if the login test was failed.
         """
         #print "moving data between containers"
-        if (not GenomeSpaceTest.logged_in) or (not GenomeSpaceTest.data_testing_swift_mounted):
+        if (not GST.logged_in) or (not GST.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
-        elif not GenomeSpaceTest.moving_data_test_ready:
+        elif not GST.moving_data_test_ready:
             raise unittest.SkipTest("Skipped for failed to prepare moving data tests.")
         self.dismiss_dialogs()
-        function = js_func["move_file"] % (gs_file_paths["move_source_path"]["container"], gs_file_paths["move_target_path"]["container"])
+        function = js_func["move_file"] % (GST.gs_file_paths["file_to_move_to_container_source_path"], GST.gs_file_paths["move_to_container_target_path"])
         try:
             self.send_request(function, "move_file()")
         except Exception as e:

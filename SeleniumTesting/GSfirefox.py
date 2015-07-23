@@ -13,6 +13,7 @@ from constants import common
 from selenium.common.exceptions import *
 import register_login as rl
 import pickle
+import sys
 
 #driver = None
 
@@ -21,11 +22,12 @@ class GSFirefox(unittest.TestCase, GSTestCases):
     def setUpClass(cls):
         #global driver
         #if driver==None:
-        print 1
+        #print 1
+        cls.parse_config()
         cls.driver_name = "firefox"
-        print 2
+        #print 2
         cls.driver = webdriver.Firefox()
-        print 3
+        #print 3
         driver = cls.driver
         driver.implicitly_wait(10)
         cls.wait = WebDriverWait(driver,20)
@@ -39,7 +41,7 @@ class GSFirefox(unittest.TestCase, GSTestCases):
             alert = driver.switch_to_alert()
             text = alert.text
             alert.accept()
-            print ("Unexpected alert present: " + text)
+            print >>sys.stderr, ("Unexpected alert present: " + text)
         except AssertionError:
             driver.close()
             raise Exception("Page not found: " + home_page)
@@ -64,7 +66,7 @@ class GSFirefox(unittest.TestCase, GSTestCases):
             alert = driver.switch_to_alert()
             text = alert.text
             alert.dismiss()
-            print "Unexpected alert present: " + text
+            print >>sys.stderr, "Unexpected alert present: " + text
 
     @classmethod
     def tearDownClass(cls):

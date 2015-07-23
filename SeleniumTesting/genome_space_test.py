@@ -32,8 +32,10 @@ class GenomeSpaceTest():
 	upload_file_test_ready = False
 	rename_file_test_ready = False
 	copying_data_test_ready = False
-	#generate_public_URL_test_ready = False
+	generate_public_URL_test_ready = False
 	default_folder_to_be_used = False
+	launch_GVL_with_file_test_ready = False
+	importing_url_test_ready = False
 
 	user_details = {}
 	local_file_paths = {}
@@ -130,8 +132,9 @@ class GenomeSpaceTest():
 			raise MountingException(response)
 
 	def uploading(self, filename, file_path, data):
+		print data
 		function = js_func["upload_file"] % (file_path, data) #gs_file_paths["file_to_upload_path"]
-		#print function
+		print function
 		try:
 			print "b"
 			self.send_request(function, "upload_file()")
@@ -191,10 +194,13 @@ class GenomeSpaceTest():
 			value = Config.get(sectionname, option)
 			if value == "":
 				errors = errors + ("in %s, %s is not provided; default is to be used.\n" % (sectionname, option))
-				if (option != "copy_to_container_target_path") and (option != "move_to_container_target_path"):
-					dictnry[option] = (default_dict[option] % container_one["container"])
+				if (sectionname == "GSFilePaths") or (sectionname == "GSFolderPaths"):
+					if (option != "copy_to_container_target_path") and (option != "move_to_container_target_path"):
+						dictnry[option] = (default_dict[option] % GenomeSpaceTest.container_one["container"])
+					else:
+						dictnry[option] = (default_dict[option] % GenomeSpaceTest.container_two["container"])
 				else:
-					dictnry[option] = (default_dict[option] % container_two["container"])
+					dictnry[option] = default_dict[option]
 			else:
 				try:
 					dictnry[option] = value

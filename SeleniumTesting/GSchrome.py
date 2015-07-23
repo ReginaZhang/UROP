@@ -13,8 +13,8 @@ from selenium.common.exceptions import *
 from constants import *
 import pickle
 import chrome_path
-from genome_space_test import *
-from data_test_preparation import DataTestPreparation
+from genome_space_test import GenomeSpaceTest as GST
+#from data_test_preparation import DataTestPreparation
 import sys
 
 #chrome_path = "D:\Softwares\Python2.7.5\New Folder\Scripts\chromedriver.exe"
@@ -31,8 +31,8 @@ class GSChrome(unittest.TestCase, GSTestCases):
         else:
             print "World"'''
         cls.parse_config()
-        print GenomeSpaceTest.user_details
-        print GenomeSpaceTest.container_names
+        #print GST.user_details
+        #print GST.container_names
         cls.driver_name = "chrome"
         cls.driver = webdriver.Chrome()#executable_path = chrome_path)
         driver = cls.driver
@@ -62,9 +62,9 @@ class GSChrome(unittest.TestCase, GSTestCases):
             #print "world"
             for cookie in cookies:
                 driver.add_cookie(cookie)
-            GenomeSpaceTest.logged_in = True
+            GST.logged_in = True
         except IOError:
-            GenomeSpaceTest.logged_in = False
+            GST.logged_in = False
         try:
             driver.get(home_page)
             driver.implicitly_wait(20)
@@ -85,25 +85,4 @@ class GSChrome(unittest.TestCase, GSTestCases):
         pass
 
 if __name__ == "__main__":
-    """options_tpl = ('-i', '--in_file', '-o', '--out_file')
-    del_lst = []
-    for i,option in enumerate(sys.argv):
-        if option in options_tpl:
-            del_lst.append(i)
-            del_lst.append(i+1)
-    print sys.argv
-    sys.argv = sys.argv[:-4]
-
-    Config = ConfigParser.ConfigParser()
-    Config.read("./file_paths.cfg")
-    local_file_paths
-    for option in Config.options()
-    print "sections"
-    print Config.sections()
-    print "options"
-    print Config.options("LocalSystemPaths")
-    print "value to age"
-    print Config.get("SectionOne", "age")
-    print Config.options("SectionTwo")
-    print Config.get("SectionTwo", "favorite color")"""
     unittest.main(verbosity=2)

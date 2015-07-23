@@ -1,20 +1,20 @@
-from genome_space_test import GenomeSpaceTest
+from genome_space_test import GenomeSpaceTest as GST
 from abc import ABCMeta
 from constants import *
 import unittest
 from selenium.webdriver.support import expected_conditions as EC
 import unicodedata
 
-class FilePublish(GenomeSpaceTest):
+class FilePublish(GST):
 
 	__metaclass__ = ABCMeta
 
 	def test_8_get_DOI(self):
-		if (not GenomeSpaceTest.logged_in):
+		if (not GST.logged_in):
 			raise unittest.SkipTest("Skipped for failed login.")
-		if (not GenomeSpaceTest.data_testing_swift_mounted):
+		if (not GST.data_testing_swift_mounted):
 			raise unittest.SkipTest("Skipped for failed mounting container.")
-		if not GenomeSpaceTest.publishing_file_test_ready:
+		if not GST.publishing_file_test_ready:
 			raise unittest.SkipTest("Skipped for failed to prepare getting DOI test.")
 		function1 = js_func["get_tags"]
 		try:
@@ -28,7 +28,8 @@ class FilePublish(GenomeSpaceTest):
 			alert.accept()
 		except Exception as e:
 			raise e
-		function2 = js_func["get_doi"]% (gs_file_paths["file_to_publish_path"],doi_info["Title"], doi_info["TitleType"], doi_info["Email"], doi_info["Creator"],doi_info["Contributors"], doi_info["Description"])
+		function2 = js_func["get_doi"]% (GST.gs_file_paths["file_to_publish_path"],GST.doi_info["Title"], GST.doi_info["TitleType"], GST.doi_info["Email"], GST.doi_info["Creator"],GST.doi_info["Contributors"], GST.doi_info["Description"])
+		print function2
 		try:
 			self.send_request(function2, "get_doi()")
 		except Exception as e:
@@ -37,7 +38,7 @@ class FilePublish(GenomeSpaceTest):
 			response = self.get_response()
 			assert "Success" in response
 		except Exception as e:
-			raise e
+			raise Exception("Failed to get DOI of the file." + response)
 		try:
 			self.send_request(function1, "get_tags()")
 		except Exception as e:

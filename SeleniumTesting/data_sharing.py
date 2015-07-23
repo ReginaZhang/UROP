@@ -19,11 +19,11 @@ from selenium.webdriver.common.action_chains import ActionChains
 #import mount_disconnect as md
 import unicodedata
 
-from genome_space_test import *
+from genome_space_test import GenomeSpaceTest as GST
 
 
 #@unittest.skipIf(rl.logged_in == False, "I've skipped the whole class")
-class DataSharing(GenomeSpaceTest):
+class DataSharing(GST):
     
     __metaclass__ = ABCMeta
     
@@ -34,12 +34,12 @@ class DataSharing(GenomeSpaceTest):
         
         Skipped if the login test was failed.
         """
-        if (not GenomeSpaceTest.logged_in) or (not GenomeSpaceTest.data_testing_swift_mounted):
+        if (not GST.logged_in) or (not GST.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
-        elif not GenomeSpaceTest.generate_public_URL_test_ready:
+        elif not GST.generate_public_URL_test_ready:
             raise unittest.SkipTest("Skipped for failed to prepare generating public URL test.")
         self.dismiss_dialogs()
-        function = js_func["generate_public_url"] % gs_file_paths["file_to_generate_public_URL_path"]
+        function = js_func["generate_public_url"] % GST.gs_file_paths["file_to_generate_public_URL_path"]
         try:
             #print 1
             self.send_request(function, "generate_public_url()")

@@ -1,3 +1,10 @@
+Configeration Errors: 
+
+in LocalFilePaths, file_to_upload_path is not provided; default is to be used.
+in GSFilePaths, file_to_rename_path is not provided; default is to be used.
+
+======================================================================
+
 test_1a_register (__main__.GSChrome) ... skipped 'Logged in'
 test_1b_login (__main__.GSChrome) ... skipped 'Logged in'
 test_2a_mount_container (__main__.GSChrome) ... ok
@@ -55,6 +62,6 @@ Failure: 500  Response: <html><head><title>Apache Tomcat/7.0.26 - Error report</
 </pre></p><p><b>note</b> <u>The full stack trace of the root cause is available in the Apache Tomcat/7.0.26 logs.</u></p><HR size="1" noshade="noshade"><h3>Apache Tomcat/7.0.26</h3></body></html>
 
 ----------------------------------------------------------------------
-Ran 16 tests in 441.840s
+Ran 16 tests in 352.989s
 
 FAILED (errors=4, skipped=2)

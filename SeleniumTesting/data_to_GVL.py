@@ -17,9 +17,9 @@ from selenium.webdriver.common.action_chains import ActionChains
 #import register_login as rl
 #import mount_disconnect as md
 
-from genome_space_test import GenomeSpaceTest
+from genome_space_test import GenomeSpaceTest as GST
 
-class DataToGVL(GenomeSpaceTest):
+class DataToGVL(GST):
     
     __metaclass__ = ABCMeta
     
@@ -32,12 +32,14 @@ class DataToGVL(GenomeSpaceTest):
         
         Skipped if the login test was failed.
         """
-        if (not GenomeSpaceTest.logged_in) or (not GenomeSpaceTest.data_testing_swift_mounted):
+        if (not GST.logged_in) or (not GST.data_testing_swift_mounted):
             raise unittest.SkipTest("Skipped for failed login or failed mounting container.")
-        self.dismiss_dialogs()
-        file_url = "https://genomespace.genome.edu.au:443/datamanager/file/Home/swift:UROP/file_to_share.txt"
-        file_url_escaped = "https%3A%2F%2Fgenomespace.genome.edu.au%3A443%2Fdatamanager%2Ffile%2FHome%2Fswift%3AUROP%2Ffile_to_share.txt"
-        function = js_func["launch_with_file"] % (file_url, file_url_escaped, file_url)
+        elif not GST.launch_GVL_with_file_test_ready:
+            raise unittest.SkipTest("Skipped for failed to prepare launch Galaxy with file test.")
+        #file_url = "https://genomespace.genome.edu.au:443/datamanager/file/Home/swift:UROP/file_to_share.txt"
+        #file_url_escaped = "https%3A%2F%2Fgenomespace.genome.edu.au%3A443%2Fdatamanager%2Ffile%2FHome%2Fswift%3AUROP%2Ffile_to_share.txt"
+        function = js_func["launch_with_file"] % (GST.gs_file_paths["file_to_launch_GVL_with"], GST.user_details["username"])
+        print function
         try:
             self.send_request(function, "launch_with_file()")
         except Exception as e:
