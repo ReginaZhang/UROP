@@ -1,0 +1,24 @@
+ERROR
+
+======================================================================
+ERROR: setUpClass (__main__.GSChrome)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "GSchrome.py", line 36, in setUpClass
+    driver.maximize_window()
+  File "/Library/Python/2.7/site-packages/selenium/webdriver/remote/webdriver.py", line 485, in maximize_window
+    self.execute(Command.MAXIMIZE_WINDOW, {"windowHandle": "current"})
+  File "/Library/Python/2.7/site-packages/selenium/webdriver/remote/webdriver.py", line 175, in execute
+    self.error_handler.check_response(response)
+  File "/Library/Python/2.7/site-packages/selenium/webdriver/remote/errorhandler.py", line 166, in check_response
+    raise exception_class(message, screen, stacktrace)
+WebDriverException: Message: unknown error: cannot get automation extension
+from timeout: Timed out receiving message from renderer: -0.407
+  (Session info: chrome=44.0.2403.89)
+  (Driver info: chromedriver=2.14.313457 (3d645c400edf2e2c500566c9aa096063e707c9cf),platform=Mac OS X 10.10.2 x86_64)
+
+
+----------------------------------------------------------------------
+Ran 0 tests in 27.057s
+
+FAILED (errors=1)
