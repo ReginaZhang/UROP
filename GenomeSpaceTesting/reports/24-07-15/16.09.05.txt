@@ -1,0 +1,20 @@
+ERROR
+
+======================================================================
+ERROR: setUpClass (__main__.GSChrome)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./source/GSchrome.py", line 32, in setUpClass
+    cls.driver = webdriver.Chrome(executable_path = chrome_path.driver_path)
+  File "/Library/Python/2.7/site-packages/selenium/webdriver/chrome/webdriver.py", line 59, in __init__
+    self.service.start()
+  File "/Library/Python/2.7/site-packages/selenium/webdriver/chrome/service.py", line 66, in start
+    "'" + os.path.basename(self.path) + "' executable needs to be \
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/posixpath.py", line 121, in basename
+    i = p.rfind('/') + 1
+AttributeError: 'NoneType' object has no attribute 'rfind'
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.083s
+
+FAILED (errors=1)

@@ -1,0 +1,4 @@
+  File "./source/GSchrome.py", line 31
+    if chrome_driver_path != None
+                                ^
+SyntaxError: invalid syntax

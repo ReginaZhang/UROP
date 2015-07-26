@@ -1,0 +1,32 @@
+ERROR
+
+======================================================================
+ERROR: setUpClass (__main__.GSChrome)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./source/GSchrome.py", line 34, in setUpClass
+    cls.driver = webdriver.Chrome()
+  File "/Library/Python/2.7/site-packages/selenium/webdriver/chrome/webdriver.py", line 67, in __init__
+    self.quit()
+  File "/Library/Python/2.7/site-packages/selenium/webdriver/chrome/webdriver.py", line 82, in quit
+    self.service.stop()
+  File "/Library/Python/2.7/site-packages/selenium/webdriver/chrome/service.py", line 100, in stop
+    url_request.urlopen("http://127.0.0.1:%d/shutdown" % self.port)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/urllib2.py", line 127, in urlopen
+    return _opener.open(url, data, timeout)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/urllib2.py", line 404, in open
+    response = self._open(req, data)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/urllib2.py", line 422, in _open
+    '_open', req)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/urllib2.py", line 382, in _call_chain
+    result = func(*args)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/urllib2.py", line 1214, in http_open
+    return self.do_open(httplib.HTTPConnection, req)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/urllib2.py", line 1184, in do_open
+    raise URLError(err)
+URLError: <urlopen error [Errno 61] Connection refused>
+
+----------------------------------------------------------------------
+Ran 0 tests in 12.466s
+
+FAILED (errors=1)

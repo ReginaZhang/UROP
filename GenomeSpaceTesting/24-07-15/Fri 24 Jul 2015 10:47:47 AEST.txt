@@ -1,0 +1,32 @@
+test_1a_register (__main__.GSChrome) ... ok
+test_1b_login (__main__.GSChrome) ... ok
+test_2a_mount_container (__main__.GSChrome) ... ok
+test_2b_disconnect_container (__main__.GSChrome) ... ok
+test_3_setting_up (__main__.GSChrome) ... ERROR
+test_4a_import_url (__main__.GSChrome) ... skipped 'Skipped for failed login or failed mounting container.'
+test_4b_upload_file (__main__.GSChrome) ... skipped 'Skipped for failed login or failed mounting container.'
+test_5a_generate_public_URL (__main__.GSChrome) ... skipped 'Skipped for failed login or failed mounting container.'
+test_6a_change_file_name (__main__.GSChrome) ... skipped 'Skipped for failed login or failed mounting container.'
+test_6b_copy_data_btw_folders (__main__.GSChrome) ... skipped 'Skipped for failed login or failed mounting container.'
+test_6c_copy_data_btw_containers (__main__.GSChrome) ... skipped 'Skipped for failed login or failed mounting container.'
+test_6d_delete_file (__main__.GSChrome) ... skipped 'Skipped for failed login or failed mounting container.'
+test_6e_move_data_btw_folders (__main__.GSChrome) ... skipped 'Skipped for failed login or failed mounting container.'
+test_6f_move_data_btw_containers (__main__.GSChrome) ... skipped 'Skipped for failed login or failed mounting container.'
+test_7b_launch_with_file (__main__.GSChrome) ... skipped 'Skipped for failed login or failed mounting container.'
+test_8_get_DOI (__main__.GSChrome) ... skipped 'Skipped for failed mounting container.'
+
+======================================================================
+ERROR: test_3_setting_up (__main__.GSChrome)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/Regina/Documents/VLSCI_MAC_Documents/UROP/SeleniumTesting/data_test_preparation.py", line 239, in test_3_setting_up
+    self.containers()
+  File "/Users/Regina/Documents/VLSCI_MAC_Documents/UROP/SeleniumTesting/data_test_preparation.py", line 59, in containers
+    raise PreparationException("Containers for file tests are not connected and failed to mount them.")
+PreparationException: Failed to prepare for the file tests.
+Containers for file tests are not connected and failed to mount them.
+
+----------------------------------------------------------------------
+Ran 16 tests in 59.894s
+
+FAILED (errors=1, skipped=11)
