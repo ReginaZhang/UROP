@@ -211,14 +211,17 @@ class GenomeSpaceTest():
 		for option in Config.options(sectionname):
 			value = Config.get(sectionname, option)
 			if value == "":
-				errors = errors + ("in %s, %s is not provided; default is to be used.\n" % (sectionname, option))
-				if (sectionname == "GSFilePaths") or (sectionname == "GSFolderPaths"):
-					if (option != "copy_to_container_target_path") and (option != "move_to_container_target_path"):
-						dictnry[option] = (default_dict[option] % GenomeSpaceTest.container_one["container"])
+				try:
+					errors = errors + ("in %s, %s is not provided; default is to be used.\n" % (sectionname, option))
+					if (sectionname == "GSFilePaths") or (sectionname == "GSFolderPaths"):
+						if (option != "copy_to_container_target_path") and (option != "move_to_container_target_path"):
+							dictnry[option] = (default_dict[option] % GenomeSpaceTest.container_one["container"])
+						else:
+							dictnry[option] = (default_dict[option] % GenomeSpaceTest.container_two["container"])
 					else:
-						dictnry[option] = (default_dict[option] % GenomeSpaceTest.container_two["container"])
-				else:
-					dictnry[option] = default_dict[option]
+						dictnry[option] = default_dict[option]
+				except KeyError:
+					sys.exit("Please follow the instruction in Readme to make the minimum change to the config file.")
 			else:
 				try:
 					dictnry[option] = value

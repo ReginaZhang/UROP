@@ -28,21 +28,11 @@ page_login = {'login_name': "identity",
 
 # following are the keys for the tests
 
-default_container_one = {'Endpoint': 'https://keystone.rc.nectar.org.au:5000/v2.0/tokens',
-                 'osUserName': 'ruijing.zhang@unimelb.edu.au',
-                 'osPassword': 'NWE4Yzg4NTlkMmVlZTU4',
-                 'OsTenant': 'GenomicsVL',
-                 'container': 'GSTest'}
+default_container_one = {'Endpoint': 'https://keystone.rc.nectar.org.au:5000/v2.0/tokens'}
 
-default_container_two = {'Endpoint': 'https://keystone.rc.nectar.org.au:5000/v2.0/tokens',
-                 'osUserName': 'ruijing.zhang@unimelb.edu.au',
-                 'osPassword': 'NWE4Yzg4NTlkMmVlZTU4',
-                 'OsTenant': 'GenomicsVL',
-                 'container': 'GS-Test'}
+default_container_two = {'Endpoint': 'https://keystone.rc.nectar.org.au:5000/v2.0/tokens'}
 
-default_user_details = {'username': "devtest",
-                'password': "devtest",
-                'email': "ykowsar@gmail.com"}
+default_user_details = {}
 
 
 default_gs_folder_paths = {'dir1_path': '/Home/swift:%s/subdir1',
@@ -70,7 +60,7 @@ default_file_name_for_renaming_test = "after_rename.txt"
 default_doi_info = {"Title": "test",
             "TitleType": "AlternativeTitle",
             "Email": "test@test.com",
-            "Creator": "Regina",
+            "Creator": "John Dough",
             "Contributors": "John Dough",
             "Description": "test test"}
 
