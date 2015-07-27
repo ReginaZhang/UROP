@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "./source/GSchrome.py", line 9, in <module>
-    from GStestcases import GSTestCases
-  File "/Users/Regina/Documents/VLSCI_MAC_Documents/UROP/SeleniumTesting/source/GStestcases.py", line 20, in <module>
-    from registration_login import RegistrationLogin
-ImportError: No module named registration_login

@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "./source/GSchrome.py", line 15, in <module>
-    import chrome_path
-ImportError: No module named chrome_path

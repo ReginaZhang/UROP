@@ -170,7 +170,7 @@ class GenomeSpaceTest():
 	@classmethod
 	def parse_config(cls):
 		'''
-			method for parsing the Configeration file to read in the
+			method for parsing the Configuration file to read in the
 			information needed for the tests
 		'''
 		Config = ConfigParser.ConfigParser()
@@ -197,14 +197,14 @@ class GenomeSpaceTest():
 		GenomeSpaceTest.gs_folder_paths, error = cls.make_dict(Config, "GSFolderPaths", errors, default_gs_folder_paths)
 		GenomeSpaceTest.doi_info, errors = cls.make_dict(Config, "DOIInfo", errors, default_doi_info)
 		if errors != "":
-			print >>sys.stderr, "Configeration Errors: \n"
+			print >>sys.stderr, "Configuration Errors: \n"
 			print >>sys.stderr, errors
 			print >>sys.stderr, "="*70 + "\n"
 
 	@classmethod
 	def make_dict(cls, Config, sectionname, errors, default_dict):
 		'''
-			method to parse information in the Configeration file
+			method to parse information in the Configuration file
 			and turn it into dictionaries for the program to use
 		'''
 		dictnry = {}
